@@ -1,68 +1,20 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
 const {
-    ArtistModel,
-    AlbumModel, 
-    SongModel,
-    SingleSongModel
+    ArtistModel
 } = require('../models/SongModel')
 
-const createArtist = async (req, res) => {
-    const {full_name, bio, dob, gender, img_url, albums, single} = req.body;
-    const artist = await ArtistModel.create({full_name, bio, dob, gender, img_url, albums, single});
-    console.log(full_name, bio, dob, gender, img_url, albums, single);
-    if (!artist){
-        console.log("[INFO]: ", artist)
-        return res.status(404).json({error:"Error on creating artist"})
-    }
-    res.status(200).json(artist)
-}
-
-const listArtist = async (req, res) => {
-    const artists = await ArtistModel.find({}).sort({createdAt: -1})
-    // if (!artists){
-    //     return res.status(404).json({error: "No"})
-    // }
-    res.status(200).json(artists)
-}
-
-const getArtist = async (req, res) => {
-    const id = req.params.id
-    if (!mongoose.Types.ObjectId.isValid(id)){
-        return res.status(404).json({error:"Invalid Id"})
-    }
-    const artist = await ArtistModel.findById(id)
-    if (!artist){
-        return res.status(404).json({error:"Error on creating artist"})
-    }
-    res.status(200).json(artist)
-}
-
-const deleteArtist = async (req, res) => {
-    const id = req.params.id
-    if (!mongoose.Types.ObjectId.isValid(id)){
-        return res.status(404).json({error:"Invalid Id"})
-    }
-    const artist = await ArtistModel.findByIdAndDelete(id)
-    if (!artist){
-        return res.status(404).json({error:"Error on creating artist"})
-    }
-    res.status(200).json(artist)
-}
-
-const updateArtist = async (req, res) => {
-    const id = req.params.id
-    if (!mongoose.Types.ObjectId.isValid(id)){
-        return res.status(404).json({error:"Invalid Id"})
-    }
-    const artist = await ArtistModel.findByIdAndUpdate(id, {...req.body})
-    if (!artist){
-        return res.status(404).json({error:"Error on creating artist"})
-    }
-    res.status(200).json(artist)
-}
-
-
+/**
+ * Handles the POST request for creating new album for specific artist.
+ * 
+ * The API is /api/newAlbum/:artist_id
+ * 
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @returns {ArtistModel} - Returns the created album's data
+ * @throws {Error} - 404 Invalid Id / no artist found returns / 500 Internal Server error(if any other error happens).
+ */
 const createAlbum = async (req, res) => {
+    // Implementation to create new album
     try{
         const {title, cover_img_url, release_date} = req.body;
         const artist_id = req.params.artist_id;
@@ -89,7 +41,18 @@ const createAlbum = async (req, res) => {
     }
 };
 
+/**
+ * Handles the GET request for retrieving a specific album.
+ * 
+ * The API is /api/getAlbum/:id
+ * 
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @returns {ArtistModel} - Specifc Album information.
+ * @throws {Error} - 404 Invalid Id / no artist found returns / 500 Internal Server error(if any other error happens).
+ */
 const getAlbum = async (req, res) => {
+    // Implementation to get specific album
     try{
         const id = req.params.id;
         if (!mongoose.Types.ObjectId.isValid(id)){
@@ -107,7 +70,18 @@ const getAlbum = async (req, res) => {
    }
 };
 
+/**
+ * Handles the DELETE request for deleting a specific album.
+ * 
+ * The API is /api/deleteAlbum/:id
+ * 
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @returns {ArtistModel} - Returns deleted album's information.
+ * @throws {Error} - 404 Invalid Id / no artist found returns / 500 Internal Server error(if any other error happens).
+ */
 const deleteAlbum = async (req, res) => {
+    // Implementation to delete specific album
     try{
         const id = req.params.id
         if (!mongoose.Types.ObjectId.isValid(id)){
@@ -130,8 +104,18 @@ const deleteAlbum = async (req, res) => {
     }
 };
 
-
+/**
+ * Handles the PUT request for updating a specific album.
+ * 
+ * The API is /api/updateAlbum/:id
+ * 
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @returns {ArtistModel} - Returns updated album's information.
+ * @throws {Error} - 404 Invalid Id / no artist found returns / 500 Internal Server error(if any other error happens).
+ */
 const updateAlbum = async (req, res) => {
+    // Implementation to update specific album
     const id = req.params.id
     if (!mongoose.Types.ObjectId.isValid(id)){
         return res.status(404).json({error:"Invalid Id"})
@@ -162,45 +146,9 @@ const getArtistsAlbum = async(req, res) => {
     // I don't think this will be nessary since i can get same and additional info from getArtist
 }
 
-const createSong = async (req, res) => {
-    try{
-        const artist_id = req.params.artist_id;
-        const album_id = req.params.album_id;
-        const {title, duration, file_url, release_date, genre} = req.body;
-
-        const artist = await ArtistModel.findOneAndUpdate(
-            {_id: artist_id, 'albums._id': album_id},
-            {$push: {'albums.$.songs': {title, duration, file_url, release_date, genre}}},
-            {new: true}
-        )
-
-        if (!artist){
-            return res.status(404).json({error:"Error on creating album"});
-        }
-        res.status(200).json(artist);
-    } catch(error) {
-        console.log("[ERROR]: ", error);
-        res.status(500).json({error: "Internal Server Error"});
-    }
-};
-
-const getSong = async (req, res) => {}
-
-const deleteSong = async (req, res) => {}
-
-const updateSong = async (req, res) => {}
-
 module.exports = {
-    createArtist: createArtist,
-    listArtist: listArtist,
-    getArtist: getArtist,
-    deleteArtist: deleteArtist,
-    updateArtist: updateArtist,
-
     createAlbum: createAlbum,
     getAlbum: getAlbum,
     deleteAlbum: deleteAlbum,
-    updateAlbum: updateAlbum,
-
-    createSong: createSong
+    updateAlbum: updateAlbum
 }
