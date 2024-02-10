@@ -24,6 +24,12 @@ mongoose.connect(process.env.MOGO_URI)
     console.log(error)
 })
 
-app.listen(process.env.PORT, function(){
-    console.log('[INFO] Server listening on port', process.env.PORT)
-})
+if (process.env.NODE_ENV !== "test"){
+    app.listen(process.env.PORT, function(){
+        console.log('[INFO] Server listening on port', process.env.PORT)
+    });
+}
+// module.exports = {
+//     app: app
+// }
+module.exports = app;

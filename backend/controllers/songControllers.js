@@ -33,7 +33,7 @@ const createSong = async (req, res) => {
         if (!artist){
             return res.status(404).json({error:"Error on creating album"});
         }
-        res.status(200).json(artist);
+        res.status(201).json(artist);
     } catch(error) {
         console.log("[ERROR]: ", error);
         res.status(500).json({error: "Internal Server Error"});
@@ -153,9 +153,9 @@ const updateSong = async (req, res) => {
                 arrayFilters: [
                     { 'album._id': album_id },
                     { 'song._id': song_id }
-                ]
-            },
-            {new: true}
+                ],
+                new: true,
+            }
             );
         // the thing is that it returns all the artist data so use it only to update
         // maybe i should only respons success messages 

@@ -16,25 +16,20 @@ const {
 const createAlbum = async (req, res) => {
     // Implementation to create new album
     try{
-        const {title, cover_img_url, release_date} = req.body;
+        const {title, cover_img_url, release_date, songs} = req.body;
         const artist_id = req.params.artist_id;
-
-        if (!mongoose.Types.ObjectId.isValid(artist_id)){
-            return res.status(404).json({error:"Invalid Id"})
-        }
+        console.log("[INFO] ", req.body)
         const artist = await ArtistModel.findOneAndUpdate(
             {_id: artist_id},
-            {$push: {'artist.$.albums': {title, cover_img_url, release_date}}},
+            {$push: {'albums': {title, cover_img_url, release_date, songs}}},
             {new: true}
         )
+        // await artist.save();
         if (!artist){
             return res.status(404).json({error:"Error on creating album"});
         }
-
         // artist.albums.push({title, cover_img_url, release_date});
-        await artist.save();
-
-        res.status(200).json(artist);
+        res.status(201).json(artist);
     } catch(error) {
         console.log("[ERROR]: ", error);
         res.status(500).json({error: "Internal Server Error"});

@@ -23,6 +23,12 @@ const {
     deleteSong
 } = require('../controllers/songControllers');
 
+const {
+    numberSongsInAlbum,
+    numberSongsArtist,
+    numberAlbumArtist
+} = require('../controllers/basicStaticsControllers');
+
 
 const router = express.Router()
 
@@ -44,5 +50,9 @@ router.post('/newSong/artist/:artist_id/album/:album_id', createSong)
 router.get('/getSong/artist/:artist_id/album/:album_id/songs/:song_id', getSong)
 router.put('/updateSong/album/:album_id/songs/:song_id', updateSong)
 router.delete('/deleteSong/album/:album_id/songs/:song_id', deleteSong)
+
+router.get('/NoSongAlubm/artist/:artist_id/album/:album_id', numberSongsInAlbum)
+router.get('/NoSongArtist/:artist_id', numberSongsArtist)
+router.get('/NoAlbumArtist/:artist_id', numberAlbumArtist)
 
 module.exports = router

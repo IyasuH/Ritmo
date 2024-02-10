@@ -21,12 +21,12 @@ const createArtist = async (req, res) => {
     // Implementation to  arcreate new artist.
     const {full_name, bio, dob, gender, img_url, albums, single} = req.body;
     const artist = await ArtistModel.create({full_name, bio, dob, gender, img_url, albums, single});
-    console.log(full_name, bio, dob, gender, img_url, albums, single);
+    // console.log(full_name, bio, dob, gender, img_url, albums, single);
     if (!artist){
         console.log("[INFO]: ", artist)
         return res.status(404).json({error:"Error on creating artist"})
     }
-    res.status(200).json(artist)
+    res.status(201).json(artist)
 }
 
 /**
@@ -41,7 +41,7 @@ const createArtist = async (req, res) => {
  */
 const listArtist = async (req, res) => {
     // Implementation to list all artist
-    const artists = await ArtistModel.find({}).sort({createdAt: -1})
+    const artists = await ArtistModel.find({})
     if (!artists){
         return res.status(404).json({error: "No artist found"})
     }
@@ -110,9 +110,9 @@ const updateArtist = async (req, res) => {
     if (!mongoose.Types.ObjectId.isValid(id)){
         return res.status(404).json({error:"Invalid Id"})
     }
-    const artist = await ArtistModel.findByIdAndUpdate(id, {...req.body})
+    const artist = await ArtistModel.findByIdAndUpdate(id, {...req.body}, {new: true});
     if (!artist){
-        return res.status(404).json({error:"Error on creating artist"})
+        return res.status(404).json({error:"Error on updating artist"})
     }
     res.status(200).json(artist)
 }
