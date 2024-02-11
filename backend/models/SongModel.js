@@ -7,7 +7,7 @@ const SongSchema = new Schema({
     title: { type: String, required: true },
     duration: { type: Number, required: true },
     file_url: { type: String, required: true },
-    genre: { type: String, required: true, default: ''},
+    genre: { type: String, required: true},
     release_date: {type: Date, required: true},
 
 }, {timestamps: true})
@@ -25,8 +25,8 @@ const SingleSongSchema = new Schema({
     title: { type: String, required: true },
     duration: { type: Number, required: true },
     file_url: { type: String, required: true },
-    img_url: { type: String, required: true },
     release_date: {type: Date, required: true},
+    genre: { type: String, required: true},
 }, {timestamps: true})
 
 const ArtistSchema = new Schema({

@@ -96,4 +96,19 @@ describe('Album API',() => {
             .delete(`/api/deleteSong/album/${createdAlbumId}/songs/${createdSongId}`)
         expect(response.status).toBe(200);
     });
+
+    // test deletetion of album
+    test('Should delete album information', async() => {
+        const response = await request(app)
+            .delete(`/api/deleteAlbum/${createdAlbumId}`)
+        expect(response.status).toBe(200);
+    });
+
+    // test deletetion of artist
+    test('Should delete artist information', async() => {
+        const response = await request(app)
+            .delete(`/api/deleteArtist/${createdArtistId}`)
+        expect(response.status).toBe(200);
+    });
+
 });

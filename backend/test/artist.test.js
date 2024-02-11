@@ -19,7 +19,7 @@ afterAll(async () => {
     console.log("[INFO] after all")
 });
 
-describe('Artist API',() => {
+describe('Artist API test',() => {
     let createdArtistId;
     // test list of all artists
     test('should list all artists', async () => {

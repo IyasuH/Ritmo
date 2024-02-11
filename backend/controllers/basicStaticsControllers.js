@@ -1,11 +1,171 @@
 const mongoose = require('mongoose')
-
 const {ArtistModel} = require('../models/SongModel');
 
+const totalNumberOfSongs = async (req, res) => {
+    // total number of Songs[for every artist in albums and as a single]
+    try{
+        // here what if i can calculate the number single songs and number album songs individaully then i can add them up to get totalSongs
+        const single_songs = await ArtistModel.aggregate([
+            {$project: {
+                singleSongs: { $size: '$single' }
+            }
+        }, 
+        {
+            $group: {
+                _id: null,
+                singleSongs: {$sum: "$singleSongs"}
+            }
+        }
+        ]).exec();
+
+        const album_songs = await ArtistModel.aggregate([
+            {$project: {
+                albumSongs: { $size: '$albums.songs' }
+            }
+        }, 
+        {
+            $group: {
+                _id: null,
+                albumSongs: {$sum: "$albumSongs"}
+            }
+        }
+        ]).exec();
+        totalSongs = single_songs[0].singleSongs + album_songs[0].albumSongs;
+        // I can use the following code to get total songs on the platform[the default is now you can get total album songs and total single songs separately]
+        // const number_of_songs = await ArtistModel.aggregate([
+        //     {$project: {
+        //         totalSongs: {
+        //             $add: [
+        //                 { $size: '$albums.songs' },
+        //                 { $size: '$single' }
+        //             ]
+        //         }
+        //     }
+        // }, 
+        // {
+        //     $group: {
+        //         _id: null,
+        //         totalSongs: {$sum: "$totalSongs"}
+        //     }
+        // }
+        // ]).exec();
+        console.log("[INFO]: number of songs, ", totalSongs)
+
+        res.status(200).json({"single_songs": single_songs[0].singleSongs, "albums_songs": album_songs[0].albumSongs, "total": totalSongs})
+    } catch (err) {
+        console.log(err)
+        res.status(404).json({"Error": err});
+    }
+};
+
+const totalNumberOfArtists = async (req, res) => {
+    // total number of Artists
+    // this could be done using .length() method
+    try{
+        const artists = await ArtistModel.find({});
+        const number_of_artists = artists.length;
+        console.log("[INFO]: number of artists, ", number_of_artists)
+        res.status(200).json({"total number of artists": number_of_artists})
+    } catch (err) {
+        console.log(err)
+        res.status(404).json({"Error": err});
+    }
+};
+
+const totalNumberOfAlbums = async (req, res) => {
+    // total number of Albums
+    try{
+        const number_of_albums = await ArtistModel.aggregate([
+            {$project: {
+                albums: { $size: '$albums' }
+            }
+        }, 
+        {
+            $group: {
+                _id: null,
+                albums: {$sum: "$albums"}
+            }
+        }
+        ]).exec();
+        res.status(200).json(number_of_albums)
+    } catch (err) {
+        console.log(err)
+        res.status(404).json({"Error": err});
+    }
+};
+
+const numberSongsGenres = async (req, res) => {
+    // number of songs for each genre and total number of genres
+    try{
+        const number_of_geners = await ArtistModel.aggregate([
+            {
+                // concatenate single and in album songs
+                $project: {
+                  allSongs: {
+                    $concatArrays: [
+                      "$single",
+                    //   "$albums.songs" -- when using this it will not add same generes as one it just concatArray them
+                    { $reduce: {
+                        input: "$albums.songs", // - this value is the value where operation performed
+                        initialValue: [], // - this is just the inital value of reduce return
+                        in: { $concatArrays: ["$$value", "$$this"] } // - this the operation and here it concatArrays $$this values[each albums.songs] to the value(where initally it was empty array)
+                      }
+                    }
+                    ]
+                  }
+                }
+              },
+              // remove the empty arrays
+              {
+                $match: {
+                    allSongs: { $ne: [] }
+                }
+              },
+              
+              {
+                $unwind: "$allSongs"
+              },
+            // then group them by genere and append one per similar genre[by if i used $albums.songs only it just didn't increase the 1 per similar genre]
+            {
+              $group: {
+                _id: "$allSongs.genre",
+                count: { $sum: 1 }
+              }
+            },
+            //  rearragne the result
+            { 
+              $group: {
+                _id: null,
+                genreCounts: { $push: { genre: "$_id", count: "$count" } }
+              }
+            },
+            // avoid _id
+            {
+              $project: {
+                _id: 0,
+                genreCounts: 1
+              }
+            }
+        ]).exec();
+        const genreCountsClean = {};
+        number_of_geners[0].genreCounts.forEach((item) => {
+          genreCountsClean[item.genre] = item.count;
+        });
+        const number_of_genres = Object.keys(genreCountsClean).length  // this is to get totalNumber of genre
+        console.log("[INFO]: ", number_of_genres);
+        res.status(200).json(genreCountsClean);
+    } catch (err) {
+        console.log(err)
+        res.status(404).json({"Error": err});
+    }
+
+}
+
 const numberAlbumArtist = async (req, res) => {
+    // number of songs in an album
+    // This function could jsut be .length() method [Rethink & Review]
     const artist_id = req.params.artist_id;
     try {
-        // 
         const result = await ArtistModel.aggregate([
             {$match: {_id: new mongoose.Types.ObjectId(artist_id)}},
             {$project: {totalAlbums: { $size: '$albums' }}}
@@ -61,6 +221,7 @@ const numberSongsArtist = async (req, res) => {
 
 const numberSongsInAlbum = async (req, res) =>{
     // number of songs in album
+    // This function could be jsut run using .length() method [Rethink & Review]
     const artist_id = req.params.artist_id;
     const album_id = req.params.album_id;
     try{
@@ -92,5 +253,9 @@ const numberSongsInAlbum = async (req, res) =>{
 module.exports = {
     numberSongsInAlbum: numberSongsInAlbum,
     numberSongsArtist: numberSongsArtist,
-    numberAlbumArtist: numberAlbumArtist
+    numberAlbumArtist: numberAlbumArtist,
+    totalNumberOfSongs: totalNumberOfSongs,
+    totalNumberOfArtists: totalNumberOfArtists,
+    totalNumberOfAlbums: totalNumberOfAlbums,
+    numberSongsGenres: numberSongsGenres
 }

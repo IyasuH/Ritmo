@@ -19,9 +19,11 @@ afterAll(async () => {
     console.log("[INFO] after all")
 });
 
+// here goes the test for single songs
+
 describe('Album API',() => {
     let createdArtistId;
-    let createdAlbumId;
+    let createdSingleId;
     // to create new artist
     test('should create new artist', async ()=>{
         const response = await request(app)
@@ -40,44 +42,42 @@ describe('Album API',() => {
         createdArtistId = response.body._id.trim();
     });
 
-    // test creation of new album
-    test('should create new album', async ()=>{
+    // test creation of new single
+    test('should create new single', async ()=>{
         const response = await request(app)
-            .post(`/api/newAlbum/${createdArtistId}`)
+            .post(`/api/newSingle/${createdArtistId}`)
             .send({
-                title: "test_album",
-                cover_img_url: "/test_cover/url",
+                title: "test_single",
+                duration: 60,
+                file_url: "/test_single/url",
                 release_date: "2000-03-14",
-                single: []
+                genre: "test"
             });
         expect(response.status).toBe(201);
-        // expect(response.body).toHaveProperty('_id');
-        // console.log("[INFO] id: ", response.body)
-        createdAlbumId = response.body.albums[0]._id.trim();
-        // console.log("[INFO] id:", createdAlbumId)
+        createdSingleId = response.body.single[0]._id.trim();
     });
 
-    // test get of an album
-    test('should return single album information', async ()=>{        
+    // test get of an single
+    test('should return single song information', async ()=>{        
         const response = await request(app)
-            .get(`/api/getAlbum/${createdAlbumId}`);
+            .get(`/api/getSingle/${createdSingleId}`);
         expect(response.status).toBe(200);
-        expect(response.body.albums[0]).toHaveProperty('title', 'test_album');
+        expect(response.body.single[0]).toHaveProperty('title', 'test_single');
     });
 
-    // test update of an album
-    test('Should update album information', async() => {
+    // test update of an single
+    test('Should update single song information', async() => {
         const response = await request(app)
-            .put(`/api/updateAlbum/${createdAlbumId}`)
-            .send({cover_img_url: "/updated_test_cover/url"});
+            .put(`/api/updateSingle/${createdSingleId}`)
+            .send({file_url: "/updated_test_single/url"});
         expect(response.status).toBe(200);
-        expect(response.body.albums[0]).toHaveProperty('cover_img_url', '/updated_test_cover/url');
+        expect(response.body.single[0]).toHaveProperty('file_url', '/updated_test_single/url');
     });
 
-    // test deletetion of album
+    // test deletetion of single
     test('Should delete album information', async() => {
         const response = await request(app)
-            .delete(`/api/deleteAlbum/${createdAlbumId}`)
+            .delete(`/api/deleteSingle/${createdSingleId}`)
         expect(response.status).toBe(200);
     });
 
@@ -87,5 +87,4 @@ describe('Album API',() => {
             .delete(`/api/deleteArtist/${createdArtistId}`)
         expect(response.status).toBe(200);
     });
-
 })

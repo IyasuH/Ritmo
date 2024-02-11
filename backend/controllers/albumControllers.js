@@ -134,8 +134,8 @@ const updateAlbum = async (req, res) => {
     if (!album){
         return res.status(404).json({error:"Error on updating album"})
     }
-    res.status(200).json(album)   
-}
+    res.status(200).json(album);
+};
 
 const getArtistsAlbum = async(req, res) => {
     // I don't think this will be nessary since i can get same and additional info from getArtist
