@@ -1,0 +1,16 @@
+.indigenous_style.artist_card{
+    margin-top: 5%;
+    padding-top: 5%;
+    width: '18rem';
+    /* background-color: black; */
+    /* background-color: black; */
+}
+.indigenous_style.artist_image{
+    padding-bottom: 5%;
+}
+
+.indigenous_style.artist_compt{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
