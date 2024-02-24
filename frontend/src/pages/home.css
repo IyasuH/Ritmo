@@ -1,0 +1,31 @@
+.indigenous_style.sidebarComponents{
+    width: '20rem';
+}
+.indigenous_style.home_parent {
+    display: flex;
+    /* flex-direction: column; */
+    /* width: 50%; */
+}
+
+.indigenous_style.side_child{
+    flex-basis: 20%;
+    border: 2px solid blueviolet;
+    margin: 10px;
+}
+.indigenous_style.main_child{
+    flex-basis: 80%;
+    border: 2px solid blueviolet;
+    margin: 10px;
+}
+
+@media (max-width: 768px) {
+        .indigenous_style.home_parent {
+        flex-direction: column;
+    }
+
+    .indigenous_style.side_cild,
+    .indigenous_style.main_child {
+        flex-basis: 100%;
+    }
+}
+
