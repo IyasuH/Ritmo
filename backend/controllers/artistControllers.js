@@ -41,7 +41,7 @@ const createArtist = async (req, res) => {
  */
 const listArtist = async (req, res) => {
     // Implementation to list all artist
-    const artists = await ArtistModel.find({})
+    const artists = await ArtistModel.find({});
     if (!artists){
         return res.status(404).json({error: "No artist found"})
     }

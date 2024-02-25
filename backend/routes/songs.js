@@ -6,7 +6,6 @@ const {
     getArtist,
     deleteArtist,
     updateArtist,
-
 } = require('../controllers/artistControllers.js');
 
 const {
