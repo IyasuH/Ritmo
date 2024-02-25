@@ -1,11 +1,8 @@
 import Card from 'react-bootstrap/Card';
-import { useState, useEffect } from "react";
-import { Button } from "react-bootstrap";
+import { useEffect, useState } from "react";
+import { Alert, Button, Dropdown } from "react-bootstrap";
+import { IoMdMore } from 'react-icons/io';
 import { getAllArtistsAction } from "../redux/artist_/artistSlice";
-import React from 'react';
-
-// components
-import { artist_type, def_artist } from "../interfaces/interfaces";
 
 // custom CSS
 import './artistCard.css';
@@ -13,20 +10,11 @@ import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { StateType } from '../redux/root-reducer';
 
-const ArtistCard  = () => {
-    // Artists card container
-    // it should the following values
-        // Artist name
-        // Artsit image
-        // number of songs the artist has
-        // link to the artist page
-    // const [artists, getArtists] = useState<artist_type[]>([def_artist]);
-    // useEffect(() => {
-    //     fetch('/api/listArtists')
-    //     .then(data => data.json())
-    //     .then(result => getArtists(result))
-    // }, []);
+import ArtistCardMorePopupForm from './updateaAtistPopupForm';
+import ArtistDeleteWarnPopupForm from './deleteArtistWarnPopup';
+import { artist_type } from '../interfaces/interfaces';
 
+const ArtistCard  = () => {
     const payload_ = useSelector((state: StateType)=>state.artists);
 
     const dispatch = useDispatch();
@@ -35,13 +23,46 @@ const ArtistCard  = () => {
         dispatch(getAllArtistsAction());
     },[]);
     var artists = payload_.artist_list.data;
-    console.log("[INFO] artist list payload: ", JSON.stringify(payload_.artist_list.data))
-    if (artists === null) {
-        return <>None</>
+    // console.log("[INFO] artist list payload: ", JSON.stringify(payload_.artist_list.data))
+
+    const [showMorePopup, setShowMorePopUp] = useState(false);
+
+    const [showDropdown, setShowDropdown] = useState(false);
+
+    const [showDeleWarn, setShowDeleWarn] = useState(false);
+
+    const [selectedArtist, setSelectedArtist] = useState<artist_type | null>(null);
+
+    const handleMoreButtonClick = () => {
+        setShowDropdown(!showDropdown);
     }
-    const artistCard_ = artists.map(artist => (
+
+    const handleShowMorePopup = (artist: artist_type) => {
+        setSelectedArtist(artist);
+        setShowMorePopUp(true);
+    };
+
+    const handleCloseShowMorePopup = () =>{
+        // This will call getAllArtistAction() every time update popUp is closed which I think is expensive
+        dispatch(getAllArtistsAction());
+        setShowMorePopUp(false)
+    };
+
+    const handleDeleteWarnPopup = (artist: artist_type) => {
+        setSelectedArtist(artist);
+        setShowDeleWarn(true);
+    };
+
+    const handleCloseWarnPopup = () => {
+        dispatch(getAllArtistsAction());
+        setShowDeleWarn(false);
+    };
+
+    const artistCard_ = artists?.map(artist => (
         <div className="col-md-3">
-            <Card key={artist._id} style={{ width: '18rem' }} className="indigenous_style artist_card">
+            <Card key={artist._id} 
+                // style={{ width: '18rem' }}
+                className="indigenous_style artist_card">
                 <Link to={`/artist/${artist._id}`}>
                     <div className="text-center indigenous_style artist_image">
                         <Card.Img variant="top" src={artist.img_url} style={{ height: '100%', width: 'auto' }} />
@@ -54,14 +75,26 @@ const ArtistCard  = () => {
                                 <strong>{artist.full_name}</strong>
                             </Card.Text>
                             <Card.Text>Albums: {artist.single.length}</Card.Text>
-                            <Card.Text>Single songs: {artist.albums.length}</Card.Text>
+                            {/* <Card.Text>Single songs: {artist.albums.length}</Card.Text>
                             <Card.Text>
                                 50 songs
-                            </Card.Text>
+                            </Card.Text> */}
                         </div>
-                        <Button variant="primary">
-                            <i className="fa fa-ellipsis-v" aria-hidden="true"></i>
-                        </Button>
+                        {/* <Button variant="secondary" style={{ height: '50%', width: '15%' }} onClick={handleMoreButtonClick}>
+                            <IoMdMore />
+                        </Button> */}
+                        <Dropdown>
+                            <Dropdown.Toggle variant="secondary">
+                                {/* <IoMdMore /> */}
+                            </Dropdown.Toggle>
+                            <Dropdown.Menu>
+                                <Dropdown.Item onClick={() => handleShowMorePopup(artist)}>Update</Dropdown.Item>
+                                <Dropdown.Item onClick={() => handleDeleteWarnPopup(artist)}>Delete</Dropdown.Item>
+                            </Dropdown.Menu>
+                        </Dropdown>
+                        {/* for some reason this popups are making the background screen to be blank invetegate  */}
+                        <ArtistCardMorePopupForm show={showMorePopup && selectedArtist === artist} handleClose={handleCloseShowMorePopup} artist_u={artist}/>
+                        <ArtistDeleteWarnPopupForm show={showDeleWarn && selectedArtist === artist} handleClose={handleCloseWarnPopup} artistId={artist._id}/>
                     </div>
                 </Card.Footer>
             </Card>

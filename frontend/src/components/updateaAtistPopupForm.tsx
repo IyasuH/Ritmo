@@ -1,28 +1,32 @@
+import { Modal, Button, Form } from "react-bootstrap";
 import React, { ChangeEvent, FormEvent, useState } from "react";
-import { craeteArtistAction } from "../redux/artist_/artistSlice";
+import { artist_form_type, artist_type } from "../interfaces/interfaces";
+import { updateArtistAction } from "../redux/artist_/artistSlice";
 import { useDispatch } from "react-redux";
-import { Button, Form, Modal } from "react-bootstrap";
-import { artist_form_type } from "../interfaces/interfaces";
 interface PopupformProps {
     show: boolean;
-    handleClose: () => void
+    handleClose: () => void;
+    artist_u: artist_type
 }
 
-function CreateArtistPopupForm({ show, handleClose}: PopupformProps){
-    // const fromData = useSelector((state: StateType)=>state.artists)
-    const [formData, setFormData] = useState<artist_form_type>({
-        full_name: '',
-        bio: '',
-        dob: new Date(),
-        gender: '',
-        img_url: '',
-        // albums: [{}],
-        // single: [{}],
-        createdAt: new Date(),
+function ArtistCardMorePopupForm({ show, handleClose, artist_u}: PopupformProps ){
+
+    const [formData, setFormData] = useState<artist_type>({
+        _id: artist_u._id,
+        full_name: artist_u.full_name,
+        bio: artist_u.bio,
+        dob: new Date(artist_u.dob),
+        gender: artist_u.gender,
+        img_url: artist_u.img_url,
+        albums: artist_u.albums,
+        single: artist_u.single,
+        createdAt: artist_u.createdAt,
         updatedAt: new Date(),
     })
+
+    // console.log("[INFO] dob value, ", artist_u.dob)
+
     const handleFormChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement >) => {
-        
         const { name, value } = e.target as HTMLInputElement|HTMLTextAreaElement;
         // console.log("[INFO] form change: ", {...formData})
         if (name==='dob'){
@@ -38,46 +42,31 @@ function CreateArtistPopupForm({ show, handleClose}: PopupformProps){
     }
     const dispatch = useDispatch();
     const handleSubmit =(e: FormEvent<HTMLFormElement>) => {
-        // console.log("[INFO] Data: ", formData)
-
-        // 
-
-        // useEffect(() => {
-        dispatch(craeteArtistAction(formData));
-        // }, [formData]);
-
+        // console.log("[INFO] formData: ", formData)
+        dispatch(updateArtistAction(formData));
         e.preventDefault();
         setFormData({
-            full_name: '',
-            bio: '',
-            dob: new Date(),
-            gender: '',
-            img_url: '',
-            // albums: [{}],
-            // single: [{}],
-            createdAt: new Date(),
+            _id: artist_u._id,
+            full_name: artist_u.full_name,
+            bio: artist_u.bio,
+            dob: new Date(artist_u.dob),
+            gender: artist_u.gender,
+            img_url: artist_u.img_url,
+            albums: artist_u.albums,
+            single: artist_u.single,
+            createdAt: artist_u.createdAt,
             updatedAt: new Date(),    
         });
         handleClose();
     }
-    const handleClear = () => {
-        setFormData({
-            full_name: '',
-            bio: '',
-            dob: new Date(),
-            gender: '',
-            img_url: '',
-            // albums: [{}],
-            // single: [{}],
-            createdAt: new Date(),
-            updatedAt: new Date(),
-        })
+    const handleUpdate = () => {
+        console.log("[INFO] update artist: ", artist_u._id);
+        handleClose();
     }
-
-    return (
+    return(
         <Modal show={show} onHide={handleClose}>
             <Modal.Header closeButton>
-                <Modal.Title>New Artist</Modal.Title>
+                <Modal.Title>Artist</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <Form onSubmit={handleSubmit}>
@@ -105,7 +94,8 @@ function CreateArtistPopupForm({ show, handleClose}: PopupformProps){
                             type="date"
                             placeholder="dob"
                             name="dob"
-                            value={formData.dob.toISOString().substr(0,10)}
+                            value={formData.dob instanceof Date ? formData.dob.toISOString().substr(0,10) : ''}
+                            // value = {formData.dob}
                             onChange={handleFormChange}/>
                     </Form.Group>
                     <Form.Group className="mb-3" controlId="formArtistInfo">
@@ -141,15 +131,16 @@ function CreateArtistPopupForm({ show, handleClose}: PopupformProps){
                         <Form.Group controlId="formSongInfo">
                         </Form.Group>
                     </Form.Group>
-                    <Button variant="primary" type="submit">Submit</Button>
+                    <Button variant="primary" type="submit">Update</Button>
                 </Form>                
+
             </Modal.Body>
             <Modal.Footer>
-                <Button variant="secondary" onClick={handleClear}>
-                    Clear
-                </Button>
+                {/* <Button variant="secondary" onClick={handleUpdate}>
+                    Update
+                </Button> */}
                 <Button variant="secondary" onClick={handleClose}>
-                    Close
+                    Cancle
                 </Button>
                 {/* <Button variant="primary" onClick={handleSubmit}>
                     Save Changes
@@ -159,4 +150,4 @@ function CreateArtistPopupForm({ show, handleClose}: PopupformProps){
     )
 }
 
-export default CreateArtistPopupForm;
+export default ArtistCardMorePopupForm;

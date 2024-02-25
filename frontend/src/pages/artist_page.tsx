@@ -1,16 +1,20 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
+import { IoMdMore } from 'react-icons/io';
 import '../components/artistCard.css'
+import { BsThreeDotsVertical } from 'react-icons/bs';
 
 // custom CSS
 import './home.css'
 
-import { album_type, def_album, song_type } from '../interfaces/interfaces';
-import { Card, Button } from 'react-bootstrap';
+import { album_type, song_type } from '../interfaces/interfaces';
+import { Card, Button, Dropdown } from 'react-bootstrap';
 import { Link, useParams } from 'react-router-dom';
 import { getArtistAction } from '../redux/artist_/artistSlice';
 import { StateType } from '../redux/root-reducer';
 import SideBarArtist from '../components/sideBarArtist';
+import CreateAlbumPopupForm from '../components/newAlbumPopupForm';
+import CreateSinglePopupForm from '../components/newSinglePopupForm';
 
 export default function ArtistPage(){
     type ParamsType = {
@@ -55,15 +59,81 @@ export default function ArtistPage(){
             </Card>
         </div>
     ))
+    const single_card = singles?.map(single => (
+        <Card>
+            <Card.Body>
+            {/* <Card.Text>{single.title}</Card.Text> */}
+                <Card.Text>{single.title}  {single.genre}  {single.duration.toString()}</Card.Text>
+            </Card.Body>
+        </Card>
+    ))
+    const [showNewAlbumPopup, setShowNewAlbumPopup] = useState(false);
+
+    const [showNewSinglePopup, setShowNewSinglePopup] = useState(false);
+
+    const handleShowNewSinglePopup = () => setShowNewSinglePopup(true);
+    const handleCloseNewSinglePopup = () => setShowNewSinglePopup(false);
+
+
+    const handleShowNewAlbumPopup = () => setShowNewAlbumPopup(true);
+    const handleCloseNewAlbumPopup = () => setShowNewAlbumPopup(false);
+
+    const about_artist_card = (
+        <Card className="bg-dark text-white ">
+            {/* {JSON.stringify(payload_.artist.data?.img_url)} */}
+            {/* <Card.Img src={payload_.artist.data?.img_url || "https://imgur.com/RDxhZsI.png"} alt="Card image" /> */}
+            {/* have to set max_width, and height */}
+            <Card.Img src={"https://imgur.com/RDxhZsI.png"} alt="Card image" /> 
+            <Card.ImgOverlay className='indigenous_style artist_card_overlay'>
+                <div className="indigenous_style artist_card_top">
+                    <div></div>
+                    {/* <Button variant="outline-light"> */}
+                        {/* <BsThreeDotsVertical /> */}
+                        <Dropdown >
+                            <Dropdown.Toggle className="indigenous_style artist_card_icon_btn">
+                                
+                            </Dropdown.Toggle>
+                            <Dropdown.Menu>
+                                <Dropdown.Item onClick={() => {}}>Update</Dropdown.Item>
+                                <Dropdown.Item onClick={() => {}}>Delete</Dropdown.Item>
+                                <Dropdown.Item onClick={handleShowNewAlbumPopup}>New Album</Dropdown.Item>
+                                <CreateAlbumPopupForm show={showNewAlbumPopup} handleClose={handleCloseNewAlbumPopup} />
+                                <Dropdown.Item onClick={handleShowNewSinglePopup}>New Singles</Dropdown.Item>
+                                <CreateSinglePopupForm show={showNewSinglePopup} handleClose={handleCloseNewSinglePopup}/>
+                            </Dropdown.Menu>
+                        </Dropdown>
+                    {/* </Button> */}
+                </div>
+                <div className="indigenous_style artist_card_bottom">
+                    <Card.Title>{payload_.artist.data?.full_name}</Card.Title>
+                    <Card.Text>
+                        {payload_.artist.data?.bio}
+                    </Card.Text>
+                    {/* converting Date to string was being error */}
+                    {/* <Card.Text>{payload_.artist.data?.dob.toDateString()}</Card.Text> */}
+                </div>
+            </Card.ImgOverlay>
+        </Card>
+      )
 
     return (
         <>
             <div className="indigenous_style home_parent">
-                <div className="container indigenous_style side_child">
+                <div className="indigenous_style side_main">
                     <SideBarArtist/>
                 </div>
-                <div className="container row indigenous_style main_child">
-                    {albumCard_}
+                <div className="indigenous_style main_child">
+                    <div className="container row indigenous_style albums">
+                        {about_artist_card}
+                    </div>
+                    <div className="indigenous_style albums">
+                        Albums
+                        {albumCard_}
+                    </div>
+                    <div className="indigenous_style singles">
+                        Singles
+                        {single_card}
+                    </div>
                 </div>
             </div>
         </>

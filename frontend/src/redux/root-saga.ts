@@ -1,5 +1,5 @@
 import { all, fork } from "redux-saga/effects";
-import { watchGetArtist, watchCreateArtist, watchListArtists } from "./artist_/artistSaga";
+import { watchGetArtist, watchCreateArtist, watchListArtists, watchUpdateArtist, watchDeleteArtist } from "./artist_/artistSaga";
 
 // here I tried to create and manage multiple concurrent Sagas
 
@@ -9,7 +9,9 @@ const rootSaga = function* () {
         // [i] fork is used to create a new child Saga
         fork(watchGetArtist),
         fork(watchCreateArtist),
-        fork(watchListArtists)
+        fork(watchListArtists),
+        fork(watchUpdateArtist),
+        fork(watchDeleteArtist)
     ]);
 };
 

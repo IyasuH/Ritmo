@@ -9,6 +9,17 @@ export interface song_type {
     updated_at: Date,
 }
 
+export interface single_form_type {
+    title: string,
+    duration: Number,
+    file_url: string,
+    genre: string,
+    release_date: Date,
+    created_at: Date,
+    updated_at: Date,
+}
+
+
 export interface single_type {
     _id: string,
     title: string,
@@ -19,6 +30,16 @@ export interface single_type {
     created_at: Date,
     updated_at: Date,
 }
+
+export interface album_form_type {
+    title: string,
+    cover_img_url: string,
+    release_date: Date,
+    // songs: Array<song_type>,
+    created_at: Date,
+    updated_at: Date,
+}
+
 
 export interface album_type {
     _id: string,
@@ -75,10 +96,9 @@ export type LArtistState = {
 export type ArtistStateType = {
     artist: IArtistState, // this is to get by ID
     artist_create: CArtistState, // this is to create artist
-    artist_list: LArtistState
-    // to list
-    // update
-    // to delete
+    artist_list: LArtistState, // to list
+    artist_update: IArtistState, // to update
+    artist_delete: IArtistState // to delete
 }
 
 const def_single: single_type = {

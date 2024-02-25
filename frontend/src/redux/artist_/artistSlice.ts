@@ -16,6 +16,16 @@ const artistInitalState: ArtistStateType = {
         data: null,
         isLoading: false,
         errors: '',
+    },
+    artist_update: {
+        data: null,
+        isLoading: false,
+        errors: '',
+    },
+    artist_delete: {
+        data: null,
+        isLoading: false,
+        errors: '',
     }
 }
 
@@ -55,7 +65,7 @@ export const artistsSlice = createSlice({
         // setForm: (state: ArtistStateType, {payload: artist_create}: PayloadAction<artist_form_type>) => {
         //     state.artist_create.data = artist_create;
         // },
-        // clearForm: (state: ArtistStateType) => {
+        // clearForm: (state1: ArtistStateType) => {
         //     state.artist_create.data = null;
         // }
         // to list all artists
@@ -71,6 +81,35 @@ export const artistsSlice = createSlice({
             state.artist_list.isLoading = false;
             state.artist_list.errors = error;
         },
+        // to update artist
+        updateArtistAction: (state: ArtistStateType, {payload: artist_update}: PayloadAction<artist_type>) =>{
+            state.artist_update.isLoading = true;
+            state.artist_update.errors = '';
+
+        },
+        updateArtistSuccessAction: (state: ArtistStateType, {payload: artist_update}: PayloadAction<artist_type>) =>{
+            state.artist_update.isLoading = true;
+            state.artist_update.data = artist_update;
+
+        },
+        updateArtistErrorAction: (state: ArtistStateType, {payload: error}: PayloadAction<string>) => {
+            state.artist_update.isLoading = false;
+            state.artist_update.errors = error;
+        },
+        // to delete artist
+        deleteArtistAction: (state: ArtistStateType, {payload: id}: PayloadAction<string>) => {
+            state.artist_delete.isLoading = true;
+            state.artist_delete.errors = '';
+        },
+        deleteArtistSuccessAction: (state: ArtistStateType, {payload: artist_delete}: PayloadAction<artist_type>) => {
+            state.artist_delete.isLoading = false;
+            state.artist_delete.data = artist_delete;
+        },
+        deleteArtistErrorAction: (state: ArtistStateType, {payload: error}: PayloadAction<string>) => {
+            state.artist_delete.isLoading = false;
+            state.artist_delete.errors = error;
+        },
+
 
     }
 });
@@ -87,7 +126,15 @@ export const {
     // clearForm,
     getAllArtistsAction,
     getAllArtistsSuccessAction,
-    getAllArtistsErrorAction
+    getAllArtistsErrorAction,
+    // 
+    updateArtistAction,
+    updateArtistSuccessAction,
+    updateArtistErrorAction,
+    // 
+    deleteArtistAction,
+    deleteArtistSuccessAction,
+    deleteArtistErrorAction
 } = artistsSlice.actions;
 
 export default artistsSlice.reducer;

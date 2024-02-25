@@ -1,8 +1,19 @@
 import { PayloadAction } from "@reduxjs/toolkit";
 import axios, { AxiosResponse } from "axios";
-import {call, put, takeLatest } from "redux-saga/effects"
-import { getAllArtistsErrorAction, getAllArtistsSuccessAction, getArtistErrorAction, getArtistSuccessAction } from "./artistSlice";
-import { createArtistErrorAction, createArtistSuccessAction} from "./artistSlice";
+import { put, takeLatest } from "redux-saga/effects"
+// import { artist_type } from "../../interfaces/interfaces";
+import { getAllArtistsErrorAction,
+    getAllArtistsSuccessAction,
+    getArtistErrorAction,
+    getArtistSuccessAction,
+    createArtistErrorAction,
+    createArtistSuccessAction,
+    updateArtistSuccessAction,
+    updateArtistErrorAction,
+    deleteArtistSuccessAction,
+    deleteArtistErrorAction } from "./artistSlice";
+
+// import { createArtistErrorAction, createArtistSuccessAction} from "./artistSlice";
 import { artist_type } from "../../interfaces/interfaces";
 
 
@@ -17,7 +28,7 @@ function* getArtistSaga({payload: id}: PayloadAction<string>) {
     }
 }
 
-function* createArtistSaga({payload: artist}: PayloadAction<String>){
+function* createArtistSaga({payload: artist}: PayloadAction<artist_type>){
     try{
         const response: AxiosResponse<artist_type> = yield axios.post('/api/newArtist', artist)
         yield put(createArtistSuccessAction(response.data));
@@ -35,6 +46,24 @@ function* listArtistSaga(){
     }
 }
 
+function* updateArtistSaga({payload: artist}: PayloadAction<artist_type>){
+    try{
+        const response: AxiosResponse<artist_type> = yield axios.put(`/api/updateArtist/${artist._id}`, artist)
+        yield put(updateArtistSuccessAction(response.data));
+    }catch (error){
+        yield put(updateArtistErrorAction(error as string));
+    }
+}
+
+function* deleteArtistSaga({payload: id}: PayloadAction<string>){
+    try{
+        const response: AxiosResponse<artist_type> = yield axios.delete(`/api/deleteArtist/${id}`)
+        yield put(deleteArtistSuccessAction(response.data))
+    } catch (error){
+        yield put(deleteArtistErrorAction(error as string));
+    }
+}
+
 
 export function* watchGetArtist(){
     yield takeLatest('artists/getArtistAction', getArtistSaga)
@@ -46,4 +75,12 @@ export function* watchCreateArtist() {
 
 export function* watchListArtists() {
     yield takeLatest('artists/getAllArtistsAction', listArtistSaga)
+}
+
+export function* watchUpdateArtist() {
+    yield takeLatest ('artists/updateArtistAction', updateArtistSaga)
+}
+
+export function* watchDeleteArtist() {
+    yield takeLatest ('artists/deleteArtistAction', deleteArtistSaga)
 }

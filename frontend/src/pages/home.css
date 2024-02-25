@@ -1,22 +1,84 @@
-.indigenous_style.sidebarComponents{
+/* .indigenous_style.sidebarComponents{
     width: '20rem';
-}
+} */
 .indigenous_style.home_parent {
-    display: flex;
-    /* flex-direction: column; */
-    /* width: 50%; */
+    /* position: relative; */
+    padding: 1%;
 }
 
-.indigenous_style.side_child{
-    flex-basis: 20%;
+.indigenous_style.home_parent {
+    display: flex;
+}
+
+.indigenous_style.side_main{
+    /* flex-basis: 20%; */
+    width: 20%;
     border: 2px solid blueviolet;
-    margin: 10px;
+    /* margin: 10px; */
+    overflow-y: auto;
 }
 .indigenous_style.main_child{
-    flex-basis: 80%;
+    /* flex-basis: 80%; */
+    width: 80%;
     border: 2px solid blueviolet;
-    margin: 10px;
+    overflow-y: auto;
+    margin-left: 1%;
+    padding-left: 1%;
+    padding-right: 1%;
+    /* margin: 10px; */
 }
+.indigenous_style.albums{
+    margin-bottom: 1%;
+}
+.indigenous_style.singles{
+    /* margin-bottom: 1%; */
+    border: 2px solid violet;
+    /* width: 70%; */
+}
+.indigenous_style.artist_card_overlay{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.indigenous_style.artist_card_top{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.indigenous_style.artist_card_bottom{
+    border: 2px solid violet;
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+}
+.indigenous_style.custom_toggle{
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    margin-left: 0rem;
+    font-size: 1rem;
+    color: #000; /* Adjust color as needed */
+    cursor: pointer;    
+}
+/* .indigenous_style.home_parent {
+    position: relative;
+    padding: 3%;
+}
+
+.indigenous_style.side_main{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 20%;
+    overflow-y: autom;
+    border: 2px solid blueviolet;
+}
+
+.indigenous_style.main_child{
+    margin-left: 2px;
+    margin-left: 20%;
+    border: 2px solid blueviolet;
+} */
 
 @media (max-width: 768px) {
         .indigenous_style.home_parent {
@@ -29,3 +91,9 @@
     }
 }
 
+.indigenous_style.second_list{
+    /* flex-basis: 80%; */
+    width: 80%;
+    align-items: right;
+    border: 2px solid blueviolet;
+}

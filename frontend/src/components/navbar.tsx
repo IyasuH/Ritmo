@@ -9,6 +9,7 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import CreateArtistPopupForm from "./newArtistPopupFrom";
 
 import { Outlet } from "react-router-dom";
+import { Dropdown } from "react-bootstrap";
 
 const NavBarComponent: React.FC =()=> {
   const [showNewArtistPopup, setShowNewArtistPopup] = useState(false);
@@ -28,7 +29,8 @@ const NavBarComponent: React.FC =()=> {
           >
             <NavDropdown title="Link" id="navbarScrollingDropdown">
               {/* <NavDropdown> */}
-              <Button onClick={handleShowNewArtistPopup}>New Artist</Button>
+              <Dropdown.Item onClick={handleShowNewArtistPopup}>New Artist</Dropdown.Item>
+              {/* <Button onClick={handleShowNewArtistPopup}>New Artist</Button> */}
               <CreateArtistPopupForm show={showNewArtistPopup} handleClose={handleCloseNewArtistPopup}/>
               {/* </NavDropdown> */}
               <NavDropdown.Item href="#action4">

@@ -1,6 +1,5 @@
-import artistReducer from "./artist_/artistSlice";
 import artistsReducer from "./artist_/artistSlice";
-import { ArtistStateType, IArtistState } from "../interfaces/interfaces";
+import { ArtistStateType } from "../interfaces/interfaces";
 
 
 // defined state type
