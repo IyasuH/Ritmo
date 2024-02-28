@@ -23,12 +23,12 @@ function CreateSinglePopupForm({ show, handleClose}: PopupformProps){
     const handleFormChange = () => {}
     const handleClear = () => {}
     return (
-        <Modal show={show} onHide={handleClose}>
+        <Modal show={show} onHide={handleClose} centered>
             <Modal.Header closeButton>
                 <Modal.Title>New Single</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-            <Form onSubmit={handleSubmit}>
+                <Form onSubmit={handleSubmit}>
                     <Form.Group className="mb-3" controlId="formArtistInfo">
                         <Form.Label>Title</Form.Label>
                         <Form.Control
@@ -58,12 +58,23 @@ function CreateSinglePopupForm({ show, handleClose}: PopupformProps){
                     </Form.Group>
                     <Form.Group className="mb-3" controlId="formArtistInfo">
                         <Form.Label>Genre</Form.Label>
-                        <Form.Control
+                        <Form.Select>
+                            <option>Hip hop</option>
+                            <option>Rock</option>
+                            <option>Pop</option>
+                            <option>Metal</option>
+                            <option>Jazz</option>
+                            <option>Afro</option>
+                            <option>Indie</option>
+                            <option>Country</option>
+
+                        </Form.Select>
+                        {/* <Form.Control
                             type="text"
                             placeholder="Genre"
                             name="genre"
                             value={formData.genre}
-                            onChange={handleFormChange}/>
+                            onChange={handleFormChange}/> */}
                     </Form.Group>
                     <Form.Group className="mb-3" controlId="formArtistInfo">
                         <Form.Label>Release Date</Form.Label>

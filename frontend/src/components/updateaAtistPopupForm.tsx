@@ -55,7 +55,7 @@ function ArtistCardMorePopupForm({ show, handleClose, artist_u}: PopupformProps 
             albums: artist_u.albums,
             single: artist_u.single,
             createdAt: artist_u.createdAt,
-            updatedAt: new Date(),    
+            updatedAt: artist_u.updatedAt,    
         });
         handleClose();
     }
@@ -64,7 +64,7 @@ function ArtistCardMorePopupForm({ show, handleClose, artist_u}: PopupformProps 
         handleClose();
     }
     return(
-        <Modal show={show} onHide={handleClose}>
+        <Modal show={show} onHide={handleClose} centered>
             <Modal.Header closeButton>
                 <Modal.Title>Artist</Modal.Title>
             </Modal.Header>
@@ -142,9 +142,6 @@ function ArtistCardMorePopupForm({ show, handleClose, artist_u}: PopupformProps 
                 <Button variant="secondary" onClick={handleClose}>
                     Cancle
                 </Button>
-                {/* <Button variant="primary" onClick={handleSubmit}>
-                    Save Changes
-                </Button> */}
             </Modal.Footer>
         </Modal>
     )

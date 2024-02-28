@@ -11,8 +11,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { StateType } from '../redux/root-reducer';
 
 import ArtistCardMorePopupForm from './updateaAtistPopupForm';
-import ArtistDeleteWarnPopupForm from './deleteArtistWarnPopup';
+// import ArtistDeleteWarnPopupForm from './deleteArtistWarnPopup';
 import { artist_type } from '../interfaces/interfaces';
+import DeleteWarnPopupForm, { deleted_items } from './deleteWarnPopup';
 
 const ArtistCard  = () => {
     const payload_ = useSelector((state: StateType)=>state.artists);
@@ -43,7 +44,7 @@ const ArtistCard  = () => {
     };
 
     const handleCloseShowMorePopup = () =>{
-        // This will call getAllArtistAction() every time update popUp is closed which I think is expensive
+        // [?] This will call getAllArtistAction() every time update popUp is closed which I think is expensive
         dispatch(getAllArtistsAction());
         setShowMorePopUp(false)
     };
@@ -68,34 +69,32 @@ const ArtistCard  = () => {
                         <Card.Img variant="top" src={artist.img_url} style={{ height: '100%', width: 'auto' }} />
                     </div>
                 </Link>
-                <Card.Footer>
-                    <div className="indigenous_style artist_compt">
-                        <div className="indigenous_style artist_summ">
-                            <Card.Text>
-                                <strong>{artist.full_name}</strong>
-                            </Card.Text>
-                            <Card.Text>Albums: {artist.single.length}</Card.Text>
-                            {/* <Card.Text>Single songs: {artist.albums.length}</Card.Text>
-                            <Card.Text>
-                                50 songs
-                            </Card.Text> */}
-                        </div>
-                        {/* <Button variant="secondary" style={{ height: '50%', width: '15%' }} onClick={handleMoreButtonClick}>
-                            <IoMdMore />
-                        </Button> */}
-                        <Dropdown>
-                            <Dropdown.Toggle variant="secondary">
-                                {/* <IoMdMore /> */}
-                            </Dropdown.Toggle>
-                            <Dropdown.Menu>
-                                <Dropdown.Item onClick={() => handleShowMorePopup(artist)}>Update</Dropdown.Item>
-                                <Dropdown.Item onClick={() => handleDeleteWarnPopup(artist)}>Delete</Dropdown.Item>
-                            </Dropdown.Menu>
-                        </Dropdown>
-                        {/* for some reason this popups are making the background screen to be blank invetegate  */}
-                        <ArtistCardMorePopupForm show={showMorePopup && selectedArtist === artist} handleClose={handleCloseShowMorePopup} artist_u={artist}/>
-                        <ArtistDeleteWarnPopupForm show={showDeleWarn && selectedArtist === artist} handleClose={handleCloseWarnPopup} artistId={artist._id}/>
+                <Card.Footer className="indigenous_style artist_compt">
+                    <div className="indigenous_style artist_summ">
+                        <Card.Text>
+                            <strong>{artist.full_name}</strong>
+                        </Card.Text>
+                        <Card.Text>Albums: {artist.single.length}</Card.Text>
+                        {/* <Card.Text>Single songs: {artist.albums.length}</Card.Text>
+                        <Card.Text>
+                            50 songs
+                        </Card.Text> */}
                     </div>
+                    {/* <Button variant="secondary" style={{ height: '50%', width: '15%' }} onClick={handleMoreButtonClick}>
+                        <IoMdMore />
+                    </Button> */}
+                    <Dropdown>
+                        <Dropdown.Toggle variant="secondary">
+                            {/* <IoMdMore /> */}
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu>
+                            <Dropdown.Item onClick={() => handleShowMorePopup(artist)}>Update</Dropdown.Item>
+                            <Dropdown.Item onClick={() => handleDeleteWarnPopup(artist)}>Delete</Dropdown.Item>
+                        </Dropdown.Menu>
+                    </Dropdown>
+                    {/* for some reason this popups are making the background screen to be blank invetegate  */}
+                    <ArtistCardMorePopupForm show={showMorePopup && selectedArtist === artist} handleClose={handleCloseShowMorePopup} artist_u={artist}/>
+                    <DeleteWarnPopupForm show={showDeleWarn && selectedArtist === artist} handleClose={handleCloseWarnPopup} itemId={artist._id} what={deleted_items.artist} />
                 </Card.Footer>
             </Card>
         </div>

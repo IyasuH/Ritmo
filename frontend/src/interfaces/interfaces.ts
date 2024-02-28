@@ -74,7 +74,6 @@ export interface artist_type  {
     updatedAt: Date,
 }
 
-// this type will represent the sub-state for getting a single artist by ID
 export type IArtistState = {
     data: artist_type | null;
     isLoading: boolean;
@@ -93,12 +92,40 @@ export type LArtistState = {
     errors: string;    
 }
 
+export type IAlbumtState = {
+    data: album_type | null;
+    isLoading: boolean;
+    errors: string;
+}
+
+export type CAlbumtState = {
+    data: album_form_type | null;
+    isLoading: boolean;
+    errors: string;
+}
+
+export type LAlbumState = {
+    data: [album_type] | null;
+    isLoading: boolean;
+    errors: string;    
+}
+
+
 export type ArtistStateType = {
     artist: IArtistState, // this is to get by ID
     artist_create: CArtistState, // this is to create artist
     artist_list: LArtistState, // to list
     artist_update: IArtistState, // to update
     artist_delete: IArtistState // to delete
+}
+
+export type AlbumStateType = {
+    album: IAlbumtState,
+    album_create: CAlbumtState,
+    album_delete: IAlbumtState, // to delete
+    album_update: IAlbumtState // to update
+    // album_list: LAlbumState,
+    // album_update: IAlbumtState,
 }
 
 const def_single: single_type = {
