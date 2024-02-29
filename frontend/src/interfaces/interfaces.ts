@@ -81,6 +81,18 @@ export interface artist_type  {
     updatedAt: Date,
 }
 
+export interface total_number_Songs_type {
+    single_songs: string,
+    albums_songs: string,
+    total: string,
+}
+
+export type totalNumberSongsR = {
+    data: total_number_Songs_type | null;
+    isLoading: boolean;
+    errors: string;
+}
+
 export type IArtistState = {
     data: artist_type | null;
     isLoading: boolean;
@@ -170,6 +182,10 @@ export type SingleStateType = {
     single_delete: ISingleState,
     single_update: ISingleState
 
+}
+
+export type BasicStasticsStateType = {
+    totalNumberOfSongs: totalNumberSongsR
 }
 
 const def_single: single_type = {

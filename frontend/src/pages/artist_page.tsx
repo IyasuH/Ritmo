@@ -134,14 +134,24 @@ export default function ArtistPage(){
             </Card>
         </div>
     ))
+    // this function is used to convert second values to minute:seconds
+    function  convertSecondsToMinutesAndSeconds(seconds: Number): string {
+        var minutes = Math.floor(seconds.valueOf() / 60); 
+        var remainingSeconds = seconds.valueOf() % 60; 
+
+        var formattedTime = minutes + ':' + (remainingSeconds < 10 ? '0' : '') + remainingSeconds;
+      
+        return formattedTime;
+      }
+
     const single_card = singles?.map(single => (
         <Card>
             <Card.Body  className="indigenous_style single_song">
             {/* <Card.Text>{single.title}</Card.Text> */}
                 <div className="indigenous_style single_song_info">
                     <Card.Text className="indigenous_style single_item">{single.title}</Card.Text>
-                  l  <Card.Text className="indigenous_style single_item">{single.genre}</Card.Text>  
-                    <Card.Text className="indigenous_style single_item">{(single.duration).toString()}</Card.Text>
+                    <Card.Text className="indigenous_style single_item">{single.genre}</Card.Text>  
+                    <Card.Text className="indigenous_style single_item">{(convertSecondsToMinutesAndSeconds(single.duration)).toString()}</Card.Text>
                 </div>
                 <Dropdown>
                     <Dropdown.Toggle variant="secondary">

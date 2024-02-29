@@ -65,13 +65,23 @@ export default function AlbumPage(){
     };
 
 
+    // this function is used to convert second values to minute:seconds
+    function  convertSecondsToMinutesAndSeconds(seconds: Number): string {
+        var minutes = Math.floor(seconds.valueOf() / 60); 
+        var remainingSeconds = seconds.valueOf() % 60; 
+
+        var formattedTime = minutes + ':' + (remainingSeconds < 10 ? '0' : '') + remainingSeconds;
+      
+        return formattedTime;
+      }
+
     const songs_card = songs_?.map(song => (
         <Card>
             <Card.Body  className="indigenous_style single_song">
                 <div className="indigenous_style single_song_info">
                     <Card.Text className="indigenous_style single_item">{song.title}</Card.Text>
                     <Card.Text className="indigenous_style single_item">{song.genre}</Card.Text>  
-                    <Card.Text className="indigenous_style single_item">{(song.duration).toString()}</Card.Text>
+                    <Card.Text className="indigenous_style single_item">{(convertSecondsToMinutesAndSeconds(song.duration)).toString()}</Card.Text>
                 </div>
                 <Dropdown>
                     <Dropdown.Toggle variant="secondary">
@@ -81,15 +91,9 @@ export default function AlbumPage(){
                         <Dropdown.Item onClick={() => handleDeleteWarnPopup(song)}>Delete</Dropdown.Item>
                         <DeleteSongPopupForm show={showDeleWarn && selectedSong === song} handleClose={handleCloseWarnPopup} albumId={payload_.album.data?._id as string} songId={song._id} />
                         <SongCardMorePopupForm show={showUpdateForm && selectedSong === song } handleClose={handleCloseUpdatePopup} song_u={song} albumId={payload_.album.data?._id as string} />
-                        {/* <DeleteWarnPopupForm show={showSingleDeleWarn && selectedSong === single} handleClose={handleCloseSingleWarnPopup} itemId={single._id} what={deleted_items.single} /> */}
-                        {/* <SingleCardMorePopupForm show={showSingleUpdateForm && selectedSong === single} handleClose={handleCloseSingleUpdatePopup} single_u={single}/> */}
                     </Dropdown.Menu>
                 </Dropdown>
             </Card.Body>
-
-            {/* <Card.Body>
-                <Card.Text>{song.title}  {song.genre}  {song.duration.toString()}</Card.Text>
-            </Card.Body> */}
         </Card>
     ))
     const about_album_card = (
