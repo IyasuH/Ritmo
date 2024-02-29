@@ -2,6 +2,7 @@ import { Modal, Button, Form } from "react-bootstrap";
 import { deleteArtistAction } from "../redux/artist_/artistSlice";
 import { useDispatch } from "react-redux";
 import { deleteAlbumAction } from "../redux/album_/albumSlice";
+import { deleteSingleAction } from "../redux/single_/singleSlice";
 
 export enum deleted_items {
     artist = "artist",
@@ -27,6 +28,7 @@ interface PopupformProps {
 function DeleteWarnPopupForm({ show, handleClose, itemId, what }: DelPopupformProps ){
     // 
     const dispatch = useDispatch();
+    // [?] there should be some informative popup after item is deleted 
     const handleDelete = () => {
         switch (what) {
             case deleted_items.artist:
@@ -44,6 +46,8 @@ function DeleteWarnPopupForm({ show, handleClose, itemId, what }: DelPopupformPr
             case deleted_items.single:
                 // delete single
                 console.log("[INFO] delete single: ", itemId);
+                dispatch(deleteSingleAction(itemId))
+                handleClose();
                 break;
         }}
         return(
@@ -64,40 +68,6 @@ function DeleteWarnPopupForm({ show, handleClose, itemId, what }: DelPopupformPr
                 </Modal.Footer>
             </Modal>
         )
-    
-        // if (what === deleted_items.artist) {
-        //     // Delete Artist
-        // } else if 
     }
-
-
-{/* function ArtistDeleteWarnPopupForm({ show, handleClose, artistId}: PopupformProps ){
-    const dispatch = useDispatch();
-    const handleDelete = () => {
-        // may be here i have add something that ask for are sure manmen....
-        console.log("[INFO] delete artist: ", artistId);
-        dispatch(deleteArtistAction(artistId));
-        handleClose();
-    }
-
-    return(
-        <Modal show={show} size="sm" onHide={handleClose} centered>
-            <Modal.Header closeButton>
-                <Modal.Title>Artist</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-                {artistId}
-            </Modal.Body>
-            <Modal.Footer>
-                <Button variant="secondary" onClick={handleClose}>
-                    Cancle
-                </Button>
-                <Button variant="danger" onClick={handleDelete}>
-                    Delete
-                </Button>
-            </Modal.Footer>
-        </Modal>
-    )
-} */}
 
 export default DeleteWarnPopupForm;

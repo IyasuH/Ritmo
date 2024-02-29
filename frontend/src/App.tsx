@@ -25,7 +25,7 @@ const router = createBrowserRouter(createRoutesFromElements(
       element={<ArtistPage/>}
     />
     <Route
-      path="/album/:albumId"
+      path="/album/:artistId/:albumId"
       element={<AlbumPage/>}
     />
   </Route>

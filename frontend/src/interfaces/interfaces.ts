@@ -18,7 +18,15 @@ export interface single_form_type {
     created_at: Date,
     updated_at: Date,
 }
-
+export interface song_form_type {
+    title: string,
+    duration: Number,
+    file_url: string,
+    genre: string,
+    release_date: Date,
+    created_at: Date,
+    updated_at: Date,
+}
 
 export interface single_type {
     _id: string,
@@ -39,7 +47,6 @@ export interface album_form_type {
     created_at: Date,
     updated_at: Date,
 }
-
 
 export interface album_type {
     _id: string,
@@ -104,11 +111,35 @@ export type CAlbumtState = {
     errors: string;
 }
 
-export type LAlbumState = {
-    data: [album_type] | null;
+export type ISongState = {
+    data: song_type | null;
     isLoading: boolean;
-    errors: string;    
+    errors: string;
 }
+
+export type CSongState = {
+    data: song_form_type | null;
+    isLoading: boolean;
+    errors: string;
+}
+
+export type ISingleState = {
+    data: single_form_type | null;
+    isLoading: boolean;
+    errors: string;
+}
+
+export type CsingleState = {
+    data: single_form_type | null;
+    isLoading: boolean;
+    errors: string;
+}
+// I don't need this, since album listing is done when requesting detail for artist
+// export type LAlbumState = { 
+//     data: [album_type] | null;
+//     isLoading: boolean;
+//     errors: string;    
+// }
 
 
 export type ArtistStateType = {
@@ -120,12 +151,25 @@ export type ArtistStateType = {
 }
 
 export type AlbumStateType = {
-    album: IAlbumtState,
-    album_create: CAlbumtState,
+    album: IAlbumtState, // to get album detail by ID
+    album_create: CAlbumtState, // create album 
     album_delete: IAlbumtState, // to delete
     album_update: IAlbumtState // to update
-    // album_list: LAlbumState,
-    // album_update: IAlbumtState,
+}
+
+export type SongStateType = {
+    song: ISongState, 
+    song_create: CSongState,
+    song_delete: ISongState,
+    song_update: ISongState
+}
+
+export type SingleStateType = {
+    single: ISingleState, 
+    single_create: CsingleState,
+    single_delete: ISingleState,
+    single_update: ISingleState
+
 }
 
 const def_single: single_type = {

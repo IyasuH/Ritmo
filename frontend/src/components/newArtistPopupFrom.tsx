@@ -38,13 +38,7 @@ function CreateArtistPopupForm({ show, handleClose}: PopupformProps){
     }
     const dispatch = useDispatch();
     const handleSubmit =(e: FormEvent<HTMLFormElement>) => {
-        // console.log("[INFO] Data: ", formData)
-
-        // 
-
-        // useEffect(() => {
         dispatch(craeteArtistAction(formData));
-        // }, [formData]);
 
         e.preventDefault();
         setFormData({
@@ -87,6 +81,7 @@ function CreateArtistPopupForm({ show, handleClose}: PopupformProps){
                             type="text"
                             placeholder="Enter Full Name"
                             name="full_name"
+                            required={true}
                             value={formData.full_name}
                             onChange={handleFormChange}/>
                     </Form.Group>
@@ -96,6 +91,7 @@ function CreateArtistPopupForm({ show, handleClose}: PopupformProps){
                             type="text"
                             placeholder="Bio"
                             name="bio"
+                            required={true}
                             value={formData.bio}
                             onChange={handleFormChange}/>
                     </Form.Group>
@@ -105,6 +101,7 @@ function CreateArtistPopupForm({ show, handleClose}: PopupformProps){
                             type="date"
                             placeholder="dob"
                             name="dob"
+                            required={true}
                             value={formData.dob.toISOString().substr(0,10)}
                             onChange={handleFormChange}/>
                     </Form.Group>
@@ -133,6 +130,7 @@ function CreateArtistPopupForm({ show, handleClose}: PopupformProps){
                             type="text"
                             placeholder="Image URL"
                             name="img_url"
+                            required={true}
                             value={formData.img_url}
                             onChange={handleFormChange}/>
                     </Form.Group>

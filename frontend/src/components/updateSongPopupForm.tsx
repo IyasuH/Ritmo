@@ -1,53 +1,33 @@
-import { ChangeEvent, FormEvent, SetStateAction, useState } from "react";
-import { Button, Form, Modal } from "react-bootstrap";
-import { single_form_type } from "../interfaces/interfaces";
+import { Modal, Button, Form } from "react-bootstrap";
+import React, { ChangeEvent, FormEvent, useState } from "react";
+import { album_type, song_type } from "../interfaces/interfaces";
 import { useDispatch } from "react-redux";
-import { createSingleAction } from "../redux/single_/singleSlice";
+import { updateSongAction } from "../redux/song_/songSlice";
 
 interface PopupformProps {
     show: boolean;
-    handleClose: () => void
-    artistId: string;
+    handleClose: () => void;
+    song_u: song_type;
+    albumId: string;
 }
 
-function CreateSinglePopupForm({ show, handleClose, artistId}: PopupformProps){
-
-    const [formData, setFormData] = useState<single_form_type>({
-        title: '',
-        duration: 0,
-        file_url: '',
-        genre: '',
-        release_date: new Date(),
-        created_at: new Date(),
+function SongCardMorePopupForm({ show, handleClose, song_u, albumId }: PopupformProps ){
+    const [formData, setFormData] = useState<song_type>({
+        _id: song_u._id,
+        title: song_u.title,
+        duration: song_u.duration,
+        file_url: song_u.file_url,
+        genre: song_u.genre,
+        release_date: new Date(song_u.release_date),
+        created_at: song_u.created_at,
         updated_at: new Date(),
     })
 
-    // this is for selecting Genre
-    const [selectedGenre, setSelectedGenre] = useState('Hip hop');
-
-    const dispatch = useDispatch();
-    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-        // console.log("[INFO]: ", formData)
-        // console.log(selectedGenre);
-        dispatch(createSingleAction([formData, artistId]))
-        e.preventDefault();
-        setFormData({
-            title: '',
-            duration: 0,
-            file_url: '',
-            genre: '',
-            release_date: new Date(),
-            created_at: new Date(),
-            updated_at: new Date(),    
-        });
-        handleClose();
-    }
-
-    const handleFormChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement >) => {
+    const handleFormChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         const { name, value } = e.target as HTMLInputElement|HTMLTextAreaElement| HTMLSelectElement;
+        // console.log("[INFO] form change: ", {...formData})
         if (name==='release_date'){
-            // 
-            const dateValue = new Date(value);
+            const dateValue  = new Date(value);
             setFormData({
                 ...formData, [name]: dateValue
             });
@@ -56,43 +36,51 @@ function CreateSinglePopupForm({ show, handleClose, artistId}: PopupformProps){
             setFormData({
                 ...formData, [name]: value
             })
-        }
-        else{
-            // 
+        } else{
             setFormData({
                 ...formData, [name]: value
             })
         }
     }
 
-    const handleClear = () => {
+    const [selectedGenre, setSelectedGenre] = useState(song_u.genre);
+
+    const dispatch = useDispatch();
+    const handleSubmit =(e: FormEvent<HTMLFormElement>) => {
+        try {
+            dispatch(updateSongAction([formData, albumId]));
+        } catch (error) {
+            // 
+        }
+        e.preventDefault();
         setFormData({
-            title: '',
-            duration: 0,
-            file_url: '',
-            genre: '',
-            release_date: new Date(),
-            created_at: new Date(),
-            updated_at: new Date(),    
+            _id: song_u._id,
+            title: song_u.title,
+            duration: song_u.duration,
+            file_url: song_u.file_url,
+            genre: song_u.genre,
+            release_date: new Date(song_u.release_date),
+            created_at: song_u.created_at,
+            updated_at: song_u.updated_at,
         });
+        handleClose();
     }
 
-    return (
+    return(
         <Modal show={show} onHide={handleClose} centered>
             <Modal.Header closeButton>
-                <Modal.Title>New Single</Modal.Title>
+                <Modal.Title>Artist</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <Form onSubmit={handleSubmit}>
                     <Form.Group className="mb-3" controlId="formArtistInfo">
                         <Form.Label>Title</Form.Label>
-                        <Form.Control
-                            type="text"
-                            placeholder="Title"
-                            name="title"
-                            required={true}
-                            value={formData.title}
-                            onChange={handleFormChange}/>
+                            <Form.Control
+                                type="text"
+                                placeholder="Title"
+                                name="title"
+                                value={formData.title}
+                                onChange={handleFormChange}/>
                     </Form.Group>
                     <Form.Group className="mb-3" controlId="formArtistInfo">
                         <Form.Label>Duration(in sec)</Form.Label>
@@ -100,7 +88,6 @@ function CreateSinglePopupForm({ show, handleClose, artistId}: PopupformProps){
                             type="number"
                             placeholder="Duration"
                             name="duration"
-                            required={true}
                             value={formData.duration.toString()}
                             onChange={handleFormChange}/>
                     </Form.Group>
@@ -110,13 +97,12 @@ function CreateSinglePopupForm({ show, handleClose, artistId}: PopupformProps){
                             type="text"
                             placeholder="File URL"
                             name="file_url"
-                            required={true}
                             value={formData.file_url}
                             onChange={handleFormChange}/>
                     </Form.Group>
                     <Form.Group className="mb-3" controlId="formArtistInfo">
                         <Form.Label>Genre</Form.Label>
-                        <Form.Select value={selectedGenre} onChange={handleFormChange} required={true} name="genre">
+                        <Form.Select value={selectedGenre} onChange={handleFormChange} name="genre">
                             {/* this list should be based on some reference on */}
                             <option value="Hip hop">Hip hop</option>
                             <option value="Rock">Rock</option>
@@ -134,24 +120,20 @@ function CreateSinglePopupForm({ show, handleClose, artistId}: PopupformProps){
                             type="date"
                             placeholder="Release Date"
                             name="release_date"
-                            required={true}
-                            value={formData.release_date.toISOString().substr(0,10)}
+                            value={formData.release_date instanceof Date ? formData.release_date.toISOString().substr(0,10) : ''}
                             onChange={handleFormChange}/>
                     </Form.Group>
 
-                    <Button variant="primary" type="submit">Submit</Button>
+                    <Button variant="primary" type="submit">Submit</Button>                    
                 </Form>
             </Modal.Body>
             <Modal.Footer>
-                <Button variant="secondary" onClick={handleClear}>
-                    Clear
-                </Button>
                 <Button variant="secondary" onClick={handleClose}>
-                    Close
+                    Cancle
                 </Button>
             </Modal.Footer>
         </Modal>
     )
 }
 
-export default CreateSinglePopupForm;
+export default SongCardMorePopupForm;

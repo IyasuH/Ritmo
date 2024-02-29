@@ -8,11 +8,22 @@ import {
     deleteAlbumSuccessAction,
     deleteAlbumErrorAction,
     updateAlbumSuccessAction,
-    updateArtistErrorAction
+    updateArtistErrorAction,
+    getAlbumSuccessAction,
+    getAlbumErrorAction
  } from "./albumSlice";
 
  import { album_type } from "../../interfaces/interfaces";
 
+ function* getAlbumSaga({payload: id}: PayloadAction<string>) {
+    try{
+        const response: AxiosResponse<album_type> = yield axios.get(`/api/getAlbum/${id}`)
+        yield put(getAlbumSuccessAction(response.data))
+    } catch (error){
+        yield put(getAlbumErrorAction(error as string));
+    }
+}
+ 
  function* createAlbumSaga({payload: [album, artist_id]}: PayloadAction<[album_type, string]>){
     try{
         const response: AxiosResponse<album_type> = yield axios.post(`/api/newAlbum/${artist_id}`, album) // i have to pass artist_id as a parameter
@@ -42,14 +53,18 @@ function* updateAlbumSaga({payload: album}: PayloadAction<album_type>){
     }
 }
 
- export function* watchCreateAlbum(){
+export function* watchGetAlbum(){
+    yield takeLatest('albums/getAlbumAction', getAlbumSaga)
+}
+
+export function* watchCreateAlbum(){
     yield takeLatest('albums/createAlbumAction', createAlbumSaga)
- }
+}
 
- export function* watchDeleteAlbum() {
+export function* watchDeleteAlbum() {
     yield takeLatest('albums/deleteAlbumAction', deleteAlbumSaga)
- }
+}
 
- export function* watchUpdateAlbum() {
+export function* watchUpdateAlbum() {
     yield takeLatest('albums/updateAlbumAction', updateAlbumSaga)
- }
+}

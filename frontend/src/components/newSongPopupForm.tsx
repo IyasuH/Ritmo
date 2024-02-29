@@ -1,17 +1,18 @@
-import { ChangeEvent, FormEvent, SetStateAction, useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 import { Button, Form, Modal } from "react-bootstrap";
 import { single_form_type } from "../interfaces/interfaces";
 import { useDispatch } from "react-redux";
-import { createSingleAction } from "../redux/single_/singleSlice";
+import { createSongAction } from "../redux/song_/songSlice";
 
 interface PopupformProps {
     show: boolean;
-    handleClose: () => void
+    handleClose: () => void;
     artistId: string;
+    albumId: string;
 }
 
-function CreateSinglePopupForm({ show, handleClose, artistId}: PopupformProps){
-
+function CreateSongPopupForm({ show, handleClose, artistId, albumId }: PopupformProps){
+    
     const [formData, setFormData] = useState<single_form_type>({
         title: '',
         duration: 0,
@@ -21,15 +22,11 @@ function CreateSinglePopupForm({ show, handleClose, artistId}: PopupformProps){
         created_at: new Date(),
         updated_at: new Date(),
     })
-
-    // this is for selecting Genre
-    const [selectedGenre, setSelectedGenre] = useState('Hip hop');
-
     const dispatch = useDispatch();
+
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-        // console.log("[INFO]: ", formData)
-        // console.log(selectedGenre);
-        dispatch(createSingleAction([formData, artistId]))
+        // createSongAction
+        dispatch(createSongAction([formData, artistId, albumId]));
         e.preventDefault();
         setFormData({
             title: '',
@@ -43,8 +40,10 @@ function CreateSinglePopupForm({ show, handleClose, artistId}: PopupformProps){
         handleClose();
     }
 
+    const [selectedGenre, setSelectedGenre] = useState('Hip hop');
+
     const handleFormChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement >) => {
-        const { name, value } = e.target as HTMLInputElement|HTMLTextAreaElement| HTMLSelectElement;
+        const { name, value } = e.target as HTMLInputElement|HTMLTextAreaElement | HTMLSelectElement;
         if (name==='release_date'){
             // 
             const dateValue = new Date(value);
@@ -56,8 +55,7 @@ function CreateSinglePopupForm({ show, handleClose, artistId}: PopupformProps){
             setFormData({
                 ...formData, [name]: value
             })
-        }
-        else{
+        } else{
             // 
             setFormData({
                 ...formData, [name]: value
@@ -80,7 +78,7 @@ function CreateSinglePopupForm({ show, handleClose, artistId}: PopupformProps){
     return (
         <Modal show={show} onHide={handleClose} centered>
             <Modal.Header closeButton>
-                <Modal.Title>New Single</Modal.Title>
+                <Modal.Title>New Song</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <Form onSubmit={handleSubmit}>
@@ -141,7 +139,7 @@ function CreateSinglePopupForm({ show, handleClose, artistId}: PopupformProps){
 
                     <Button variant="primary" type="submit">Submit</Button>
                 </Form>
-            </Modal.Body>
+            </Modal.Body>       
             <Modal.Footer>
                 <Button variant="secondary" onClick={handleClear}>
                     Clear
@@ -150,8 +148,9 @@ function CreateSinglePopupForm({ show, handleClose, artistId}: PopupformProps){
                     Close
                 </Button>
             </Modal.Footer>
+
         </Modal>
     )
 }
 
-export default CreateSinglePopupForm;
+export default CreateSongPopupForm;

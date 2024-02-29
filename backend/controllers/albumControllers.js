@@ -53,12 +53,28 @@ const getAlbum = async (req, res) => {
         if (!mongoose.Types.ObjectId.isValid(id)){
             return res.status(404).json({error:"Invalid Id"});
         }
+        // I don't know why i make the return to be like this, but it is being an issue on the frontend so i am chnaging for now
         const album = await ArtistModel.findOne({'albums._id': id}, {'albums.$': 1});
-    
-        if (!album){
+        const albm = album.albums.reduce((obj, albmData) => {
+            const {_id, title, cover_img_url, release_date, songs, createdAt, updatedAt }= albmData;
+            obj= {
+                _id: _id.toString(),
+                title,
+                cover_img_url,
+                release_date: new Date(release_date),
+                songs,
+                created_at: new Date(createdAt),
+                updated_at: new Date(updatedAt)
+            };
+            return obj;
+        }, {});
+        console.log("albm: ", albm)
+        // console.log("album: ", album)
+            // }
+        if (!albm){
             return res.status(404).json({error:"Error on retriving Album"});
         }
-        res.status(200).json(album);
+        res.status(200).json(albm);
     } catch(error){
         console.log("[ERROR]: ", error);
         res.status(500).json({error: "Internal Server Error"});

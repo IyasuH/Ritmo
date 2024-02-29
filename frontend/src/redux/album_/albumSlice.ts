@@ -23,21 +23,34 @@ const albumInitalState: AlbumStateType = {
         isLoading: false,
         errors: '',
     }
-
 }
 
 export const albumSlice = createSlice({
     name: "albums",
     initialState: albumInitalState,
     reducers: 
-    // create new album
-    {
+        {
+        // to get one album
+        getAlbumAction: (state: AlbumStateType, {payload: id}: PayloadAction<string>) => {
+            state.album.isLoading = true;
+            state.album.errors = '';
+        },
+        getAlbumSuccessAction: (state: AlbumStateType, {payload: album}: PayloadAction<album_type>) => {
+            state.album.isLoading = false;
+            state.album.data = album;
+        },
+        getAlbumErrorAction: (state: AlbumStateType, {payload: error}: PayloadAction<string>) => {
+            state.album.isLoading = false;
+            state.album.errors = error;
+        },
+    
+        // create new album
         createAlbumAction: (state: AlbumStateType, {payload: [album_create, artist_id]}: PayloadAction<[album_form_type, string]>) => {
             state.album_create.isLoading = true;
             state.album_create.errors = '';
         },
         createAlbumSuccessAction: (state: AlbumStateType, {payload: album_create}: PayloadAction<album_form_type>) => {
-            // when create new album is a success it will return the artist
+            // when create new album is a success it will return the album
             state.album_create.isLoading = false;
             state.album_create.data = album_create;
         },
@@ -87,7 +100,11 @@ export const {
     // 
     updateAlbumAction,
     updateAlbumSuccessAction,
-    updateArtistErrorAction
+    updateArtistErrorAction,
+    // 
+    getAlbumAction,
+    getAlbumSuccessAction,
+    getAlbumErrorAction
 } = albumSlice.actions;
 
 export default albumSlice.reducer;

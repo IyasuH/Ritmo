@@ -7,7 +7,7 @@ import { BsThreeDotsVertical } from 'react-icons/bs';
 // custom CSS
 import './home.css'
 
-import { album_type, song_type } from '../interfaces/interfaces';
+import { album_type, artist_type, single_type, song_type } from '../interfaces/interfaces';
 import { Card, Button, Dropdown } from 'react-bootstrap';
 import { Link, useParams } from 'react-router-dom';
 import { getArtistAction } from '../redux/artist_/artistSlice';
@@ -17,25 +17,41 @@ import CreateAlbumPopupForm from '../components/newAlbumPopupForm';
 import CreateSinglePopupForm from '../components/newSinglePopupForm';
 import DeleteWarnPopupForm, { deleted_items } from '../components/deleteWarnPopup';
 import AlbumCardMorePopupForm from '../components/updateAlbumPopupForm';
+import SingleCardMorePopupForm from '../components/updateSInglePopupForm';
 
 export default function ArtistPage(){
     type ParamsType = {
         artistId?: string;
     }
-    // here i used useSelector to reacd data from the Reduz store when there is change to store it will compare values and re-renders
+    // here i used useSelector to reacd data from the Redux store when there is change to store it will compare values and re-renders
     const payload_ = useSelector((state: StateType) => state.artists);
 
     const { artistId }: ParamsType = useParams();
     // useDispatch is used to triger and changes to the store 
     const dispatch  = useDispatch();
-    useEffect(() => {
-        dispatch(getArtistAction( artistId as string)); // here i am considering artistId will not be undefined or other types 
-    }, [artistId]);
 
     const [selectedAlbum, setSelectedAlbum] = useState<album_type | null>(null);
+    const [selectedSingle, setSelectedSingle] = useState<single_type | null>(null);
 
     const [showDeleWarn, setShowDeleWarn] = useState(false);
     const [showUpdateForm, setShowUpdateForm] = useState(false);
+    const [showSingleDeleWarn, setShowSingleDeleWarn] = useState(false);
+    const [showSingleUpdateForm, setShowSingleUpdateForm] = useState(false);
+    
+    // 
+    // const [showNewSinglePopup, setShowNewSinglePopup] = useState(false);
+
+
+    useEffect(() => {
+        dispatch(getArtistAction( artistId as string)); // here i am considering artistId will not be undefined or other types 
+    }, [artistId]);
+    // }, [artistId]);
+
+    // const handleShowNewPopup = () => setShowNewSinglePopup(true);
+    // const handleCloseNewSongPopup = () => {
+    //     dispatch(getArtistAction(artistId as string));
+    //     setShowNewSinglePopup(false);
+    // }
 
     const handleDeleteWarnPopup = (album: album_type) => {
         setSelectedAlbum(album)
@@ -47,26 +63,47 @@ export default function ArtistPage(){
         setShowUpdateForm(true);
     };
 
+    const handleSingleUpdatePopup = (single: single_type) => {
+        setSelectedSingle(single)
+        setShowSingleUpdateForm(true);
+    };
+
+    const handleCloseSingleUpdatePopup = () => {
+        dispatch(getArtistAction( artistId as string));
+        setShowSingleUpdateForm(false)
+    };
+
+    
     const handleCloseWarnPopup = () => {
         // [?] calling dispatch everytime seems expensive
         dispatch(getArtistAction( artistId as string));
-        setShowDeleWarn(false);
-    }
+        setShowDeleWarn(false)
+    };
 
     const handleCloseUpdatePopup = () => {
-        // [?] calling dispatch everytime seems expensive
         dispatch(getArtistAction( artistId as string));
-        setShowUpdateForm(false);
-    }
+        setShowUpdateForm(false)
+    };
 
+    const handleDeleteSingleWarnPopup = (single: single_type) => {
+        setSelectedSingle(single);
+            setShowSingleDeleWarn(true);
+        };
+    
+    const handleCloseSingleWarnPopup = () => {
+        dispatch(getArtistAction( artistId as string));
+        setShowSingleDeleWarn(false);
+    };
+    
 
+    // const artist_: artist_type = payload_.artist.data as unknown as artist_type || [];
     const albums_: album_type[]  = payload_.artist.data?.albums as unknown as album_type[] || [];
     const singles = payload_.artist.data?.single;
     const albumCard_ = albums_?.map(albm => (
         <div className="col-md-3">
             {/* {consoloe.log("[INFO] albums title",albm.title)}; */}
             <Card key={albm._id} style={{ width: '18rem' }} className="indigenous_style artist_card">
-                <Link to={`/album/${albm._id}`}>
+                <Link to={`/album/${payload_.artist.data?._id}/${albm._id}`}>
                     <div className="text-center">
                         <Card.Img variant="top" src={albm.cover_img_url} style={{ height: '100%', width: 'auto' }} />
                     </div>
@@ -89,8 +126,8 @@ export default function ArtistPage(){
                         <Dropdown.Menu>
                             <Dropdown.Item onClick={() => handleUpdatePopup(albm)}>Update</Dropdown.Item>
                             <Dropdown.Item onClick={() => handleDeleteWarnPopup(albm)}>Delete</Dropdown.Item>
-                            <AlbumCardMorePopupForm show={showUpdateForm && selectedAlbum === albm} handleClose={handleCloseWarnPopup} album_u={albm}/>
-                            <DeleteWarnPopupForm show={showDeleWarn && selectedAlbum === albm} handleClose={handleCloseUpdatePopup} itemId={albm._id} what={deleted_items.album} />
+                            <AlbumCardMorePopupForm show={showUpdateForm && selectedAlbum === albm} handleClose={handleCloseUpdatePopup} album_u={albm} />
+                            <DeleteWarnPopupForm show={showDeleWarn && selectedAlbum === albm} handleClose={handleCloseWarnPopup} itemId={albm._id} what={deleted_items.album} />
                         </Dropdown.Menu>
                     </Dropdown>
                 </Card.Footer>
@@ -99,10 +136,28 @@ export default function ArtistPage(){
     ))
     const single_card = singles?.map(single => (
         <Card>
-            <Card.Body>
+            <Card.Body  className="indigenous_style single_song">
             {/* <Card.Text>{single.title}</Card.Text> */}
-                <Card.Text>{single.title}  {single.genre}  {single.duration.toString()}</Card.Text>
+                <div className="indigenous_style single_song_info">
+                    <Card.Text className="indigenous_style single_item">{single.title}</Card.Text>
+                  l  <Card.Text className="indigenous_style single_item">{single.genre}</Card.Text>  
+                    <Card.Text className="indigenous_style single_item">{(single.duration).toString()}</Card.Text>
+                </div>
+                <Dropdown>
+                    <Dropdown.Toggle variant="secondary">
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu>
+                        <Dropdown.Item onClick={() => handleSingleUpdatePopup(single)}>Update</Dropdown.Item>
+                        <Dropdown.Item onClick={() => handleDeleteSingleWarnPopup(single)}>Delete</Dropdown.Item>
+                        
+                        {/* <AlbumCardMorePopupForm show={showUpdateForm && selectedAlbum === albm} handleClose={handleCloseUpdatePopup} album_u={albm} /> */}
+                        <DeleteWarnPopupForm show={showSingleDeleWarn && selectedSingle === single} handleClose={handleCloseSingleWarnPopup} itemId={single._id} what={deleted_items.single} />
+                        <SingleCardMorePopupForm show={showSingleUpdateForm && selectedSingle === single} handleClose={handleCloseSingleUpdatePopup} single_u={single}/>
+                        {/* <DeleteWarnPopupForm show={showDeleWarn && selectedAlbum === albm} handleClose={handleCloseWarnPopup} itemId={albm._id} what={deleted_items.album} /> */}
+                    </Dropdown.Menu>
+                </Dropdown>
             </Card.Body>
+            {/* {JSON.stringify(single)} */}
         </Card>
     ))
     const [showNewAlbumPopup, setShowNewAlbumPopup] = useState(false);
@@ -110,22 +165,28 @@ export default function ArtistPage(){
     const [showNewSinglePopup, setShowNewSinglePopup] = useState(false);
 
     const handleShowNewSinglePopup = () => setShowNewSinglePopup(true);
-    const handleCloseNewSinglePopup = () => setShowNewSinglePopup(false);
+    const handleCloseNewSinglePopup = () => {
+        setShowNewSinglePopup(false);
+         // dispite this it is loading - i think the thing is that i have to wait some time before calling dipatch to see the update
+        dispatch(getArtistAction( artistId as string));
+    }
 
     const handleShowNewAlbumPopup = () => setShowNewAlbumPopup(true);
-    const handleCloseNewAlbumPopup = () => setShowNewAlbumPopup(false);
+    const handleCloseNewAlbumPopup = () => {
+        setShowNewAlbumPopup(false);
+        dispatch(getArtistAction( artistId as string));
+    }
 
     const about_artist_card = (
         <Card className="bg-dark text-white ">
-            {/* {JSON.stringify(payload_.artist.data?.img_url)} */}
             {/* <Card.Img src={payload_.artist.data?.img_url || "https://imgur.com/RDxhZsI.png"} alt="Card image" /> */}
             {/* have to set max_width, and height */}
             <Card.Img src={"https://imgur.com/RDxhZsI.png"} alt="Card image" /> 
             <Card.ImgOverlay className='indigenous_style artist_card_overlay'>
                 <div className="indigenous_style artist_card_top">
-                    <div></div>
                     {/* <Button variant="outline-light"> */}
                         {/* <BsThreeDotsVertical /> */}
+                        <div></div>
                         <Dropdown >
                             <Dropdown.Toggle className="indigenous_style artist_card_icon_btn">
                                 
@@ -135,8 +196,8 @@ export default function ArtistPage(){
                                 <Dropdown.Item onClick={() => {}}>Delete</Dropdown.Item>
                                 <Dropdown.Item onClick={handleShowNewAlbumPopup}>New Album</Dropdown.Item>
                                 <CreateAlbumPopupForm show={showNewAlbumPopup} handleClose={handleCloseNewAlbumPopup} artistId={payload_.artist.data?._id as string} />
-                                <Dropdown.Item onClick={handleShowNewSinglePopup}>New Singles</Dropdown.Item>
-                                <CreateSinglePopupForm show={showNewSinglePopup} handleClose={handleCloseNewSinglePopup}/>
+                                <Dropdown.Item onClick={handleShowNewSinglePopup}>New Single</Dropdown.Item>
+                                <CreateSinglePopupForm show={showNewSinglePopup} handleClose={handleCloseNewSinglePopup} artistId={payload_.artist.data?._id as string}/>
                             </Dropdown.Menu>
                         </Dropdown>
                     {/* </Button> */}

@@ -14,3 +14,21 @@
     flex-direction: row;
     justify-content: space-between;
 }
+
+.indigenous_style.single_song{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.indigenous_style.single_song_info{
+    display: flex;
+    flex-direction: row;
+    border: 2px solid violet;
+    width: 100%;
+    justify-content: space-around;
+}
+
+.indigenous_style.single_item{
+    border: 2px solid violet;
+    width: 30%;
+}

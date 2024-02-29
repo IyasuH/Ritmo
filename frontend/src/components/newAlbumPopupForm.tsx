@@ -74,6 +74,7 @@ function CreateAlbumPopupForm({ show, handleClose, artistId}: PopupformProps){
                             type="text"
                             placeholder="Title"
                             name="title"
+                            required={true}
                             value={formData.title}
                             onChange={handleFormChange}/>
                     </Form.Group>
@@ -83,6 +84,7 @@ function CreateAlbumPopupForm({ show, handleClose, artistId}: PopupformProps){
                             type="text"
                             placeholder="Cover Img URL"
                             name="cover_img_url"
+                            required={true}
                             value={formData.cover_img_url}
                             onChange={handleFormChange}/>
                     </Form.Group>
@@ -92,6 +94,7 @@ function CreateAlbumPopupForm({ show, handleClose, artistId}: PopupformProps){
                             type="date"
                             placeholder="Release Date"
                             name="release_date"
+                            required={true}
                             value={formData.release_date.toISOString().substr(0,10)}
                             onChange={handleFormChange}/>
                     </Form.Group>
