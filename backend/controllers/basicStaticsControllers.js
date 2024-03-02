@@ -9,7 +9,7 @@ const totalNumberOfSongs = async (req, res) => {
             {$project: {
                 singleSongs: { $size: '$single' }
             }
-        }, 
+        },
         {
             $group: {
                 _id: null,
@@ -19,10 +19,26 @@ const totalNumberOfSongs = async (req, res) => {
         ]).exec();
 
         const album_songs = await ArtistModel.aggregate([
-            {$project: {
-                albumSongs: { $size: '$albums.songs' }
+        {
+            // here i updated the albumSongs because it was not returning correct value
+            // so in updated code i am using $map to iterate over each albums array, then for each albums calculating the songs number
+            // then sum that up
+            $project: {
+                albumSongs: {
+                    $sum: {
+                        $map: {
+                            input: "$albums",
+                            as: "album",
+                            in: { $size: "$$album.songs"}
+                        }
+                    }
+                }
             }
-        }, 
+        },
+        //     {$project: {
+        //         albumSongs: { $size: '$albums.songs' }
+        //     }
+        // }, 
         {
             $group: {
                 _id: null,
@@ -49,9 +65,10 @@ const totalNumberOfSongs = async (req, res) => {
         //     }
         // }
         // ]).exec();
-        console.log("[INFO]: number of songs, ", totalSongs)
+        console.log("[INFO]: type of number of songs, ", (typeof totalSongs))
 
         res.status(200).json({"single_songs": single_songs[0].singleSongs, "albums_songs": album_songs[0].albumSongs, "total": totalSongs})
+        
     } catch (err) {
         console.log(err)
         res.status(404).json({"Error": err});
@@ -65,7 +82,7 @@ const totalNumberOfArtists = async (req, res) => {
         const artists = await ArtistModel.find({});
         const number_of_artists = artists.length;
         console.log("[INFO]: number of artists, ", number_of_artists)
-        res.status(200).json({"total number of artists": number_of_artists})
+        res.status(200).json({"artists_number": number_of_artists})
     } catch (err) {
         console.log(err)
         res.status(404).json({"Error": err});
@@ -87,7 +104,9 @@ const totalNumberOfAlbums = async (req, res) => {
             }
         }
         ]).exec();
-        res.status(200).json(number_of_albums)
+        console.log("[INFO]: number_of_albums ", number_of_albums)
+
+        res.status(200).json({"album_number": number_of_albums[0].albums})
     } catch (err) {
         console.log(err)
         res.status(404).json({"Error": err});
