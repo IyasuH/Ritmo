@@ -3,6 +3,7 @@ import { watchGetArtist, watchCreateArtist, watchListArtists, watchUpdateArtist,
 import { watchCreateAlbum, watchDeleteAlbum, watchUpdateAlbum, watchGetAlbum } from "./album_/albumSaga";
 import { watchCreateSong, watchDeleteSong, watchUpdateSong } from "./song_/songSaga";
 import { watchCreateSingle, watchUpdateSingle, watchDeleteSingle } from "./single_/singleSaga";
+import { watchTotNumAlbum, watchTotNumArtist, watchTotNumSong, watchTotNumGenre } from "./stastics_/stasticSaga";
 
 // here I tried to create and manage multiple concurrent Sagas
 
@@ -28,6 +29,12 @@ const rootSaga = function* () {
         fork(watchCreateSingle),
         fork(watchUpdateSingle),
         fork(watchDeleteSingle),
+        // 
+        fork(watchTotNumSong),
+        fork(watchTotNumArtist),
+        fork(watchTotNumAlbum),
+        fork(watchTotNumGenre),
+        // 
     ]);
 };
 

@@ -82,13 +82,43 @@ export interface artist_type  {
 }
 
 export interface total_number_Songs_type {
-    single_songs: string,
-    albums_songs: string,
-    total: string,
+    single_songs: number,
+    albums_songs: number,
+    total: number,
+}
+
+export interface total_number_artist_type {
+    artists_number: number,
+}
+
+export interface total_number_album_type {
+    album_number: number,
+}
+
+export interface total_number_genre_type {
+    [genreName: string]: number
 }
 
 export type totalNumberSongsR = {
     data: total_number_Songs_type | null;
+    isLoading: boolean;
+    errors: string;
+}
+
+export type totalNumberArtistR = {
+    data: total_number_artist_type | null;
+    isLoading: boolean;
+    errors: string;
+}
+
+export type totalNumberAlbumR = {
+    data: total_number_album_type | null;
+    isLoading: boolean;
+    errors: string;
+}
+
+export type totalNumberGenresR = {
+    data: total_number_genre_type | {};
     isLoading: boolean;
     errors: string;
 }
@@ -185,7 +215,10 @@ export type SingleStateType = {
 }
 
 export type BasicStasticsStateType = {
-    totalNumberOfSongs: totalNumberSongsR
+    totalNumberOfSongs: totalNumberSongsR,
+    totalNumberOfArtists: totalNumberArtistR,
+    totalNumberOfAlbums: totalNumberAlbumR,
+    totalNumberOfGenres: totalNumberGenresR,
 }
 
 const def_single: single_type = {

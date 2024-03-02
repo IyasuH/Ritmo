@@ -38,20 +38,10 @@ export default function ArtistPage(){
     const [showSingleDeleWarn, setShowSingleDeleWarn] = useState(false);
     const [showSingleUpdateForm, setShowSingleUpdateForm] = useState(false);
     
-    // 
-    // const [showNewSinglePopup, setShowNewSinglePopup] = useState(false);
-
 
     useEffect(() => {
         dispatch(getArtistAction( artistId as string)); // here i am considering artistId will not be undefined or other types 
     }, [artistId]);
-    // }, [artistId]);
-
-    // const handleShowNewPopup = () => setShowNewSinglePopup(true);
-    // const handleCloseNewSongPopup = () => {
-    //     dispatch(getArtistAction(artistId as string));
-    //     setShowNewSinglePopup(false);
-    // }
 
     const handleDeleteWarnPopup = (album: album_type) => {
         setSelectedAlbum(album)
