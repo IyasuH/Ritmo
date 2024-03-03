@@ -26,7 +26,7 @@ export default function ArtistPage(){
     // here i used useSelector to reacd data from the Redux store when there is change to store it will compare values and re-renders
     const payload_ = useSelector((state: StateType) => state.artists);
 
-    const { artistId }: ParamsType = useParams();
+    const { artistId } = useParams<ParamsType>();
     // useDispatch is used to triger and changes to the store 
     const dispatch  = useDispatch();
 
@@ -218,7 +218,7 @@ export default function ArtistPage(){
         <>
             <div className="indigenous_style home_parent">
                 <div className="indigenous_style side_main">
-                    <SideBarArtist/>
+                    <SideBarArtist artist_Id={artistId || ''} />
                 </div>
                 <div className="indigenous_style main_child">
                     <div className="container row indigenous_style albums">

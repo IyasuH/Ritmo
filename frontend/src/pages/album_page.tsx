@@ -7,12 +7,12 @@ import { useDispatch, useSelector } from "react-redux";
 // custom CSS
 import './home.css'
 
-import SideBarArtist from '../components/sideBarArtist';
-import { Card, Button, Dropdown } from 'react-bootstrap';
+import { Card, Dropdown } from 'react-bootstrap';
 import { song_type } from "../interfaces/interfaces";
 import CreateSongPopupForm from "../components/newSongPopupForm";
 import DeleteSongPopupForm from "../components/deleteSongPopupForm";
 import SongCardMorePopupForm from "../components/updateSongPopupForm";
+import SideBarAlbum from "../components/sideBarAlbum";
 
 export default function AlbumPage(){
     type ParamsType = {
@@ -131,7 +131,8 @@ export default function AlbumPage(){
         <>
             <div className="indigenous_style home_parent">
                 <div className="indigenous_style side_main">
-                    <SideBarArtist/>
+                    {/* <SideBarArtist/> */}
+                    <SideBarAlbum artist_Id={artistId || ''} album_Id={albumId || ''} />
                 </div>
                 <div className="indigenous_style main_child">
                     <div className="container row indigenous_style albums">

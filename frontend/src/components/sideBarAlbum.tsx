@@ -5,27 +5,23 @@ import { Button } from "react-bootstrap";
 // custom CSS
 import './SideBarHome.css';
 import { StateType } from '../redux/root-reducer';
-import { getNumberOfArtistsSongsAction, getNumberOfArtitsAlbumAction } from '../redux/artists_stastics/artistStatSlice';
+import { getNumberOfAlbumsSongsAction } from '../redux/albums_stastics/albumStatSlice';
 import { useDispatch, useSelector } from 'react-redux';
-interface SideBarArtistProps {
+interface SideBarAlbumProps {
     artist_Id: string;
+    album_Id: string;
   }
-const SideBarArtist: React.FC<SideBarArtistProps> = ({ artist_Id }) => {
-    const {artistsNumberOfSongs, artistsNumberOfAlbums } = useSelector((state: StateType) => state.artistStastics)
+const SideBarAlbum: React.FC<SideBarAlbumProps> = ({ artist_Id, album_Id }) => {
+    const { albumsNumberOfSongs } = useSelector((state: StateType) => state.albumStastics)
     const dispatch = useDispatch();
     useEffect(() => {
-        dispatch(getNumberOfArtistsSongsAction(artist_Id as string));
-        dispatch(getNumberOfArtitsAlbumAction(artist_Id as string));
-    }, [])
-    const artistStatCard =(
+        dispatch(getNumberOfAlbumsSongsAction([artist_Id, album_Id]));
+    }, [artist_Id, album_Id])
+    const albumStatCard =(
         <Card style={{ width: '100%' }}>
             <Card.Body>
                 <Card.Title>Platform Statistics</Card.Title>
-                    <Card.Text>Total Number of songs: <mark>{artistsNumberOfSongs.data?.total}</mark></Card.Text>
-                    <Card.Text>Total Number of Single Songs: <mark>{artistsNumberOfSongs.data?.single_songs}</mark></Card.Text>
-                    <Card.Text>Total Number of Album Songs: <mark>{artistsNumberOfSongs.data?.albums_songs}</mark></Card.Text>
-                    <Card.Text>Total Number of albums: <mark>{artistsNumberOfAlbums.data?.totalAlbums}</mark></Card.Text>
-                    <>Can also define for genres</>
+                    <Card.Text>Total Number of songs: <mark>{albumsNumberOfSongs.data?.songCount}</mark></Card.Text>
             </Card.Body>
             {/* {JSON.stringify({"totalNumberOfGenres": totalNumberOfGenres})} */}
         </Card>
@@ -34,7 +30,7 @@ const SideBarArtist: React.FC<SideBarArtistProps> = ({ artist_Id }) => {
         <div className="indigenous_style sidebarComponents">
             <img src="" alt="" />
             {/* < StatisticCardComponent/> */}
-            {artistStatCard}
+            {albumStatCard}
             <div className="col-md-1 indigenous_style button_container">
                 <Button variant="primary" className="indigenous_style button_1">Artist</Button>
                 <Button variant="primary" className="indigenous_style button_1">Album</Button>
@@ -45,4 +41,4 @@ const SideBarArtist: React.FC<SideBarArtistProps> = ({ artist_Id }) => {
     )
 }
 
-export default SideBarArtist;
+export default SideBarAlbum;
