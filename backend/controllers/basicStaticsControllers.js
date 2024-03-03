@@ -48,6 +48,7 @@ const totalNumberOfSongs = async (req, res) => {
         ]).exec();
         totalSongs = single_songs[0].singleSongs + album_songs[0].albumSongs;
         // I can use the following code to get total songs on the platform[the default is now you can get total album songs and total single songs separately]
+        // but this does not give correct songs number inside album
         // const number_of_songs = await ArtistModel.aggregate([
         //     {$project: {
         //         totalSongs: {
@@ -210,28 +211,49 @@ const numberSongsArtist = async (req, res) => {
     // number of songs for an artist
     const artist_id = req.params.artist_id;
     try{
-        const result = await ArtistModel.aggregate([
+        const single_songs = await ArtistModel.aggregate([
             {$match: {_id: new mongoose.Types.ObjectId(artist_id)}},
             {$project: {
-                totalSongs: {
-                    $add: [
-                        { $size: '$albums.songs' },
-                        { $size: '$single'}
-                    ]
-                }
-            }}
+                singleSongs: { $size: '$single' }
+            }},
+            {$group: {
+                _id: null,
+                singleSongs: {$sum: "$singleSongs"}
+                }}
         ]).exec();
-        console.log("[INFO] result", result)
-        if (result && result.length > 0 &&result[0].totalSongs !== undefined){
-            const totalSongs  = result[0].totalSongs;
-            console.log(totalSongs);
-            console.log("[INFO] totalSongs", totalSongs);
-            res.status(200).json({totalSongs});
-        } else {
-            console.log("[INFO] result ",result);
-            console.log('unable to retrive song count.');
-            res.status(404).json({"Error": "error"});    
-        }
+        const album_songs = await ArtistModel.aggregate([
+            {$match: {_id: new mongoose.Types.ObjectId(artist_id)}},
+            {$project: {
+                albumSongs: {
+                    $sum: {
+                        $map: {
+                            input: "$albums",
+                            as: "album",
+                            in: { $size: "$$album.songs"}
+                        }
+                    }
+                }
+            }
+        },
+        {$group: {
+            _id: null,
+            albumSongs: {$sum: "$albumSongs"}
+            }
+        }]).exec();
+        totalSongs = single_songs[0].singleSongs + album_songs[0].albumSongs
+        // this does not give correct songs number inside album
+        // const result = await ArtistModel.aggregate([
+        //     {$match: {_id: new mongoose.Types.ObjectId(artist_id)}},
+        //     {$project: {
+        //         totalSongs: {
+        //             $add: [
+        //                 { $size: '$albums.songs' },
+        //                 { $size: '$single'}
+        //             ]
+        //         }
+        //     }}
+        // ]).exec();
+        res.status(200).json({"single_songs": single_songs[0].singleSongs, "albums_songs": album_songs[0].albumSongs, "total": totalSongs})
     } catch (err) {
         console.log(err)
         res.status(404).json({"Error": err});
