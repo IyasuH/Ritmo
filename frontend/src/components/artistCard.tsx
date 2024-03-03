@@ -14,6 +14,7 @@ import ArtistCardMorePopupForm from './updateaAtistPopupForm';
 // import ArtistDeleteWarnPopupForm from './deleteArtistWarnPopup';
 import { artist_type } from '../interfaces/interfaces';
 import DeleteWarnPopupForm, { deleted_items } from './deleteWarnPopup';
+import { CardFooterStyle, CardGrid, CardInfo, CardStyle, CardTextStyle, AroundCardImg, CardImg } from './styled_components/card.style';
 
 const ArtistCard  = () => {
     const payload_ = useSelector((state: StateType)=>state.artists);
@@ -58,31 +59,35 @@ const ArtistCard  = () => {
         dispatch(getAllArtistsAction());
         setShowDeleWarn(false);
     };
+    interface ArtistCardProps{
+        artist: artist_type;
+    }
+    const ArtistCard: React.FC<ArtistCardProps> = ({ artist }) => {
+        const [imageLoadError, setImageLoadError] = useState(false);
 
-    const artistCard_ = artists?.map(artist => (
-        <div className="col-md-3">
-            <Card key={artist._id} 
-                // style={{ width: '18rem' }}
-                className="indigenous_style artist_card">
-                <Link to={`/artist/${artist._id}`}>
-                    <div className="text-center indigenous_style artist_image">
-                        <Card.Img variant="top" src={artist.img_url} style={{ height: '100%', width: 'auto' }} />
-                    </div>
-                </Link>
-                <Card.Footer className="indigenous_style artist_compt">
-                    <div className="indigenous_style artist_summ">
-                        <Card.Text>
+        const handleImageLoadError = () =>{
+            setImageLoadError(true);
+        };
+
+        return (
+            <CardStyle key={artist._id}>
+                <AroundCardImg>
+                    <Link to={`/artist/${artist._id}`}>
+                        {imageLoadError ? (
+                            <CardImg src="https://imgur.com/Lf76JRO.png" alt='unable to load defult image' />
+                        ):(
+                            <CardImg src={artist.img_url} alt='' onError={handleImageLoadError}  />
+                        )}
+                    </Link>
+                </AroundCardImg>
+                
+                <CardFooterStyle>
+                    <CardInfo>
+                        <CardTextStyle>
                             <strong>{artist.full_name}</strong>
-                        </Card.Text>
-                        <Card.Text>Albums: {artist.single.length}</Card.Text>
-                        {/* <Card.Text>Single songs: {artist.albums.length}</Card.Text>
-                        <Card.Text>
-                            50 songs
-                        </Card.Text> */}
-                    </div>
-                    {/* <Button variant="secondary" style={{ height: '50%', width: '15%' }} onClick={handleMoreButtonClick}>
-                        <IoMdMore />
-                    </Button> */}
+                        </CardTextStyle>
+                        <CardTextStyle>Albums: {artist.single.length}</CardTextStyle>
+                    </CardInfo>
                     <Dropdown>
                         <Dropdown.Toggle variant="secondary">
                             {/* <IoMdMore /> */}
@@ -92,16 +97,19 @@ const ArtistCard  = () => {
                             <Dropdown.Item onClick={() => handleDeleteWarnPopup(artist)}>Delete</Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
-                    {/* for some reason this popups are making the background screen to be blank invetegate  */}
                     <ArtistCardMorePopupForm show={showMorePopup && selectedArtist === artist} handleClose={handleCloseShowMorePopup} artist_u={artist}/>
                     <DeleteWarnPopupForm show={showDeleWarn && selectedArtist === artist} handleClose={handleCloseWarnPopup} itemId={artist._id} what={deleted_items.artist} />
-                </Card.Footer>
-            </Card>
-        </div>
-    ))
+                </CardFooterStyle>                
+            </CardStyle>
+    );
+    }
+
+    const artistCard_ = artists?.map(artist => (
+        <ArtistCard artist={artist}/>
+      ));
 
     return (
-        <>{artistCard_}</>
+        <CardGrid>{artistCard_}</CardGrid>
     )    
 }
 

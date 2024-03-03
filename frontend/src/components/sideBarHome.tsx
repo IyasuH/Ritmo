@@ -7,18 +7,19 @@ import StatisticCardComponent from "./stasticsCard";
 
 // custom CSS
 import './SideBarHome.css';
+import { Button1, ButtonContainer } from "./styled_components/button.style";
 
 const SideBar: React.FC = () => {
     return (
         <div className="indigenous_style sidebarComponents">
             < LogoComponent/>
             < StatisticCardComponent/>
-            <div className="col-md-1 indigenous_style button_container">
-                <Button variant="primary" className="indigenous_style button_1">Artist</Button>
-                <Button variant="primary" className="indigenous_style button_1">Album</Button>
-                <Button variant="primary" className="indigenous_style button_1">Genre</Button>
-                <Button variant="primary" className="indigenous_style button_1">Songs</Button>
-            </div>
+            <ButtonContainer>
+                <Button1 onClick={()=>{}}><b>Artist</b></Button1>
+                <Button1 onClick={()=>{}}><b>Album</b></Button1>
+                <Button1 onClick={()=>{}}><b>Genre</b></Button1>
+                <Button1 onClick={()=>{}}><b>Songs</b></Button1>
+            </ButtonContainer>
         </div>
     )
 }
