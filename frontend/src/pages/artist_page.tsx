@@ -13,11 +13,11 @@ import { Link, useParams } from 'react-router-dom';
 import { getArtistAction } from '../redux/artist_/artistSlice';
 import { StateType } from '../redux/root-reducer';
 import SideBarArtist from '../components/sideBarArtist';
-import CreateAlbumPopupForm from '../components/newAlbumPopupForm';
-import CreateSinglePopupForm from '../components/newSinglePopupForm';
+import CreateAlbumPopupForm from '../components/Input/newAlbumPopupForm';
+import CreateSinglePopupForm from '../components/Input/newSinglePopupForm';
 import DeleteWarnPopupForm, { deleted_items } from '../components/deleteWarnPopup';
-import AlbumCardMorePopupForm from '../components/updateAlbumPopupForm';
-import SingleCardMorePopupForm from '../components/updateSInglePopupForm';
+import AlbumCardMorePopupForm from '../components/Input/updateAlbumPopupForm';
+import SingleCardMorePopupForm from '../components/Input/updateSInglePopupForm';
 
 export default function ArtistPage(){
     type ParamsType = {

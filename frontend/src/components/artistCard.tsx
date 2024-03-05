@@ -10,7 +10,7 @@ import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { StateType } from '../redux/root-reducer';
 
-import ArtistCardMorePopupForm from './updateaAtistPopupForm';
+import ArtistCardMorePopupForm from './Input/updateaAtistPopupForm';
 // import ArtistDeleteWarnPopupForm from './deleteArtistWarnPopup';
 import { artist_type } from '../interfaces/interfaces';
 import DeleteWarnPopupForm, { deleted_items } from './deleteWarnPopup';
@@ -104,7 +104,7 @@ const ArtistCard  = () => {
     );
     }
 
-    const artistCard_ = artists?.map(artist => (
+    const artistCard_ = artists?.map((artist: artist_type) => (
         <ArtistCard artist={artist}/>
       ));
 

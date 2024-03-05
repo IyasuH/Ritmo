@@ -1,8 +1,9 @@
 import { Modal, Button, Form } from "react-bootstrap";
 import React, { ChangeEvent, FormEvent, useState } from "react";
-import { artist_form_type, artist_type } from "../interfaces/interfaces";
-import { updateArtistAction } from "../redux/artist_/artistSlice";
+import { updateArtistAction } from "../../redux/artist_/artistSlice";
+import { artist_type } from "../../interfaces/interfaces";
 import { useDispatch } from "react-redux";
+import { CustomInput } from "./input.style";
 interface PopupformProps {
     show: boolean;
     handleClose: () => void;
@@ -69,70 +70,63 @@ function ArtistCardMorePopupForm({ show, handleClose, artist_u}: PopupformProps 
                 <Modal.Title>Artist</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <Form onSubmit={handleSubmit}>
-                    <Form.Group className="mb-3" controlId="formArtistInfo">
-                        <Form.Label>Artist Full Name</Form.Label>
-                        <Form.Control
+                <form onSubmit={handleSubmit}>
+                        <label>Artist Full Name</label>
+                        <CustomInput
                             type="text"
                             placeholder="Enter Full Name"
                             name="full_name"
                             value={formData.full_name}
                             onChange={handleFormChange}/>
-                    </Form.Group>
-                    <Form.Group className="mb-3" controlId="formArtistInfo">
-                        <Form.Label>Artist Bio</Form.Label>
-                        <Form.Control
+                        <br/>
+                        <label>Artist Bio</label>
+                        <CustomInput
                             type="text"
                             placeholder="Bio"
                             name="bio"
                             value={formData.bio}
                             onChange={handleFormChange}/>
-                    </Form.Group>
-                    <Form.Group className="mb-3" controlId="formArtistInfo">
-                        <Form.Label>Artist dob</Form.Label>
-                        <Form.Control 
+                        <br/>
+                        <label>Artist dob</label>
+                        <CustomInput
                             type="date"
                             placeholder="dob"
                             name="dob"
                             value={formData.dob instanceof Date ? formData.dob.toISOString().substr(0,10) : ''}
                             // value = {formData.dob}
                             onChange={handleFormChange}/>
-                    </Form.Group>
-                    <Form.Group className="mb-3" controlId="formArtistInfo">
-                        <Form.Label>Gender:</Form.Label>
-                        <Form.Check
+                        <br/>
+                        <label>Gender:</label>
+                        <br/>
+                        <label>Male</label>
+                        <CustomInput
                             type="radio"
-                            label="Male"
+                            // label="Male"
                             name="gender"
                             checked={formData.gender === 'M'}
                             value="M"
                             onChange={handleFormChange}
                             id="male"/>
-                        <Form.Check
+                        <label>Female</label>
+                        <CustomInput
                             type="radio"
-                            label="Female"
+                            // label="Female"
                             name="gender"
                             checked={formData.gender === 'F'}
                             value="F"
                             onChange={handleFormChange}
                             id="female"/>
-                    </Form.Group>
-                    <Form.Group className="mb-3" controlId="formArtistInfo">
-                        <Form.Label>Image URL</Form.Label>
-                        <Form.Control
+                        <br/>
+                        <label>Image URL</label>
+                        <CustomInput
                             type="text"
                             placeholder="Image URL"
                             name="img_url"
                             value={formData.img_url}
                             onChange={handleFormChange}/>
-                    </Form.Group>
-                    {/* I don't know if I should allow adding album and songs and single songs */}
-                    <Form.Group controlId="formAlbumInfo">
-                        <Form.Group controlId="formSongInfo">
-                        </Form.Group>
-                    </Form.Group>
+                        <br/>
                     <Button variant="primary" type="submit">Update</Button>
-                </Form>                
+                </form>                
 
             </Modal.Body>
             <Modal.Footer>

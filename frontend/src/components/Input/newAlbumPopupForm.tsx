@@ -1,9 +1,9 @@
 import React, { ChangeEvent, FormEvent, useState } from "react";
-import { Button, Form, Modal } from "react-bootstrap";
-import { album_form_type } from "../interfaces/interfaces";
+import { Button, Modal } from "react-bootstrap";
+import { album_form_type } from "../../interfaces/interfaces";
 import { useDispatch } from "react-redux";
-import { createAlbumAction } from "../redux/album_/albumSlice";
-
+import { createAlbumAction } from "../../redux/album_/albumSlice";
+import { CustomInput } from "./input.style";
 interface PopupformProps {
     show: boolean;
     handleClose: () => void;
@@ -61,46 +61,46 @@ function CreateAlbumPopupForm({ show, handleClose, artistId}: PopupformProps){
             updated_at: new Date(),    
         });
     }
+
     return (
         <Modal show={show} onHide={handleClose} centered>
             <Modal.Header closeButton>
                 <Modal.Title>New Artist</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <Form onSubmit={handleSubmit}>
-                    <Form.Group className="mb-3" controlId="formAlbumInfo">
-                        <Form.Label>Title</Form.Label>
-                        <Form.Control
-                            type="text"
-                            placeholder="Title"
-                            name="title"
-                            required={true}
-                            value={formData.title}
-                            onChange={handleFormChange}/>
-                    </Form.Group>
-                    <Form.Group className="mb-3" controlId="formAlbumInfo">
-                        <Form.Label>Cover Img URL</Form.Label>
-                        <Form.Control
-                            type="text"
-                            placeholder="Cover Img URL"
-                            name="cover_img_url"
-                            required={true}
-                            value={formData.cover_img_url}
-                            onChange={handleFormChange}/>
-                    </Form.Group>
-                    <Form.Group className="mb-3" controlId="formAlbumInfo">
-                        <Form.Label>Release Date</Form.Label>
-                        <Form.Control 
-                            type="date"
-                            placeholder="Release Date"
-                            name="release_date"
-                            required={true}
-                            value={formData.release_date.toISOString().substr(0,10)}
-                            onChange={handleFormChange}/>
-                    </Form.Group>
+                {/* <form onSubmit={handleSubmit}>
+                    {album_form_inputs}
+                </form> */}
+                <form onSubmit={handleSubmit}>
+                    <label>Title</label>
+                    <CustomInput
+                        type="text"
+                        placeholder="Title"
+                        name="title"
+                        required={true}
+                        value={formData.title}
+                        onChange={handleFormChange}/>
+                    <br/>
+                    <label>Cover Img URL</label>
+                    <CustomInput
+                        type="text"
+                        placeholder="Cover Img URL"
+                        name="cover_img_url"
+                        required={true}
+                        value={formData.cover_img_url}
+                        onChange={handleFormChange}/>
+                    <br/>
+                    <label>Release Date</label>
+                    <CustomInput
+                        type="date"
+                        placeholder="Release Date"
+                        name="release_date"
+                        required={true}
+                        value={formData.release_date.toISOString().substr(0,10)}
+                        onChange={handleFormChange}/>
+                    <br/>
                     <Button variant="primary" type="submit">Submit</Button>
-                </Form>                
-
+                </form>
             </Modal.Body>
             <Modal.Footer>
                 <Button variant="secondary" onClick={handleClear}>

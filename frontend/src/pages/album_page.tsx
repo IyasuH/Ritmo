@@ -9,9 +9,9 @@ import './home.css'
 
 import { Card, Dropdown } from 'react-bootstrap';
 import { song_type } from "../interfaces/interfaces";
-import CreateSongPopupForm from "../components/newSongPopupForm";
+import CreateSongPopupForm from "../components/Input/newSongPopupForm";
 import DeleteSongPopupForm from "../components/deleteSongPopupForm";
-import SongCardMorePopupForm from "../components/updateSongPopupForm";
+import SongCardMorePopupForm from "../components/Input/updateSongPopupForm";
 import SideBarAlbum from "../components/sideBarAlbum";
 
 export default function AlbumPage(){

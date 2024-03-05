@@ -6,6 +6,7 @@ export const CardContainer = styled.div`
     padding-left: 15px;
     margin-right: 15px;
     margin-left: 15px;
+    height: fit-content;
     display: flex;
     flex-direction: column;
     /* flex-wrap: wrap; */
@@ -32,6 +33,8 @@ export const CardGrid = styled.div`
 export const CardStyle = styled.div`
     border: 1px solid rgba(134, 72, 106, 0.979);
     border-radius: 0.25rem;
+    /* height: fit-content; */
+    height: 80%;
     /* padding: 1rem;     */
     margin-top: 0%;
     /* padding-top: 5%; */
@@ -42,7 +45,7 @@ export const CardStyle = styled.div`
 `
 
 export const StatCard = styled.div`
-    width: 100%;
+    /* width: 100%; */
     display: flex;
     flex-direction: column;
     padding: 3%;
@@ -55,7 +58,8 @@ export const StatCard = styled.div`
 export const AroundCardImg = styled.div`
     align-items: center;
     text-align: center;
-    padding: 5%;
+    height: 60%;
+    padding: 3%;
     /* width: 70%; */
     border: 1px solid rgba(15, 189, 233, 0.829);
 `
@@ -63,6 +67,7 @@ export const AroundCardImg = styled.div`
 export const CardImg = styled.img`
     text-align: center;
     height: 100%;
+    /* max-height: ; */
     width: fit;
     object-fit: cover;
     border: 1px solid rgba(233, 77, 15, 0.829);

@@ -1,8 +1,9 @@
 import { Modal, Button, Form } from "react-bootstrap";
 import React, { ChangeEvent, FormEvent, useState } from "react";
-import { album_type,  } from "../interfaces/interfaces";
+import { album_type,  } from "../../interfaces/interfaces";
 import { useDispatch } from "react-redux";
-import { updateAlbumAction } from "../redux/album_/albumSlice";
+import { updateAlbumAction } from "../../redux/album_/albumSlice";
+import { CustomInput } from "./input.style";
 
 interface PopupformProps {
     show: boolean;
@@ -64,37 +65,33 @@ function AlbumCardMorePopupForm({ show, handleClose, album_u }: PopupformProps )
                 <Modal.Title>Artist</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <Form onSubmit={handleSubmit}>
-                    <Form.Group className="mb-3" controlId="formAlbumInfo">
-                        <Form.Label>Album Title</Form.Label>
-                        <Form.Control
-                            type="text"
-                            placeholder="Album Title"
-                            name="title"
-                            value={formData.title}
-                            onChange={handleFormChange}/>
-                    </Form.Group>
-                    <Form.Group className="mb-3" controlId="formAlbumInfo">
-                        <Form.Label>Album Cover Img URL</Form.Label>
-                        <Form.Control
-                            type="text"
-                            placeholder="Album Cover Img URL"
-                            name="cover_img_url"
-                            value={formData.cover_img_url}
-                            onChange={handleFormChange}/>
-                    </Form.Group>
-                    <Form.Group className="mb-3" controlId="formAlbumInfo">
-                        <Form.Label>Album Release Date</Form.Label>
-                        <Form.Control 
-                            type="date"
-                            placeholder="Album Release Date"
-                            name="release_date"
-                            // value={formData.release_date instanceof Date ? formData.release_date.toISOString().substr(0,10) : ''}
-                            value={formData.release_date instanceof Date ? formData.release_date.toISOString().substr(0,10) : ''}
-                            onChange={handleFormChange}/>
-                    </Form.Group>
+                <form onSubmit={handleSubmit}>
+                    <label>Album Title</label>
+                    <CustomInput
+                        type="text"
+                        placeholder="Album Title"
+                        name="title"
+                        value={formData.title}
+                        onChange={handleFormChange}/>
+                    <br/>
+                    <label>Album Cover Img URL</label>
+                    <CustomInput
+                        type="text"
+                        placeholder="Album Cover Img URL"
+                        name="cover_img_url"
+                        value={formData.cover_img_url}
+                        onChange={handleFormChange}/>
+                    <br/>
+                    <label>Album Release Date</label>
+                    <CustomInput 
+                        type="date"
+                        placeholder="Album Release Date"
+                        name="release_date"
+                        // value={formData.release_date instanceof Date ? formData.release_date.toISOString().substr(0,10) : ''}
+                        value={formData.release_date instanceof Date ? formData.release_date.toISOString().substr(0,10) : ''}
+                        onChange={handleFormChange}/>
                     <Button variant="primary" type="submit">Submit</Button>
-                </Form>
+                </form>
             </Modal.Body>
             <Modal.Footer>
                 <Button variant="secondary" onClick={handleClose}>

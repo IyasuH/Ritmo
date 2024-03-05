@@ -10,7 +10,7 @@ import { TfiArrowCircleRight, TfiArrowCircleLeft } from "react-icons/tfi";
 import { VscAccount } from "react-icons/vsc";
 import { IoMdMore } from "react-icons/io";
 
-import CreateArtistPopupForm from "./newArtistPopupFrom";
+import CreateArtistPopupForm from "./Input/newArtistPopupFrom";
 
 import { Link, Outlet } from "react-router-dom";
 import { Dropdown } from "react-bootstrap";
@@ -27,7 +27,7 @@ const NavBarComponent: React.FC =()=> {
         </NavBarButton>
         <form action="">
           <input type="text" />
-          <button type="submit">Submit</button>
+          <button type="submit">Search</button>
           <IoMdMore size={35} onClick={()=>{}}/>
         </form>
         {/* <Form className="d-flex">

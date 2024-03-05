@@ -3,11 +3,13 @@
 } */
 .indigenous_style.home_parent {
     /* position: relative; */
-    padding: 1%;
+    padding: 1% 3%;
 }
 
 .indigenous_style.home_parent {
     display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
 
 .indigenous_style.side_main{

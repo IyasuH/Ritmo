@@ -9,7 +9,7 @@ import { IoMdAdd } from "react-icons/io";
 import { TopComIconStyle, TopCompStyle } from '../components/styled_components/top_components.style';
 import { CardContainer } from '../components/styled_components/card.style';
 import { useState } from 'react';
-import CreateArtistPopupForm from '../components/newArtistPopupFrom';
+import CreateArtistPopupForm from '../components/Input/newArtistPopupFrom';
 
 // import createArtistPopupForm from '../components/newArtistPopupFrom';
 
@@ -20,9 +20,7 @@ export default function HomePage(){
     const handleCloseNewArtistPopup = () => setShowNewArtistPopup(false);  
     return (
         <div className="indigenous_style home_parent">
-            <div className="indigenous_style side_child">
-                <SideBar/>
-            </div>
+            <SideBar/>
             <CardContainer>
                 <TopCompStyle>
                     <h1>Artists</h1>
