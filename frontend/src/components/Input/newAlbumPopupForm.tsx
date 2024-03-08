@@ -1,9 +1,12 @@
 import React, { ChangeEvent, FormEvent, useState } from "react";
-import { Button, Modal } from "react-bootstrap";
+import { Button, Modal, Placeholder } from "react-bootstrap";
 import { album_form_type } from "../../interfaces/interfaces";
 import { useDispatch } from "react-redux";
 import { createAlbumAction } from "../../redux/album_/albumSlice";
 import { CustomInput } from "./input.style";
+import { SubmitButton, CancleButton, ClearButton, XCloseButton } from "../Button/button.comp";
+import { CustomPopup, PopupParent, PopupTopComp, PopupBottomComp } from "../Popup/popup.style";
+import { alignItems } from "styled-system";
 interface PopupformProps {
     show: boolean;
     handleClose: () => void;
@@ -20,7 +23,7 @@ function CreateAlbumPopupForm({ show, handleClose, artistId}: PopupformProps){
         created_at: new Date(),
         updated_at: new Date(),
         })
-        
+
     const dispatch = useDispatch();
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         console.log("[INFO]: ", formData)
@@ -41,14 +44,16 @@ function CreateAlbumPopupForm({ show, handleClose, artistId}: PopupformProps){
         if (name==='release_date'){
             // 
             const dateValue = new Date(value);
-            setFormData({
-                ...formData, [name]: dateValue
-            });
+            setFormData((formData)=>({
+                ...formData,
+                [name]: dateValue
+            }));
         } else{
             // 
-            setFormData({
-                ...formData, [name]: value
-            })
+            setFormData((formData)=>({
+                ...formData, 
+                [name]: value,
+            }));
         }
     }
     const handleClear = () => {
@@ -62,56 +67,119 @@ function CreateAlbumPopupForm({ show, handleClose, artistId}: PopupformProps){
         });
     }
 
-    return (
-        <Modal show={show} onHide={handleClose} centered>
-            <Modal.Header closeButton>
-                <Modal.Title>New Artist</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-                {/* <form onSubmit={handleSubmit}>
-                    {album_form_inputs}
-                </form> */}
-                <form onSubmit={handleSubmit}>
-                    <label>Title</label>
-                    <CustomInput
-                        type="text"
-                        placeholder="Title"
-                        name="title"
-                        required={true}
-                        value={formData.title}
-                        onChange={handleFormChange}/>
-                    <br/>
-                    <label>Cover Img URL</label>
-                    <CustomInput
-                        type="text"
-                        placeholder="Cover Img URL"
-                        name="cover_img_url"
-                        required={true}
-                        value={formData.cover_img_url}
-                        onChange={handleFormChange}/>
-                    <br/>
-                    <label>Release Date</label>
-                    <CustomInput
-                        type="date"
-                        placeholder="Release Date"
-                        name="release_date"
-                        required={true}
-                        value={formData.release_date.toISOString().substr(0,10)}
-                        onChange={handleFormChange}/>
-                    <br/>
-                    <Button variant="primary" type="submit">Submit</Button>
-                </form>
-            </Modal.Body>
-            <Modal.Footer>
-                <Button variant="secondary" onClick={handleClear}>
-                    Clear
-                </Button>
-                <Button variant="secondary" onClick={handleClose}>
-                    Close
-                </Button>
-            </Modal.Footer>
-        </Modal>
+    // const FormInput: React.FC<InputFormProps> = React.memo(({
+    //     label,
+    //     type,
+    //     placeholder,
+    //     name,
+    //     onChange,
+    //     value,
+    // }) => (
+    //     <form onSubmit={handleSubmit}>
+    //         <label htmlFor="">
+    //             {label}
+    //         </label>
+    //         <CustomInput
+    //             key={name}
+    //             type={type}
+    //             placeholder={placeholder}
+    //             name={name}
+    //             value={value}
+    //             required={true}
+    //             onChange={onChange}
+    //             m={2}
+    //         />
+    //     </form>
+    // ))
+    // const input_list = [
+    //     {"name":"title", "value": formData.title},
+    //     {"name":"cover_img_url", "value": formData.cover_img_url},
+    //     {"name":"release_date", "value": formData.release_date.toISOString().substr(0,10)}
+    // ]
+    // const input_form = input_list.map(({name, value}) => (
+    //     <FormInput
+    //         label={name}
+    //         type="text"
+    //         placeholder={name}
+    //         name={name}
+    //         onChange={handleFormChange}
+    //         value={value}
+    //     />
+    // ))
 
+    // const [isFocused, setIsFocused] = useState(false);
+    // const handleFormFocus = () => {
+    //     setIsFocused(true);
+    // };
+    // const handleFormBlur = () => {
+    //     setIsFocused(false);
+    // };
+    // const [isOpen, set]
+    console.log("[INFO] show ", show);
+    if (!show) {
+        return null;
+    }
+    return (
+        <PopupParent>
+            <CustomPopup
+             variant="newItem"
+             bg={"#fff"}
+             color={"#000000"}
+            >
+                <div>
+                    <PopupTopComp>
+                        <h3>New Album</h3>
+                        <XCloseButton onClick={handleClose} />
+                    </PopupTopComp>
+                    <form onSubmit={handleSubmit}>
+                        <div>
+                            <label>Title</label>
+                            <br/>
+                            <CustomInput
+                                type="text"
+                                placeholder="Title"
+                                name="title"
+                                required={true}
+                                value={formData.title}
+                                onChange={handleFormChange}
+                                // m={2}
+                            />
+                        </div>
+                        <div>
+                            <label>Cover Img URL</label>
+                            <br/>
+                            <CustomInput
+                                type="text"
+                                placeholder="Cover Img URL"
+                                name="cover_img_url"
+                                required={true}
+                                value={formData.cover_img_url}
+                                onChange={handleFormChange}
+                                // m={2}
+                            />
+                        </div>
+                        <div>
+                            <label>Release Date</label>
+                            <br/>
+                            <CustomInput
+                                type="date"
+                                placeholder="Release Date"
+                                name="release_date"
+                                required={true}
+                                value={formData.release_date.toISOString().substr(0,10)}
+                                onChange={handleFormChange}
+                                // m={2}
+                            />
+                        </div>
+                        <SubmitButton />
+                    </form>
+                    <PopupBottomComp>
+                        <ClearButton onClick={handleClear} />
+                        <CancleButton onClick={handleClose} />
+                    </PopupBottomComp>
+                </div>
+            </CustomPopup>
+        </PopupParent>
     )
 }
 

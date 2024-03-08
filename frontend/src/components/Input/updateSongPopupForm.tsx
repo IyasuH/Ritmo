@@ -4,6 +4,8 @@ import { album_type, song_type } from "../../interfaces/interfaces";
 import { useDispatch } from "react-redux";
 import { updateSongAction } from "../../redux/song_/songSlice";
 import { CustomInput } from "./input.style";
+import { SubmitButton, CancleButton, ClearButton, XCloseButton } from "../Button/button.comp";
+import { CustomPopup, PopupParent, PopupTopComp, PopupBottomComp } from "../Popup/popup.style";
 
 interface PopupformProps {
     show: boolean;
@@ -67,67 +69,87 @@ function SongCardMorePopupForm({ show, handleClose, song_u, albumId }: Popupform
         handleClose();
     }
 
+    if (!show) {
+        return null;
+    }
+
     return(
-        <Modal show={show} onHide={handleClose} centered>
-            <Modal.Header closeButton>
-                <Modal.Title>Artist</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-                <form onSubmit={handleSubmit}>
-                    <label>Title</label>
-                    <CustomInput
-                        type="text"
-                        placeholder="Title"
-                        name="title"
-                        value={formData.title}
-                        onChange={handleFormChange}/>
-                    <br/>
-                    <label>Duration(in sec)</label>
-                    <CustomInput
-                        type="number"
-                        placeholder="Duration"
-                        name="duration"
-                        value={formData.duration.toString()}
-                        onChange={handleFormChange}/>
-                    <br/>
-                    <label>File URL</label>
-                    <CustomInput
-                        type="text"
-                        placeholder="File URL"
-                        name="file_url"
-                        value={formData.file_url}
-                        onChange={handleFormChange}/>
-                    <br/>
-                    <label>Genre</label>
-                    <Form.Select value={selectedGenre} onChange={handleFormChange} name="genre">
-                        {/* this list should be based on some reference on */}
-                        <option value="Hip hop">Hip hop</option>
-                        <option value="Rock">Rock</option>
-                        <option value="Pop">Pop</option>
-                        <option value="Metal">Metal</option>
-                        <option value="Jazz">Jazz</option>
-                        <option value="Afro">Afro</option>
-                        <option value="Indie">Indie</option>
-                        <option value="Country">Country</option>
-                    </Form.Select>
-                    <br/>
-                    <label>Release Date</label>
-                    <CustomInput 
-                        type="date"
-                        placeholder="Release Date"
-                        name="release_date"
-                        value={formData.release_date instanceof Date ? formData.release_date.toISOString().substr(0,10) : ''}
-                        onChange={handleFormChange}/>
-                    <br/>
-                    <Button variant="primary" type="submit">Submit</Button>                    
-                </form>
-            </Modal.Body>
-            <Modal.Footer>
-                <Button variant="secondary" onClick={handleClose}>
-                    Cancle
-                </Button>
-            </Modal.Footer>
-        </Modal>
+        <PopupParent>
+            <CustomPopup
+             variant="newItem"
+             bg={"#fff"}
+             color={"#000000"}
+            >
+                <div>
+                    <PopupTopComp>
+                        <h3>Update Single</h3>
+                        <XCloseButton onClick={handleClose} />
+                    </PopupTopComp>
+                        <form onSubmit={handleSubmit}>
+                            <div>
+                                <label>Title</label>
+                                <br />
+                                <CustomInput
+                                    type="text"
+                                    placeholder="Title"
+                                    name="title"
+                                    value={formData.title}
+                                    onChange={handleFormChange}/>
+                            </div>
+                            <div>
+                                <label>Duration(in sec)</label>
+                                <br />
+                                <CustomInput
+                                    type="number"
+                                    placeholder="Duration"
+                                    name="duration"
+                                    value={formData.duration.toString()}
+                                    onChange={handleFormChange}/>
+                            </div>
+                            <div>
+                                <label>File URL</label>
+                                <br />
+                                <CustomInput
+                                    type="text"
+                                    placeholder="File URL"
+                                    name="file_url"
+                                    value={formData.file_url}
+                                    onChange={handleFormChange}/>
+                            </div>
+                            <div>
+                                <label>Genre</label>
+                                <br />
+                                <select value={selectedGenre} onChange={handleFormChange} name="genre">
+                                    {/* this list should be based on some reference on */}
+                                    <option value="Hip hop">Hip hop</option>
+                                    <option value="Rock">Rock</option>
+                                    <option value="Pop">Pop</option>
+                                    <option value="Metal">Metal</option>
+                                    <option value="Jazz">Jazz</option>
+                                    <option value="Afro">Afro</option>
+                                    <option value="Indie">Indie</option>
+                                    <option value="Country">Country</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label>Release Date</label>
+                                <br />
+                                <CustomInput 
+                                    type="date"
+                                    placeholder="Release Date"
+                                    name="release_date"
+                                    value={formData.release_date instanceof Date ? formData.release_date.toISOString().substr(0,10) : ''}
+                                    onChange={handleFormChange}/>
+                                </div>
+                                <SubmitButton />
+                        </form>
+
+                    <PopupBottomComp>
+                        <CancleButton onClick={handleClose} />
+                    </PopupBottomComp>
+                </div>
+            </CustomPopup>
+        </PopupParent>
     )
 }
 

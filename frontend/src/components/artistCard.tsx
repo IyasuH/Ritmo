@@ -10,7 +10,7 @@ import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { StateType } from '../redux/root-reducer';
 
-import ArtistCardMorePopupForm from './Input/updateaAtistPopupForm';
+import ArtistCardMorePopupForm from './Input/updateaArtistPopupForm';
 // import ArtistDeleteWarnPopupForm from './deleteArtistWarnPopup';
 import { artist_type } from '../interfaces/interfaces';
 import DeleteWarnPopupForm, { deleted_items } from './deleteWarnPopup';
@@ -70,6 +70,7 @@ const ArtistCard  = () => {
         };
 
         return (
+        <>
             <CardStyle key={artist._id}>
                 <AroundCardImg>
                     <Link to={`/artist/${artist._id}`}>
@@ -97,10 +98,13 @@ const ArtistCard  = () => {
                             <Dropdown.Item onClick={() => handleDeleteWarnPopup(artist)}>Delete</Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
-                    <ArtistCardMorePopupForm show={showMorePopup && selectedArtist === artist} handleClose={handleCloseShowMorePopup} artist_u={artist}/>
+
                     <DeleteWarnPopupForm show={showDeleWarn && selectedArtist === artist} handleClose={handleCloseWarnPopup} itemId={artist._id} what={deleted_items.artist} />
                 </CardFooterStyle>                
             </CardStyle>
+            <ArtistCardMorePopupForm show={showMorePopup && selectedArtist === artist} handleClose={handleCloseShowMorePopup} artist_u={artist}/>
+        </>
+
     );
     }
 

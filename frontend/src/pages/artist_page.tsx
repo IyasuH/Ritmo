@@ -116,12 +116,13 @@ export default function ArtistPage(){
                         <Dropdown.Menu>
                             <Dropdown.Item onClick={() => handleUpdatePopup(albm)}>Update</Dropdown.Item>
                             <Dropdown.Item onClick={() => handleDeleteWarnPopup(albm)}>Delete</Dropdown.Item>
-                            <AlbumCardMorePopupForm show={showUpdateForm && selectedAlbum === albm} handleClose={handleCloseUpdatePopup} album_u={albm} />
+                            
                             <DeleteWarnPopupForm show={showDeleWarn && selectedAlbum === albm} handleClose={handleCloseWarnPopup} itemId={albm._id} what={deleted_items.album} />
                         </Dropdown.Menu>
                     </Dropdown>
                 </Card.Footer>
             </Card>
+            <AlbumCardMorePopupForm show={showUpdateForm && selectedAlbum === albm} handleClose={handleCloseUpdatePopup} album_u={albm} />
         </div>
     ))
     // this function is used to convert second values to minute:seconds
@@ -135,30 +136,32 @@ export default function ArtistPage(){
       }
 
     const single_card = singles?.map(single => (
-        <Card>
-            <Card.Body  className="indigenous_style single_song">
-            {/* <Card.Text>{single.title}</Card.Text> */}
-                <div className="indigenous_style single_song_info">
-                    <Card.Text className="indigenous_style single_item">{single.title}</Card.Text>
-                    <Card.Text className="indigenous_style single_item">{single.genre}</Card.Text>  
-                    <Card.Text className="indigenous_style single_item">{(convertSecondsToMinutesAndSeconds(single.duration)).toString()}</Card.Text>
-                </div>
-                <Dropdown>
-                    <Dropdown.Toggle variant="secondary">
-                    </Dropdown.Toggle>
-                    <Dropdown.Menu>
-                        <Dropdown.Item onClick={() => handleSingleUpdatePopup(single)}>Update</Dropdown.Item>
-                        <Dropdown.Item onClick={() => handleDeleteSingleWarnPopup(single)}>Delete</Dropdown.Item>
-                        
-                        {/* <AlbumCardMorePopupForm show={showUpdateForm && selectedAlbum === albm} handleClose={handleCloseUpdatePopup} album_u={albm} /> */}
-                        <DeleteWarnPopupForm show={showSingleDeleWarn && selectedSingle === single} handleClose={handleCloseSingleWarnPopup} itemId={single._id} what={deleted_items.single} />
-                        <SingleCardMorePopupForm show={showSingleUpdateForm && selectedSingle === single} handleClose={handleCloseSingleUpdatePopup} single_u={single}/>
-                        {/* <DeleteWarnPopupForm show={showDeleWarn && selectedAlbum === albm} handleClose={handleCloseWarnPopup} itemId={albm._id} what={deleted_items.album} /> */}
-                    </Dropdown.Menu>
-                </Dropdown>
-            </Card.Body>
-            {/* {JSON.stringify(single)} */}
-        </Card>
+        <div>
+            <Card>
+                <Card.Body  className="indigenous_style single_song">
+                {/* <Card.Text>{single.title}</Card.Text> */}
+                    <div className="indigenous_style single_song_info">
+                        <Card.Text className="indigenous_style single_item">{single.title}</Card.Text>
+                        <Card.Text className="indigenous_style single_item">{single.genre}</Card.Text>  
+                        <Card.Text className="indigenous_style single_item">{(convertSecondsToMinutesAndSeconds(single.duration)).toString()}</Card.Text>
+                    </div>
+                    <Dropdown>
+                        <Dropdown.Toggle variant="secondary">
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu>
+                            <Dropdown.Item onClick={() => handleSingleUpdatePopup(single)}>Update</Dropdown.Item>
+                            <Dropdown.Item onClick={() => handleDeleteSingleWarnPopup(single)}>Delete</Dropdown.Item>
+                            
+                            {/* <AlbumCardMorePopupForm show={showUpdateForm && selectedAlbum === albm} handleClose={handleCloseUpdatePopup} album_u={albm} /> */}
+                            <DeleteWarnPopupForm show={showSingleDeleWarn && selectedSingle === single} handleClose={handleCloseSingleWarnPopup} itemId={single._id} what={deleted_items.single} />
+                            {/* <DeleteWarnPopupForm show={showDeleWarn && selectedAlbum === albm} handleClose={handleCloseWarnPopup} itemId={albm._id} what={deleted_items.album} /> */}
+                        </Dropdown.Menu>
+                    </Dropdown>
+                </Card.Body>
+                {/* {JSON.stringify(single)} */}
+            </Card>
+            <SingleCardMorePopupForm show={showSingleUpdateForm && selectedSingle === single} handleClose={handleCloseSingleUpdatePopup} single_u={single}/>
+        </div>
     ))
     const [showNewAlbumPopup, setShowNewAlbumPopup] = useState(false);
 
@@ -185,23 +188,28 @@ export default function ArtistPage(){
             <Card.ImgOverlay className='indigenous_style artist_card_overlay'>
                 <div className="indigenous_style artist_card_top">
                     {/* <Button variant="outline-light"> */}
-                        {/* <BsThreeDotsVertical /> */}
-                        <div></div>
-                        <Dropdown >
-                            <Dropdown.Toggle className="indigenous_style artist_card_icon_btn">
-                                
-                            </Dropdown.Toggle>
-                            <Dropdown.Menu>
-                                <Dropdown.Item onClick={() => {}}>Update</Dropdown.Item>
-                                <Dropdown.Item onClick={() => {}}>Delete</Dropdown.Item>
-                                <Dropdown.Item onClick={handleShowNewAlbumPopup}>New Album</Dropdown.Item>
-                                <CreateAlbumPopupForm show={showNewAlbumPopup} handleClose={handleCloseNewAlbumPopup} artistId={payload_.artist.data?._id as string} />
-                                <Dropdown.Item onClick={handleShowNewSinglePopup}>New Single</Dropdown.Item>
-                                <CreateSinglePopupForm show={showNewSinglePopup} handleClose={handleCloseNewSinglePopup} artistId={payload_.artist.data?._id as string}/>
-                            </Dropdown.Menu>
-                        </Dropdown>
+                    {/* <BsThreeDotsVertical /> */}
+                    <div>
+                        {/* 
+                        This div element is just to align dropdown button to the right
+                        can be just replaced with some code
+                        */}
+                    </div>
+                    <Dropdown >
+                        <Dropdown.Toggle className="indigenous_style artist_card_icon_btn">
+                            
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu>
+                            <Dropdown.Item onClick={() => {}}>Update</Dropdown.Item>
+                            <Dropdown.Item onClick={() => {}}>Delete</Dropdown.Item>
+                            <Dropdown.Item onClick={handleShowNewAlbumPopup}>New Album</Dropdown.Item>
+                            <Dropdown.Item onClick={handleShowNewSinglePopup}>New Single</Dropdown.Item>
+                        </Dropdown.Menu>
+                    </Dropdown>
                     {/* </Button> */}
                 </div>
+                <CreateAlbumPopupForm show={showNewAlbumPopup} handleClose={handleCloseNewAlbumPopup} artistId={payload_.artist.data?._id as string} />
+                <CreateSinglePopupForm show={showNewSinglePopup} handleClose={handleCloseNewSinglePopup} artistId={payload_.artist.data?._id as string}/>
                 <div className="indigenous_style artist_card_bottom">
                     <Card.Title>{payload_.artist.data?.full_name}</Card.Title>
                     <Card.Text>

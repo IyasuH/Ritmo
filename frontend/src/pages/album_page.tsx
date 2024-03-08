@@ -76,25 +76,27 @@ export default function AlbumPage(){
       }
 
     const songs_card = songs_?.map(song => (
-        <Card>
-            <Card.Body  className="indigenous_style single_song">
-                <div className="indigenous_style single_song_info">
-                    <Card.Text className="indigenous_style single_item">{song.title}</Card.Text>
-                    <Card.Text className="indigenous_style single_item">{song.genre}</Card.Text>  
-                    <Card.Text className="indigenous_style single_item">{(convertSecondsToMinutesAndSeconds(song.duration)).toString()}</Card.Text>
-                </div>
-                <Dropdown>
-                    <Dropdown.Toggle variant="secondary">
-                    </Dropdown.Toggle>
-                    <Dropdown.Menu>
-                        <Dropdown.Item onClick={() => handleUpdatePopup(song)}>Update</Dropdown.Item>
-                        <Dropdown.Item onClick={() => handleDeleteWarnPopup(song)}>Delete</Dropdown.Item>
-                        <DeleteSongPopupForm show={showDeleWarn && selectedSong === song} handleClose={handleCloseWarnPopup} albumId={payload_.album.data?._id as string} songId={song._id} />
-                        <SongCardMorePopupForm show={showUpdateForm && selectedSong === song } handleClose={handleCloseUpdatePopup} song_u={song} albumId={payload_.album.data?._id as string} />
-                    </Dropdown.Menu>
-                </Dropdown>
-            </Card.Body>
-        </Card>
+        <div>
+            <Card>
+                <Card.Body  className="indigenous_style single_song">
+                    <div className="indigenous_style single_song_info">
+                        <Card.Text className="indigenous_style single_item">{song.title}</Card.Text>
+                        <Card.Text className="indigenous_style single_item">{song.genre}</Card.Text>  
+                        <Card.Text className="indigenous_style single_item">{(convertSecondsToMinutesAndSeconds(song.duration)).toString()}</Card.Text>
+                    </div>
+                    <Dropdown>
+                        <Dropdown.Toggle variant="secondary">
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu>
+                            <Dropdown.Item onClick={() => handleUpdatePopup(song)}>Update</Dropdown.Item>
+                            <Dropdown.Item onClick={() => handleDeleteWarnPopup(song)}>Delete</Dropdown.Item>
+                        </Dropdown.Menu>
+                    </Dropdown>
+                </Card.Body>
+            </Card>
+            <DeleteSongPopupForm show={showDeleWarn && selectedSong === song} handleClose={handleCloseWarnPopup} albumId={payload_.album.data?._id as string} songId={song._id} />
+            <SongCardMorePopupForm show={showUpdateForm && selectedSong === song } handleClose={handleCloseUpdatePopup} song_u={song} albumId={payload_.album.data?._id as string} />
+        </div>
     ))
     const about_album_card = (
         <Card className="bg-dark text-white ">
@@ -110,10 +112,10 @@ export default function AlbumPage(){
                             <Dropdown.Item onClick={() => {}}>Update</Dropdown.Item>
                             <Dropdown.Item onClick={() => {}}>Delete</Dropdown.Item>
                             <Dropdown.Item onClick={handleShowNewPopup}>New Song</Dropdown.Item>
-                            <CreateSongPopupForm show={showNewSongPopup} handleClose={handleCloseNewSongPopup} artistId={artistId as string} albumId={albumId as string} />
                         </Dropdown.Menu>
                     </Dropdown>
                 </div>
+                <CreateSongPopupForm show={showNewSongPopup} handleClose={handleCloseNewSongPopup} artistId={artistId as string} albumId={albumId as string} />
                 <div className="indigenous_style artist_card_bottom">
                     <Card.Title>
                         {payload_.album.data?.title}
