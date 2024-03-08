@@ -14,6 +14,10 @@ import DeleteSongPopupForm from "../components/deleteSongPopupForm";
 import SongCardMorePopupForm from "../components/Input/updateSongPopupForm";
 import SideBarAlbum from "../components/sideBarAlbum";
 
+import { MainbarComp } from '../components/MainBar/mainbar.style';
+
+import { LineCard, LineCardSingles, LineCardInfo, CardItem } from "../components/Card/card.style";
+
 export default function AlbumPage(){
     type ParamsType = {
         artistId?: string;
@@ -77,13 +81,13 @@ export default function AlbumPage(){
 
     const songs_card = songs_?.map(song => (
         <div>
-            <Card>
-                <Card.Body  className="indigenous_style single_song">
-                    <div className="indigenous_style single_song_info">
-                        <Card.Text className="indigenous_style single_item">{song.title}</Card.Text>
-                        <Card.Text className="indigenous_style single_item">{song.genre}</Card.Text>  
-                        <Card.Text className="indigenous_style single_item">{(convertSecondsToMinutesAndSeconds(song.duration)).toString()}</Card.Text>
-                    </div>
+            <LineCard>
+                <LineCardSingles>
+                    <LineCardInfo>
+                        <CardItem>{song.title}</CardItem>
+                        <CardItem>{song.genre}</CardItem>
+                        <CardItem>{(convertSecondsToMinutesAndSeconds(song.duration)).toString()}</CardItem>
+                    </LineCardInfo>
                     <Dropdown>
                         <Dropdown.Toggle variant="secondary">
                         </Dropdown.Toggle>
@@ -92,8 +96,8 @@ export default function AlbumPage(){
                             <Dropdown.Item onClick={() => handleDeleteWarnPopup(song)}>Delete</Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
-                </Card.Body>
-            </Card>
+                </LineCardSingles>
+            </LineCard>
             <DeleteSongPopupForm show={showDeleWarn && selectedSong === song} handleClose={handleCloseWarnPopup} albumId={payload_.album.data?._id as string} songId={song._id} />
             <SongCardMorePopupForm show={showUpdateForm && selectedSong === song } handleClose={handleCloseUpdatePopup} song_u={song} albumId={payload_.album.data?._id as string} />
         </div>
@@ -128,30 +132,21 @@ export default function AlbumPage(){
             </Card.ImgOverlay>
         </Card>
       )
-
     return (
-        <>
-            <div className="indigenous_style home_parent">
-                <div className="indigenous_style side_main">
-                    {/* <SideBarArtist/> */}
-                    <SideBarAlbum artist_Id={artistId || ''} album_Id={albumId || ''} />
+        <MainbarComp>
+            <SideBarAlbum artist_Id={artistId || ''} album_Id={albumId || ''} />
+            <div className="indigenous_style main_child">
+                <div className="container row indigenous_style albums">
+                    {about_album_card}
                 </div>
-                <div className="indigenous_style main_child">
-                    <div className="container row indigenous_style albums">
-                        {about_album_card}
+                {/* {JSON.stringify(payload_.album.data)} */}
+                <>
+                    Songs
+                    <div>
+                        {songs_card}
                     </div>
-                    {/* {JSON.stringify(payload_.album.data)} */}
-                    <>
-                        Songs
-                        <div className="indigenous_style singles">
-                            {songs_card}
-                        </div>
-                    </>
-                </div>
+                </>
             </div>
-        </>
-        // <div>
-        //     {JSON.stringify(payload_.album.data)}
-        // </div>
+        </MainbarComp>
     )
 }

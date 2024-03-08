@@ -10,6 +10,7 @@ import { TopComIconStyle, TopCompStyle } from '../components/styled_components/t
 import { CardContainer } from '../components/styled_components/card.style';
 import { useState } from 'react';
 import CreateArtistPopupForm from '../components/Input/newArtistPopupFrom';
+import { MainbarComp } from '../components/MainBar/mainbar.style';
 
 // import createArtistPopupForm from '../components/newArtistPopupFrom';
 
@@ -19,7 +20,7 @@ export default function HomePage(){
     const handleShowNewArtistPopup = () => setShowNewArtistPopup(true);
     const handleCloseNewArtistPopup = () => setShowNewArtistPopup(false);  
     return (
-            <div className="indigenous_style home_parent">
+            <MainbarComp>
                 <SideBar/>
                 <CardContainer>
                     <TopCompStyle>
@@ -34,6 +35,6 @@ export default function HomePage(){
                 </CardContainer>
                 {/* <div className="container row indigenous_style main_child">
                 </div> */}
-            </div>
+            </MainbarComp>
     )
 }

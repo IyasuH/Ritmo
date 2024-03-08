@@ -19,7 +19,7 @@ import { NavBar, NavBarComp, NavBarButton } from "./styled_components/nav_bar.st
 const NavBarComponent: React.FC =()=> {
   return (
     <NavBar>
-      <a href="#" style={{ textDecoration: 'none', color: 'black' }}><h1>Ritmo</h1></a>
+      <a href="/" style={{ textDecoration: 'none', color: 'black' }}><h1>Ritmo</h1></a>
       <NavBarComp>
         <NavBarButton>
           <TfiArrowCircleLeft size={35} onClick={()=>{}}/>

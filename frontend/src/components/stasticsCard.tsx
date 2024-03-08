@@ -2,7 +2,9 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getNumberOfAlbumsAction, getNumberOfArtistsAction, getNumberOfGenresAction, getNumberOfSongsAction } from "../redux/stastics_/stasticSlice";
 import { StateType } from "../redux/root-reducer";
-import { StatCard, CardTextStyle } from "./styled_components/card.style";
+import { CardTextStyle } from "./styled_components/card.style";
+import { StasticCard, StasticValue } from "./Card/card.style";
+import { StatCard } from "./Card/card.style";
 
 const StatisticCardComponent: React.FC = () => {
     const { totalNumberOfSongs, totalNumberOfArtists, totalNumberOfAlbums, totalNumberOfGenres } = useSelector((state: StateType) => state.stastics);
@@ -16,21 +18,42 @@ const StatisticCardComponent: React.FC = () => {
         dispatch(getNumberOfAlbumsAction());
         dispatch(getNumberOfGenresAction());
     }, [])
-    return (
+    return ( 
         <StatCard>
             <h4>Platform Statistics</h4>
-            <p>Total Number of Songs: {totalNumberOfSongs.data?.total}</p>
-            <p>Total Number of Single Songs: {totalNumberOfSongs.data?.single_songs}</p>
-            <p>Total Number of Album Songs: {totalNumberOfSongs.data?.albums_songs}</p>
-            <p>Total Number of Artists: {totalNumberOfArtists.data?.artists_number}</p>
-            <p>Total Number of Albums:  {totalNumberOfAlbums.data?.album_number}</p>
-            <p>Number of Songs for each genre:</p>
-            {Object.entries(totalNumberOfGenres.data as object).map(([genre_name, genre_value]) => {
-                return (
-                    <CardTextStyle>{genre_name} {genre_value}</CardTextStyle>
-                );
-            })}
-        </StatCard>        
+            <StasticCard>
+                Total Number of Songs
+                <StasticValue>{totalNumberOfSongs.data?.total}</StasticValue>
+            </StasticCard>
+            <StasticCard>
+                Total Number of Single Songs
+                <StasticValue>{totalNumberOfSongs.data?.single_songs}</StasticValue>
+            </StasticCard>
+            <StasticCard>
+                Total Number of Album Songs
+                <StasticValue>{totalNumberOfSongs.data?.albums_songs}</StasticValue>
+            </StasticCard>
+            <StasticCard>
+                Total Number of Artists
+                <StasticValue>{totalNumberOfArtists.data?.artists_number}</StasticValue>
+            </StasticCard>
+            <StasticCard>
+                Total Number of Albums
+                <StasticValue>{totalNumberOfAlbums.data?.album_number}</StasticValue>
+            </StasticCard>
+            <div>
+                Number of Songs for each genre
+                <div>
+                    {Object.entries(totalNumberOfGenres.data as object).map(([genre_name, genre_value]) => {
+                        return (
+                            <StasticCard>
+                                {genre_name} <StasticValue>{genre_value}</StasticValue>
+                            </StasticCard>
+                        );
+                    })}
+                </div>
+            </div>
+        </StatCard>
     )
 }
 export default StatisticCardComponent;

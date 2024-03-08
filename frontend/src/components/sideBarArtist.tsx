@@ -6,7 +6,13 @@ import { Button } from "react-bootstrap";
 import './SideBarHome.css';
 import { StateType } from '../redux/root-reducer';
 import { getNumberOfArtistsSongsAction, getNumberOfArtitsAlbumAction } from '../redux/artists_stastics/artistStatSlice';
+import { OtherButton, OtherButtonContainer } from "./Button/button.style";
 import { useDispatch, useSelector } from 'react-redux';
+import { StasticCard, StasticValue } from "./Card/card.style";
+import { StatCard } from "./Card/card.style";
+import { SidebarComp } from "./Sidebar/sidebar.style";
+import LogoComponent from "./logo";
+
 interface SideBarArtistProps {
     artist_Id: string;
   }
@@ -18,30 +24,40 @@ const SideBarArtist: React.FC<SideBarArtistProps> = ({ artist_Id }) => {
         dispatch(getNumberOfArtitsAlbumAction(artist_Id as string));
     }, [])
     const artistStatCard =(
-        <Card style={{ width: '100%' }}>
-            <Card.Body>
-                <Card.Title>Platform Statistics</Card.Title>
-                    <Card.Text>Total Number of songs: <mark>{artistsNumberOfSongs.data?.total}</mark></Card.Text>
-                    <Card.Text>Total Number of Single Songs: <mark>{artistsNumberOfSongs.data?.single_songs}</mark></Card.Text>
-                    <Card.Text>Total Number of Album Songs: <mark>{artistsNumberOfSongs.data?.albums_songs}</mark></Card.Text>
-                    <Card.Text>Total Number of albums: <mark>{artistsNumberOfAlbums.data?.totalAlbums}</mark></Card.Text>
-                    <>Can also define for genres</>
-            </Card.Body>
+        <StatCard>
+            <h4>Artist Statistics</h4>
+            <StasticCard>
+                Total Number of songs
+                <StasticValue>{artistsNumberOfSongs.data?.total}</StasticValue>
+            </StasticCard>
+            <StasticCard>
+                Total Number of Single Songs
+                <StasticValue>{artistsNumberOfSongs.data?.single_songs}</StasticValue>
+            </StasticCard>
+            <StasticCard>
+                Total Number of Album Songs
+                <StasticValue>{artistsNumberOfSongs.data?.albums_songs}</StasticValue>
+            </StasticCard>
+            <StasticCard>
+                Total Number of albums
+                <StasticValue>{artistsNumberOfAlbums.data?.totalAlbums}</StasticValue>
+            </StasticCard>
+            {/* <>Can also define for genres</> */}
             {/* {JSON.stringify({"totalNumberOfGenres": totalNumberOfGenres})} */}
-        </Card>
+        </StatCard>
     )
     return (
-        <div className="indigenous_style sidebarComponents">
-            <img src="" alt="" />
+        <SidebarComp>
+            < LogoComponent/>
             {/* < StatisticCardComponent/> */}
             {artistStatCard}
-            <div className="col-md-1 indigenous_style button_container">
-                <Button variant="primary" className="indigenous_style button_1">Artist</Button>
-                <Button variant="primary" className="indigenous_style button_1">Album</Button>
-                <Button variant="primary" className="indigenous_style button_1">Genre</Button>
-                <Button variant="primary" className="indigenous_style button_1">Songs</Button>
-            </div>
-        </div>
+            <OtherButtonContainer>
+                <OtherButton>Artist</OtherButton>
+                <OtherButton>Album</OtherButton>
+                <OtherButton>Genre</OtherButton>
+                <OtherButton>Songs</OtherButton>
+            </OtherButtonContainer>
+        </SidebarComp>
     )
 }
 

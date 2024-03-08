@@ -11,10 +11,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { StateType } from '../redux/root-reducer';
 
 import ArtistCardMorePopupForm from './Input/updateaArtistPopupForm';
-// import ArtistDeleteWarnPopupForm from './deleteArtistWarnPopup';
+import { SquareCard, CardFooterStyle, CardGrid, CardInfo, CardTextStyle, AroundCardImg, CardImg } from './Card/card.style';
+
 import { artist_type } from '../interfaces/interfaces';
 import DeleteWarnPopupForm, { deleted_items } from './deleteWarnPopup';
-import { CardFooterStyle, CardGrid, CardInfo, CardStyle, CardTextStyle, AroundCardImg, CardImg } from './styled_components/card.style';
 
 const ArtistCard  = () => {
     const payload_ = useSelector((state: StateType)=>state.artists);
@@ -59,6 +59,11 @@ const ArtistCard  = () => {
         dispatch(getAllArtistsAction());
         setShowDeleWarn(false);
     };
+
+    // const [isDown, setDown] = useState(false);
+    // const toggleIsDown = () => {
+    //     setDown(!isDown)
+    // }
     interface ArtistCardProps{
         artist: artist_type;
     }
@@ -71,17 +76,19 @@ const ArtistCard  = () => {
 
         return (
         <>
-            <CardStyle key={artist._id}>
+            <SquareCard
+                key={artist._id}
+                backgroundColor={"#f5f5f5"}
+            >
                 <AroundCardImg>
                     <Link to={`/artist/${artist._id}`}>
                         {imageLoadError ? (
-                            <CardImg src="https://imgur.com/Lf76JRO.png" alt='unable to load defult image' />
+                            <CardImg src="https://imgur.com/Lf76JRO.png" alt='defult image' />
                         ):(
-                            <CardImg src={artist.img_url} alt='' onError={handleImageLoadError}  />
+                            <CardImg src={artist.img_url} alt='artist image' onError={handleImageLoadError}  />
                         )}
                     </Link>
                 </AroundCardImg>
-                
                 <CardFooterStyle>
                     <CardInfo>
                         <CardTextStyle>
@@ -89,6 +96,16 @@ const ArtistCard  = () => {
                         </CardTextStyle>
                         <CardTextStyle>Albums: {artist.single.length}</CardTextStyle>
                     </CardInfo>
+
+                    {/* <CustomDropdown display={({ isDown }) => (isDown ? 'block' : 'none')}>
+                        <CustDropdownBtn onClick={toggleIsDown}>
+                            <span>▼</span>
+                        </CustDropdownBtn>
+                        <CustDropdownCont>
+                            <a href='#'>Update</a>
+                            <a href='#'>Delete</a>
+                        </CustDropdownCont>
+                    </CustomDropdown> */}
                     <Dropdown>
                         <Dropdown.Toggle variant="secondary">
                             {/* <IoMdMore /> */}
@@ -98,10 +115,9 @@ const ArtistCard  = () => {
                             <Dropdown.Item onClick={() => handleDeleteWarnPopup(artist)}>Delete</Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
-
-                    <DeleteWarnPopupForm show={showDeleWarn && selectedArtist === artist} handleClose={handleCloseWarnPopup} itemId={artist._id} what={deleted_items.artist} />
-                </CardFooterStyle>                
-            </CardStyle>
+                </CardFooterStyle>
+            </SquareCard>
+            <DeleteWarnPopupForm show={showDeleWarn && selectedArtist === artist} handleClose={handleCloseWarnPopup} itemId={artist._id} what={deleted_items.artist} />
             <ArtistCardMorePopupForm show={showMorePopup && selectedArtist === artist} handleClose={handleCloseShowMorePopup} artist_u={artist}/>
         </>
 

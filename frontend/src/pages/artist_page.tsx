@@ -19,6 +19,10 @@ import DeleteWarnPopupForm, { deleted_items } from '../components/deleteWarnPopu
 import AlbumCardMorePopupForm from '../components/Input/updateAlbumPopupForm';
 import SingleCardMorePopupForm from '../components/Input/updateSInglePopupForm';
 
+import { SquareCard, CardFooterStyle, CardGrid, CardInfo, CardTextStyle, AroundCardImg, CardImg } from '../components/Card/card.style';
+import { LineCard, LineCardSingles, LineCardInfo, CardItem } from "../components/Card/card.style";
+import { MainbarComp } from '../components/MainBar/mainbar.style';
+
 export default function ArtistPage(){
     type ParamsType = {
         artistId?: string;
@@ -89,26 +93,34 @@ export default function ArtistPage(){
     // const artist_: artist_type = payload_.artist.data as unknown as artist_type || [];
     const albums_: album_type[]  = payload_.artist.data?.albums as unknown as album_type[] || [];
     const singles = payload_.artist.data?.single;
+    const [imageLoadError, setImageLoadError] = useState(false);
+    const handleImageLoadError = () =>{
+        setImageLoadError(true);
+    };
+
     const albumCard_ = albums_?.map(albm => (
-        <div className="col-md-3">
-            {/* {consoloe.log("[INFO] albums title",albm.title)}; */}
-            <Card key={albm._id} style={{ width: '18rem' }} className="indigenous_style artist_card">
-                <Link to={`/album/${payload_.artist.data?._id}/${albm._id}`}>
-                    <div className="text-center">
-                        <Card.Img variant="top" src={albm.cover_img_url} style={{ height: '100%', width: 'auto' }} />
-                    </div>
-                </Link>
-                <Card.Footer className="indigenous_style artist_compt">
-                    <div className="indigenous_style artist_summ">
-                        <Card.Text>
-                            {albm.title as string}
-                            {/* {(albm.songs as Array<song_type>).length} */}
-                        </Card.Text>
-                        <Card.Text>
-                            {/* {typeof albm.songs} */}
-                            {(albm.songs as Array<song_type>).length}
-                        </Card.Text>
-                    </div>
+        // <div className="col-md-3">
+        <div>
+            <SquareCard
+                key={albm._id}
+                backgroundColor={"#f5f5f5"}
+            >
+                <AroundCardImg>
+                    <Link to={`/album/${payload_.artist.data?._id}/${albm._id}`}>
+                        {imageLoadError ? (
+                            <CardImg src="https://imgur.com/Lf76JRO.png" alt='defult image' />
+                        ):(
+                            <CardImg src={albm.cover_img_url} alt='album image' onError={handleImageLoadError}  />
+                        )}
+                    </Link>
+                </AroundCardImg>
+                <CardFooterStyle>
+                    <CardInfo>
+                        <CardTextStyle>
+                            <strong>{albm.title}</strong>
+                        </CardTextStyle>
+                        <CardTextStyle>Songs: {(albm.songs as Array<song_type>).length}</CardTextStyle>
+                    </CardInfo>
                     <Dropdown>
                         <Dropdown.Toggle variant="secondary">
                             {/* <IoMdMore /> */}
@@ -116,12 +128,12 @@ export default function ArtistPage(){
                         <Dropdown.Menu>
                             <Dropdown.Item onClick={() => handleUpdatePopup(albm)}>Update</Dropdown.Item>
                             <Dropdown.Item onClick={() => handleDeleteWarnPopup(albm)}>Delete</Dropdown.Item>
-                            
-                            <DeleteWarnPopupForm show={showDeleWarn && selectedAlbum === albm} handleClose={handleCloseWarnPopup} itemId={albm._id} what={deleted_items.album} />
                         </Dropdown.Menu>
                     </Dropdown>
-                </Card.Footer>
-            </Card>
+                </CardFooterStyle>
+            </SquareCard>
+
+            <DeleteWarnPopupForm show={showDeleWarn && selectedAlbum === albm} handleClose={handleCloseWarnPopup} itemId={albm._id} what={deleted_items.album} />
             <AlbumCardMorePopupForm show={showUpdateForm && selectedAlbum === albm} handleClose={handleCloseUpdatePopup} album_u={albm} />
         </div>
     ))
@@ -137,29 +149,24 @@ export default function ArtistPage(){
 
     const single_card = singles?.map(single => (
         <div>
-            <Card>
-                <Card.Body  className="indigenous_style single_song">
-                {/* <Card.Text>{single.title}</Card.Text> */}
-                    <div className="indigenous_style single_song_info">
-                        <Card.Text className="indigenous_style single_item">{single.title}</Card.Text>
-                        <Card.Text className="indigenous_style single_item">{single.genre}</Card.Text>  
-                        <Card.Text className="indigenous_style single_item">{(convertSecondsToMinutesAndSeconds(single.duration)).toString()}</Card.Text>
-                    </div>
+            <LineCard>
+                <LineCardSingles>
+                    <LineCardInfo>
+                        <CardItem>{single.title}</CardItem>
+                        <CardItem>{single.genre}</CardItem>
+                        <CardItem>{(convertSecondsToMinutesAndSeconds(single.duration)).toString()}</CardItem>
+                    </LineCardInfo>
                     <Dropdown>
                         <Dropdown.Toggle variant="secondary">
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
                             <Dropdown.Item onClick={() => handleSingleUpdatePopup(single)}>Update</Dropdown.Item>
                             <Dropdown.Item onClick={() => handleDeleteSingleWarnPopup(single)}>Delete</Dropdown.Item>
-                            
-                            {/* <AlbumCardMorePopupForm show={showUpdateForm && selectedAlbum === albm} handleClose={handleCloseUpdatePopup} album_u={albm} /> */}
-                            <DeleteWarnPopupForm show={showSingleDeleWarn && selectedSingle === single} handleClose={handleCloseSingleWarnPopup} itemId={single._id} what={deleted_items.single} />
-                            {/* <DeleteWarnPopupForm show={showDeleWarn && selectedAlbum === albm} handleClose={handleCloseWarnPopup} itemId={albm._id} what={deleted_items.album} /> */}
                         </Dropdown.Menu>
                     </Dropdown>
-                </Card.Body>
-                {/* {JSON.stringify(single)} */}
-            </Card>
+                </LineCardSingles>
+            </LineCard>
+            <DeleteWarnPopupForm show={showSingleDeleWarn && selectedSingle === single} handleClose={handleCloseSingleWarnPopup} itemId={single._id} what={deleted_items.single} />
             <SingleCardMorePopupForm show={showSingleUpdateForm && selectedSingle === single} handleClose={handleCloseSingleUpdatePopup} single_u={single}/>
         </div>
     ))
@@ -182,18 +189,10 @@ export default function ArtistPage(){
 
     const about_artist_card = (
         <Card className="bg-dark text-white ">
-            {/* <Card.Img src={payload_.artist.data?.img_url || "https://imgur.com/RDxhZsI.png"} alt="Card image" /> */}
-            {/* have to set max_width, and height */}
             <Card.Img src={"https://imgur.com/RDxhZsI.png"} alt="Card image" /> 
             <Card.ImgOverlay className='indigenous_style artist_card_overlay'>
                 <div className="indigenous_style artist_card_top">
-                    {/* <Button variant="outline-light"> */}
-                    {/* <BsThreeDotsVertical /> */}
                     <div>
-                        {/* 
-                        This div element is just to align dropdown button to the right
-                        can be just replaced with some code
-                        */}
                     </div>
                     <Dropdown >
                         <Dropdown.Toggle className="indigenous_style artist_card_icon_btn">
@@ -206,7 +205,6 @@ export default function ArtistPage(){
                             <Dropdown.Item onClick={handleShowNewSinglePopup}>New Single</Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
-                    {/* </Button> */}
                 </div>
                 <CreateAlbumPopupForm show={showNewAlbumPopup} handleClose={handleCloseNewAlbumPopup} artistId={payload_.artist.data?._id as string} />
                 <CreateSinglePopupForm show={showNewSinglePopup} handleClose={handleCloseNewSinglePopup} artistId={payload_.artist.data?._id as string}/>
@@ -215,37 +213,31 @@ export default function ArtistPage(){
                     <Card.Text>
                         {payload_.artist.data?.bio}
                     </Card.Text>
-                    {/* converting Date to string was being error */}
-                    {/* <Card.Text>{payload_.artist.data?.dob.toDateString()}</Card.Text> */}
                 </div>
             </Card.ImgOverlay>
         </Card>
       )
 
     return (
-        <>
-            <div className="indigenous_style home_parent">
-                <div className="indigenous_style side_main">
-                    <SideBarArtist artist_Id={artistId || ''} />
+        <MainbarComp>
+            <SideBarArtist artist_Id={artistId || ''} />
+            <div className="indigenous_style main_child">
+                <div className="container row indigenous_style albums">
+                    {about_artist_card}
                 </div>
-                <div className="indigenous_style main_child">
-                    <div className="container row indigenous_style albums">
-                        {about_artist_card}
+                <>
+                    <b>Albums</b>
+                    <CardGrid>
+                        {albumCard_}
+                    </CardGrid>
+                </>
+                <>
+                    Singles
+                    <div>
+                        {single_card}
                     </div>
-                    <>
-                        Albums
-                        <div className="container row indigenous_style albums">
-                            {albumCard_}
-                        </div>
-                    </>
-                    <>
-                        Singles
-                        <div className="indigenous_style singles">
-                            {single_card}
-                        </div>
-                    </>
-                </div>
+                </>
             </div>
-        </>
+        </MainbarComp>
     )
 }

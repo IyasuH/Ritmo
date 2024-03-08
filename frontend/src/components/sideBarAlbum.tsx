@@ -6,7 +6,14 @@ import { Button } from "react-bootstrap";
 import './SideBarHome.css';
 import { StateType } from '../redux/root-reducer';
 import { getNumberOfAlbumsSongsAction } from '../redux/albums_stastics/albumStatSlice';
+import { OtherButton, OtherButtonContainer } from "./Button/button.style";
 import { useDispatch, useSelector } from 'react-redux';
+
+import { StasticCard, StasticValue } from "./Card/card.style";
+import { StatCard } from "./Card/card.style";
+import { SidebarComp } from "./Sidebar/sidebar.style";
+import LogoComponent from "./logo";
+
 interface SideBarAlbumProps {
     artist_Id: string;
     album_Id: string;
@@ -18,26 +25,26 @@ const SideBarAlbum: React.FC<SideBarAlbumProps> = ({ artist_Id, album_Id }) => {
         dispatch(getNumberOfAlbumsSongsAction([artist_Id, album_Id]));
     }, [artist_Id, album_Id])
     const albumStatCard =(
-        <Card style={{ width: '100%' }}>
-            <Card.Body>
-                <Card.Title>Platform Statistics</Card.Title>
-                    <Card.Text>Total Number of songs: <mark>{albumsNumberOfSongs.data?.songCount}</mark></Card.Text>
-            </Card.Body>
-            {/* {JSON.stringify({"totalNumberOfGenres": totalNumberOfGenres})} */}
-        </Card>
+        <StatCard>
+            <h4>Platform Statistics</h4>
+            <StasticCard>
+                Total Number of songs
+                <StasticValue>{albumsNumberOfSongs.data?.songCount}</StasticValue>
+            </StasticCard>
+        </StatCard>
     )
     return (
-        <div className="indigenous_style sidebarComponents">
-            <img src="" alt="" />
+        <SidebarComp>
+            < LogoComponent/>
             {/* < StatisticCardComponent/> */}
             {albumStatCard}
-            <div className="col-md-1 indigenous_style button_container">
-                <Button variant="primary" className="indigenous_style button_1">Artist</Button>
-                <Button variant="primary" className="indigenous_style button_1">Album</Button>
-                <Button variant="primary" className="indigenous_style button_1">Genre</Button>
-                <Button variant="primary" className="indigenous_style button_1">Songs</Button>
-            </div>
-        </div>
+            <OtherButtonContainer>
+                <OtherButton>Artist</OtherButton>
+                <OtherButton>Album</OtherButton>
+                <OtherButton>Genre</OtherButton>
+                <OtherButton>Songs</OtherButton>
+            </OtherButtonContainer>
+        </SidebarComp>
     )
 }
 

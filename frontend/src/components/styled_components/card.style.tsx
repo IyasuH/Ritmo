@@ -51,7 +51,7 @@ export const StatCard = styled.div`
     padding: 3%;
     margin-bottom: 0;
     /* border: 1px solid rgba(134, 72, 106, 0.979); */
-    box-shadow: 0.5px 3px 4px rgba(01, 0.2, 0.2, 0.2);
+    box-shadow: 0.5px 3px 4px rgba(0.1, 0.2, 0.2, 0.2);
     border-radius: 2%;
 `
 
@@ -61,7 +61,7 @@ export const AroundCardImg = styled.div`
     height: 60%;
     padding: 3%;
     /* width: 70%; */
-    border: 1px solid rgba(15, 189, 233, 0.829);
+    /* border: 1px solid rgba(15, 189, 233, 0.829); */
 `
 
 export const CardImg = styled.img`
@@ -89,7 +89,6 @@ export const CardFooterStyle = styled.div`
     flex-direction: row;
     justify-content: space-between;
 `
-
 
 export const CardTextStyle = styled.div`
     margin-bottom: 0.5rem;
