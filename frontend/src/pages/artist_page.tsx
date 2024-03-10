@@ -43,7 +43,6 @@ export default function ArtistPage(){
     const [showSingleDeleWarn, setShowSingleDeleWarn] = useState(false);
     const [showSingleUpdateForm, setShowSingleUpdateForm] = useState(false);
     
-
     useEffect(() => {
         dispatch(getArtistAction( artistId as string)); // here i am considering artistId will not be undefined or other types 
     }, [artistId]);

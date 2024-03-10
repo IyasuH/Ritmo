@@ -90,7 +90,7 @@ const ArtistCard  = () => {
                         <CardTextStyle>
                             <strong>{artist.full_name}</strong>
                         </CardTextStyle>
-                        <CardTextStyle>Albums: {artist.single.length}</CardTextStyle>
+                        <CardTextStyle>Albums: {artist.albums.length}</CardTextStyle>
                     </CardInfo>
                     <Dropdown>
                         <Dropdown.Toggle variant="secondary">
