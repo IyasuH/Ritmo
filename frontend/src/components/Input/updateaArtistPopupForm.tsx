@@ -1,4 +1,3 @@
-import { Modal, Button, Form } from "react-bootstrap";
 import React, { ChangeEvent, FormEvent, useState } from "react";
 import { updateArtistAction } from "../../redux/artist_/artistSlice";
 import { artist_type } from "../../interfaces/interfaces";

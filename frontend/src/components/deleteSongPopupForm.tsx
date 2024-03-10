@@ -1,5 +1,7 @@
-import { Modal, Button, Form } from "react-bootstrap";
 import { deleteSongAction } from "../redux/song_/songSlice";
+import { XCloseButton, DeleteButton, CancleButton } from "./Button/button.comp";
+import { PopupParent, CustomPopup, PopupTopComp, PopupBottomComp } from "./Popup/popup.style";
+
 import { useDispatch } from "react-redux";
 
 interface DeleteSongProps {
@@ -16,23 +18,34 @@ function DeleteSongPopupForm({show, handleClose, albumId, songId}: DeleteSongPro
         dispatch(deleteSongAction([albumId, songId]))
         handleClose();
     }
+    if (!show) {
+        return null;
+    }
+
     return(
-        <Modal show={show} size="sm" onHide={handleClose} centered>
-        <Modal.Header closeButton>
-            <Modal.Title>Delete Song</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-            Are you sure you want to delete the {songId}
-        </Modal.Body>
-        <Modal.Footer>
-            <Button variant="secondary" onClick={handleClose}>
-                Cancle
-            </Button>
-            <Button variant="danger" onClick={handleDelete}>
-                Delete
-            </Button>
-        </Modal.Footer>
-    </Modal>        
+            <PopupParent>
+                <CustomPopup
+                variant="filter"
+                bg={"#fff"}
+                color={"#000000"}
+                >
+                    <div>
+                        <PopupTopComp>
+                            <h3>Delete Song</h3>
+                            <XCloseButton onClick={handleClose} />
+                        </PopupTopComp>
+                        <div>
+                            Are you sure you want to delete
+                            <br />
+                            {songId}
+                        </div>
+                        <PopupBottomComp>
+                            <DeleteButton onClick={handleDelete} />
+                            <CancleButton onClick={handleClose} />
+                        </PopupBottomComp>
+                    </div>
+                </CustomPopup>
+            </PopupParent>
     )
 }
 

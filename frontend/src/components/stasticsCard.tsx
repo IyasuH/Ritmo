@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getNumberOfAlbumsAction, getNumberOfArtistsAction, getNumberOfGenresAction, getNumberOfSongsAction } from "../redux/stastics_/stasticSlice";
 import { StateType } from "../redux/root-reducer";
-import { CardTextStyle } from "./styled_components/card.style";
 import { StasticCard, StasticValue } from "./Card/card.style";
 import { StatCard } from "./Card/card.style";
 

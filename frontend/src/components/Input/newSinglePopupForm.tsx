@@ -1,5 +1,4 @@
 import { ChangeEvent, FormEvent, SetStateAction, useState } from "react";
-import { Button, Form, Modal } from "react-bootstrap";
 import { single_form_type } from "../../interfaces/interfaces";
 import { useDispatch } from "react-redux";
 import { createSingleAction } from "../../redux/single_/singleSlice";
@@ -161,29 +160,8 @@ function CreateSinglePopupForm({ show, handleClose, artistId}: PopupformProps){
                         <CancleButton onClick={handleClose} />
                     </PopupBottomComp>
                 </div>
-                {/* <PopupBottomComp>
-                    <ClearButton onClick={handleClear} />
-                    <CancleButton onClick={handleClose} />
-                </PopupBottomComp> */}
             </CustomPopup>
         </PopupParent>
-
-        // <Modal show={show} onHide={handleClose} centered>
-        //     <Modal.Header closeButton>
-        //         <Modal.Title>New Single</Modal.Title>
-        //     </Modal.Header>
-        //     <Modal.Body>
-
-        //     </Modal.Body>
-        //     <Modal.Footer>
-        //         <Button variant="secondary" onClick={handleClear}>
-        //             Clear
-        //         </Button>
-        //         <Button variant="secondary" onClick={handleClose}>
-        //             Close
-        //         </Button>
-        //     </Modal.Footer>
-        // </Modal>
     )
 }
 

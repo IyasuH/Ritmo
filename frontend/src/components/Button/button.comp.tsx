@@ -21,9 +21,12 @@ export const SubmitButton: React.FC =() =>(
     >Submit</CustomButton>
 );
 
+interface CancleButtonProps {
+    onClick: () => void;
+}
 
 // Delete Button
-export const DeleteButton: React.FC = () => (
+export const DeleteButton: React.FC<CancleButtonProps> = ({onClick}) => (
     <CustomButton
         variant=""
         color="#fff"
@@ -33,18 +36,17 @@ export const DeleteButton: React.FC = () => (
         hoverBackgroundColor="#c40000"
         hoverBorderColor="#2e2e2e"
         hoverBorderThickeness="0px"
-        width="50%"
-        p={8}
+        // width="50%"
+        p={"3.5%"}
+        mr={"2%"}
         type="button"
+        onClick={onClick}
     >
         Delete
     </CustomButton>
 );
 
 // Cancel Button
-interface CancleButtonProps {
-    onClick: () => void;
-}
 export const CancleButton: React.FC<CancleButtonProps> = ({ onClick }) => (
     <CustomButton
         variant=""
@@ -83,7 +85,6 @@ export const ClearButton: React.FC<CancleButtonProps> = ({ onClick }) => (
 )
 
 // X `Close` button
-
 export const XCloseButton: React.FC<CancleButtonProps> = ({ onClick }) => (
     <CustomButton
         variant=""

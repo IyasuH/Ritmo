@@ -1,14 +1,14 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from "react";
-import { IoMdMore } from 'react-icons/io';
 import '../components/artistCard.css'
-import { BsThreeDotsVertical } from 'react-icons/bs';
+
+import { HeroCard, HeroCardItem, HeroCardProps } from '../components/heroCard/heroCard.style';
 
 // custom CSS
 import './home.css'
 
 import { album_type, artist_type, single_type, song_type } from '../interfaces/interfaces';
-import { Card, Button, Dropdown } from 'react-bootstrap';
+import { Dropdown } from 'react-bootstrap';
 import { Link, useParams } from 'react-router-dom';
 import { getArtistAction } from '../redux/artist_/artistSlice';
 import { StateType } from '../redux/root-reducer';
@@ -22,6 +22,7 @@ import SingleCardMorePopupForm from '../components/Input/updateSInglePopupForm';
 import { SquareCard, CardFooterStyle, CardGrid, CardInfo, CardTextStyle, AroundCardImg, CardImg } from '../components/Card/card.style';
 import { LineCard, LineCardSingles, LineCardInfo, CardItem } from "../components/Card/card.style";
 import { MainbarComp } from '../components/MainBar/mainbar.style';
+import { CardContainer } from "../components/Card/card.style";
 
 export default function ArtistPage(){
     type ParamsType = {
@@ -187,44 +188,89 @@ export default function ArtistPage(){
         dispatch(getArtistAction( artistId as string));
     }
 
-    const about_artist_card = (
-        <Card className="bg-dark text-white ">
-            <Card.Img src={"https://imgur.com/RDxhZsI.png"} alt="Card image" /> 
-            <Card.ImgOverlay className='indigenous_style artist_card_overlay'>
-                <div className="indigenous_style artist_card_top">
-                    <div>
-                    </div>
+    const ArtistHeroCard: React.FC<HeroCardProps> =({
+        base_color,
+        color_1,
+        color_2,
+        }) => (
+            <div>
+                <HeroCard
+                    base_color={base_color}
+                    color_1={color_1}
+                    color_2={color_2}
+                >
                     <Dropdown >
-                        <Dropdown.Toggle className="indigenous_style artist_card_icon_btn">
-                            
+                        <Dropdown.Toggle variant="secondary">
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
-                            <Dropdown.Item onClick={() => {}}>Update</Dropdown.Item>
-                            <Dropdown.Item onClick={() => {}}>Delete</Dropdown.Item>
+                            {/* <Dropdown.Item onClick={() => {}}>Update</Dropdown.Item>
+                            <Dropdown.Item onClick={() => {}}>Delete</Dropdown.Item> */}
                             <Dropdown.Item onClick={handleShowNewAlbumPopup}>New Album</Dropdown.Item>
                             <Dropdown.Item onClick={handleShowNewSinglePopup}>New Single</Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
-                </div>
+                    <HeroCardItem>
+                        <h3><b>{payload_.artist.data?.full_name}</b></h3>
+                        <p>
+                            {payload_.artist.data?.bio}
+                        </p>
+                    </HeroCardItem>
+                </HeroCard>
                 <CreateAlbumPopupForm show={showNewAlbumPopup} handleClose={handleCloseNewAlbumPopup} artistId={payload_.artist.data?._id as string} />
                 <CreateSinglePopupForm show={showNewSinglePopup} handleClose={handleCloseNewSinglePopup} artistId={payload_.artist.data?._id as string}/>
-                <div className="indigenous_style artist_card_bottom">
-                    <Card.Title>{payload_.artist.data?.full_name}</Card.Title>
-                    <Card.Text>
-                        {payload_.artist.data?.bio}
-                    </Card.Text>
-                </div>
-            </Card.ImgOverlay>
-        </Card>
-      )
+
+            </div>
+    )
+    const artist_hero_color = [
+        {
+            'base_color': '#757575',
+            'color_1': '#cddc39',
+        },
+        {
+            'base_color': '#757575',
+            'color_1': '#8bc34a',
+        },
+        {
+            'base_color': '#757575',
+            'color_1': '#7a49cf',
+        },
+        {
+            'base_color': '#757575',
+            'color_1': '#009688',
+        },
+        {
+            'base_color': '#757575',
+            'color_1': '#ff9800',
+        },
+        {
+            'base_color': '#ffffff',
+            'color_1': '#3f51b5',
+        },
+        {
+            'base_color': '#ffffff',
+            'color_1': '#e6316d'
+        }
+    ]
+
+    function tocolor(str_val:string) {
+        var hash=0;
+        for (var i=0; i<str_val.length; i++){
+            hash = str_val.charCodeAt(i) + ((hash << 5) - hash);
+            hash = hash & hash;
+        }
+        hash = ((hash % artist_hero_color.length) + artist_hero_color.length)%artist_hero_color.length;
+        return artist_hero_color[hash];
+    }
 
     return (
         <MainbarComp>
             <SideBarArtist artist_Id={artistId || ''} />
-            <div className="indigenous_style main_child">
-                <div className="container row indigenous_style albums">
-                    {about_artist_card}
-                </div>
+            <CardContainer>
+                <ArtistHeroCard
+                    base_color={tocolor(payload_.artist.data?.full_name || '').base_color}
+                    color_1={tocolor(payload_.artist.data?.full_name || '').color_1}
+                    color_2="#9e9e9e"
+                />
                 <>
                     <b>Albums</b>
                     <CardGrid>
@@ -232,12 +278,12 @@ export default function ArtistPage(){
                     </CardGrid>
                 </>
                 <>
-                    Singles
-                    <div>
+                    <b>Singles</b>
+                    <div  style={{marginTop:"1.5em"}}>
                         {single_card}
                     </div>
                 </>
-            </div>
+            </CardContainer>
         </MainbarComp>
     )
 }

@@ -1,17 +1,13 @@
-import Card from 'react-bootstrap/Card';
 import React, { useEffect } from "react";
-import { Button } from "react-bootstrap";
-
 // custom CSS
 import './SideBarHome.css';
 import { StateType } from '../redux/root-reducer';
 import { getNumberOfArtistsSongsAction, getNumberOfArtitsAlbumAction } from '../redux/artists_stastics/artistStatSlice';
-import { OtherButton, OtherButtonContainer } from "./Button/button.style";
 import { useDispatch, useSelector } from 'react-redux';
 import { StasticCard, StasticValue } from "./Card/card.style";
 import { StatCard } from "./Card/card.style";
 import { SidebarComp } from "./Sidebar/sidebar.style";
-import LogoComponent from "./logo";
+import SideButton from "./sideButtons";
 
 interface SideBarArtistProps {
     artist_Id: string;
@@ -42,21 +38,12 @@ const SideBarArtist: React.FC<SideBarArtistProps> = ({ artist_Id }) => {
                 Total Number of albums
                 <StasticValue>{artistsNumberOfAlbums.data?.totalAlbums}</StasticValue>
             </StasticCard>
-            {/* <>Can also define for genres</> */}
-            {/* {JSON.stringify({"totalNumberOfGenres": totalNumberOfGenres})} */}
         </StatCard>
     )
     return (
         <SidebarComp>
-            < LogoComponent/>
-            {/* < StatisticCardComponent/> */}
             {artistStatCard}
-            <OtherButtonContainer>
-                <OtherButton>Artist</OtherButton>
-                <OtherButton>Album</OtherButton>
-                <OtherButton>Genre</OtherButton>
-                <OtherButton>Songs</OtherButton>
-            </OtherButtonContainer>
+            < SideButton/>
         </SidebarComp>
     )
 }

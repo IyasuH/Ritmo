@@ -92,9 +92,9 @@ export const LineCard = styled.div`
     box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.479);
     margin-bottom: 2%;
     background-color: #f5f5f5;
+    border-radius: .5em;
     &:hover{
         background-color: #e0e0e0;
-        box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.479);
     }
 `
 
@@ -161,4 +161,15 @@ export const StasticValue = styled.div`
     padding-left: .3em;
     /* padding-bottom: .1em; */
     color: #000;
+`
+export const CardContainer = styled.div`
+    width: 80%;
+    padding-right: 2em;
+    padding-left: 2em;
+    margin-right: 2em;
+    margin-left: 2em;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    /* border: 1px solid rgba(255, 99, 99, 0.644); */
 `

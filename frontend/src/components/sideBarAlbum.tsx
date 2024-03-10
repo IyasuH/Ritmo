@@ -1,18 +1,13 @@
-import Card from 'react-bootstrap/Card';
 import React, { useEffect } from "react";
-import { Button } from "react-bootstrap";
 
-// custom CSS
-import './SideBarHome.css';
 import { StateType } from '../redux/root-reducer';
 import { getNumberOfAlbumsSongsAction } from '../redux/albums_stastics/albumStatSlice';
-import { OtherButton, OtherButtonContainer } from "./Button/button.style";
 import { useDispatch, useSelector } from 'react-redux';
 
 import { StasticCard, StasticValue } from "./Card/card.style";
 import { StatCard } from "./Card/card.style";
 import { SidebarComp } from "./Sidebar/sidebar.style";
-import LogoComponent from "./logo";
+import SideButton from "./sideButtons";
 
 interface SideBarAlbumProps {
     artist_Id: string;
@@ -35,15 +30,8 @@ const SideBarAlbum: React.FC<SideBarAlbumProps> = ({ artist_Id, album_Id }) => {
     )
     return (
         <SidebarComp>
-            < LogoComponent/>
-            {/* < StatisticCardComponent/> */}
             {albumStatCard}
-            <OtherButtonContainer>
-                <OtherButton>Artist</OtherButton>
-                <OtherButton>Album</OtherButton>
-                <OtherButton>Genre</OtherButton>
-                <OtherButton>Songs</OtherButton>
-            </OtherButtonContainer>
+            < SideButton/>
         </SidebarComp>
     )
 }

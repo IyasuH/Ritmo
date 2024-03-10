@@ -1,49 +1,68 @@
 import React, { useState } from "react";
-import Button from "react-bootstrap/Button";
-import Container from 'react-bootstrap/Container';
-import Form from 'react-bootstrap/Form';
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
-import NavDropdown from 'react-bootstrap/NavDropdown';
 
-import { TfiArrowCircleRight, TfiArrowCircleLeft } from "react-icons/tfi";
 import { VscAccount } from "react-icons/vsc";
 import { IoMdMore } from "react-icons/io";
-
-import CreateArtistPopupForm from "./Input/newArtistPopupFrom";
+import { FiSearch } from "react-icons/fi";
 
 import { Link, Outlet } from "react-router-dom";
-import { Dropdown } from "react-bootstrap";
-import { NavBar, NavBarComp, NavBarButton } from "./styled_components/nav_bar.style";
+
+import { NavBar, NavBarComp } from "./other_styled_components/nav_bar.style";
+import { SearchInput } from "./Input/input.style";
+import FilterPopup from "./Popup/filterPopup";
+import AboutPopup from "./Popup/aboutPopup";
 
 const NavBarComponent: React.FC =()=> {
+  const [showFilterPopup, setShowFilterPopup] = useState(false);
+  const [showAboutPopup, setShowAboutPopup] = useState(false);
+
+  const handleFilterPopup = () => {
+    setShowFilterPopup(true);
+  }
+
+  const handleCloseFilterPoup = () => {
+    setShowFilterPopup(false)
+  }
+
+  const handleAboutPopup = () => {
+    setShowAboutPopup(true);
+  }
+
+  const handleCloseAboutPoup = () => {
+    setShowAboutPopup(false)
+  }
+
   return (
     <NavBar>
       <a href="/" style={{ textDecoration: 'none', color: 'black' }}><h1>Ritmo</h1></a>
       <NavBarComp>
-        <NavBarButton>
-          <TfiArrowCircleLeft size={35} onClick={()=>{}}/>
-          <TfiArrowCircleRight size={35} onClick={()=>{}}/>
-        </NavBarButton>
-        <form action="">
-          <input type="text" />
-          <button type="submit">Search</button>
-          <IoMdMore size={35} onClick={()=>{}}/>
-        </form>
-        {/* <Form className="d-flex">
-          <Form.Control
-              type="search"
-              placeholder="Search"
-              className="me-2"
-              aria-label="Search"
+        <form onSubmit={()=>{}}>
+          <SearchInput type="text" placeholder="search"/>
+          <FiSearch size={35} onClick={()=>{}} type="submit"
+            style={{backgroundColor: "#e0e0e0",
+            borderRadius: "1.3em", padding: ".5em",
+            width: "2.8em", height: "2.8em",
+            color: "#8aa58b"}}
           />
-          <Button variant="outline-success">Search</Button>
-        </Form> */}
-        <VscAccount size={35}/>
+          <IoMdMore size={35} onClick={() => handleFilterPopup()}
+            type="submit"
+            style={{backgroundColor: "#e0e0e0",
+            borderRadius: "1.3em", padding: ".5em",
+            width: "2.8em", height: "2.8em",
+            margin: ".7em",
+            color: "#8aa58b"}}
+          />
+        </form>
       </NavBarComp>
+      <VscAccount size={35}
+        style={{backgroundColor: "#e0e0e0",
+        borderRadius: "1.3em", padding: ".5em",
+        width: "2.8em", height: "2.8em",
+        color: "#8aa58b"}}
+        onClick={() => handleAboutPopup()}
+      />
+      <AboutPopup show={showAboutPopup} handleClose={handleCloseAboutPoup}/>
+      <FilterPopup show={showFilterPopup} handleClose={handleCloseFilterPoup}/>
     </NavBar>
-    // <Navbar expand="lg" className="bg-body-tertiary">
-    // </Navbar>
   );
 }
 

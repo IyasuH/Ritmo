@@ -14,7 +14,7 @@ export const CustomPopup = styled.div<PopupProps>`
     align-items: center;
     border: .5px solid black;
     border-radius: 8px;
-    padding: 2% 3%;
+    padding: 1em 2em;
 `
 
 export const PopupParent = styled.div`

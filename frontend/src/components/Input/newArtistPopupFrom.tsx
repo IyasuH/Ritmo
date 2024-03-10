@@ -152,21 +152,6 @@ function CreateArtistPopupForm({ show, handleClose}: PopupformProps){
                 </div>
             </CustomPopup>
         </PopupParent>
-        // <Modal show={show} onHide={handleClose} centered>
-        //     <Modal.Header closeButton>
-        //         <Modal.Title>New Artist</Modal.Title>
-        //     </Modal.Header>
-        //     <Modal.Body>
-        //     </Modal.Body>
-        //     <Modal.Footer>
-        //         <Button variant="secondary" onClick={handleClear}>
-        //             Clear
-        //         </Button>
-        //         <Button variant="secondary" onClick={handleClose}>
-        //             Close
-        //         </Button>
-        //     </Modal.Footer>
-        // </Modal>
     )
 }
 

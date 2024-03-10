@@ -1,7 +1,7 @@
 import Card from 'react-bootstrap/Card';
 import { useEffect, useState } from "react";
-import { Alert, Button, Dropdown } from "react-bootstrap";
-import { IoMdMore } from 'react-icons/io';
+import { Dropdown } from "react-bootstrap";
+
 import { getAllArtistsAction } from "../redux/artist_/artistSlice";
 
 // custom CSS
@@ -60,10 +60,6 @@ const ArtistCard  = () => {
         setShowDeleWarn(false);
     };
 
-    // const [isDown, setDown] = useState(false);
-    // const toggleIsDown = () => {
-    //     setDown(!isDown)
-    // }
     interface ArtistCardProps{
         artist: artist_type;
     }
@@ -96,16 +92,6 @@ const ArtistCard  = () => {
                         </CardTextStyle>
                         <CardTextStyle>Albums: {artist.single.length}</CardTextStyle>
                     </CardInfo>
-
-                    {/* <CustomDropdown display={({ isDown }) => (isDown ? 'block' : 'none')}>
-                        <CustDropdownBtn onClick={toggleIsDown}>
-                            <span>▼</span>
-                        </CustDropdownBtn>
-                        <CustDropdownCont>
-                            <a href='#'>Update</a>
-                            <a href='#'>Delete</a>
-                        </CustDropdownCont>
-                    </CustomDropdown> */}
                     <Dropdown>
                         <Dropdown.Toggle variant="secondary">
                             {/* <IoMdMore /> */}

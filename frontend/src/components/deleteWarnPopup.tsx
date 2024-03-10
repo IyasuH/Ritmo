@@ -1,8 +1,10 @@
-import { Modal, Button, Form } from "react-bootstrap";
 import { deleteArtistAction } from "../redux/artist_/artistSlice";
 import { useDispatch } from "react-redux";
 import { deleteAlbumAction } from "../redux/album_/albumSlice";
 import { deleteSingleAction } from "../redux/single_/singleSlice";
+
+import { XCloseButton, DeleteButton, CancleButton } from "./Button/button.comp";
+import { PopupParent, CustomPopup, PopupTopComp, PopupBottomComp } from "./Popup/popup.style";
 
 export enum deleted_items {
     artist = "artist",
@@ -50,23 +52,34 @@ function DeleteWarnPopupForm({ show, handleClose, itemId, what }: DelPopupformPr
                 handleClose();
                 break;
         }}
-        return(
-            <Modal show={show} size="sm" onHide={handleClose} centered>
-                <Modal.Header closeButton>
-                    <Modal.Title>{what as string}</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    Are you sure you want to delete the {itemId}
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={handleClose}>
-                        Cancle
-                    </Button>
-                    <Button variant="danger" onClick={handleDelete}>
-                        Delete
-                    </Button>
-                </Modal.Footer>
-            </Modal>
+
+        if (!show) {
+            return null;
+        }
+        return (
+            <PopupParent>
+                <CustomPopup
+                variant="filter"
+                bg={"#fff"}
+                color={"#000000"}
+                >
+                    <div>
+                        <PopupTopComp>
+                            <h3>Delete {what as string}</h3>
+                            <XCloseButton onClick={handleClose} />
+                        </PopupTopComp>
+                        <div>
+                            Are you sure you want to delete
+                            <br />
+                            {itemId}
+                        </div>
+                        <PopupBottomComp>
+                            <DeleteButton onClick={handleDelete} />
+                            <CancleButton onClick={handleClose} />
+                        </PopupBottomComp>
+                    </div>
+                </CustomPopup>
+            </PopupParent>
         )
     }
 
