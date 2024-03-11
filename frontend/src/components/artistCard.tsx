@@ -24,7 +24,7 @@ const ArtistCard  = () => {
     useEffect(() => {
         dispatch(getAllArtistsAction());
     },[]);
-    var artists = payload_.artist_list.data || [];
+    var artists = Array.isArray(payload_.artist_list.data) ? payload_.artist_list.data : [];
     // console.log("[INFO] artist list payload: ", JSON.stringify(payload_.artist_list.data))
 
     const [showMorePopup, setShowMorePopUp] = useState(false);
