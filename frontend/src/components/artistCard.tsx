@@ -110,7 +110,7 @@ const ArtistCard  = () => {
     );
     }
 
-    const artistCard_ = artists?.map((artist: artist_type) => (
+    const artistCard_ = payload_.artist_list.data?.map((artist: artist_type) => (
         <ArtistCard artist={artist}/>
       ));
 
