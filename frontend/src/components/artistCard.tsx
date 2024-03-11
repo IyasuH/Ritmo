@@ -24,7 +24,7 @@ const ArtistCard  = () => {
     useEffect(() => {
         dispatch(getAllArtistsAction());
     },[]);
-    var artists = payload_.artist_list.data;
+    var artists = payload_.artist_list.data || [];
     // console.log("[INFO] artist list payload: ", JSON.stringify(payload_.artist_list.data))
 
     const [showMorePopup, setShowMorePopUp] = useState(false);
@@ -109,8 +109,8 @@ const ArtistCard  = () => {
 
     );
     }
-    console.log("[INFO]: payload ", payload_)
-    const artistCard_ = (payload_.artist_list.data || []).map((artist: artist_type) => (
+    console.log("[INFO]: payload ", artists)
+    const artistCard_ = artists.map((artist: artist_type) => (
         <ArtistCard artist={artist}/>
       ));
 
