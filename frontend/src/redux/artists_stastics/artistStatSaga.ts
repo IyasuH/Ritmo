@@ -14,10 +14,11 @@ import {
     artist_album_number_type,
 } from "../../interfaces/interfaces";
 import { PayloadAction } from "@reduxjs/toolkit";
+import { BASE_URL } from "../config";
 
 function* artistsNumberOfSongs({payload: artist_id}: PayloadAction<string>) {
     try{
-        const response: AxiosResponse<artist_number_Songs_type> = yield axios.get(`/api/NoSongArtist/${artist_id}`)
+        const response: AxiosResponse<artist_number_Songs_type> = yield axios.get(`${BASE_URL}/api/NoSongArtist/${artist_id}`)
         yield put(getNumberOfArtistsSongsSuccessAction(response.data));
 
     }catch(error){
@@ -27,7 +28,7 @@ function* artistsNumberOfSongs({payload: artist_id}: PayloadAction<string>) {
 
 function* artistsAlbumNumber({payload: artist_id}: PayloadAction<string>) {
     try{
-        const response: AxiosResponse<artist_album_number_type> = yield axios.get(`/api/NoAlbumArtist/${artist_id}`)
+        const response: AxiosResponse<artist_album_number_type> = yield axios.get(`${BASE_URL}/api/NoAlbumArtist/${artist_id}`)
         yield put(getNumberOfArtitsAlbumSuccessAction(response.data));
 
     }catch(error){

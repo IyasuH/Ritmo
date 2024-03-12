@@ -19,11 +19,12 @@ import {
 } from "./songSlice";
 
 import { song_type } from "../../interfaces/interfaces";
+import { BASE_URL } from "../config";
 
 function* createSongSaga({payload: [song, artist_id, album_id]}: PayloadAction<[song_type, string, string]>){
     try{
         // 
-        const response: AxiosResponse<song_type> = yield axios.post(`/api/newSong/artist/${artist_id}/album/${album_id}`, song) // i have to pass artist_id and album_id as a parameter
+        const response: AxiosResponse<song_type> = yield axios.post(`${BASE_URL}/api/newSong/artist/${artist_id}/album/${album_id}`, song) // i have to pass artist_id and album_id as a parameter
         yield put(createSongSuccessAction(response.data));        
     } catch (error) {
         yield put(createSongErrorAction(error as string));
@@ -32,7 +33,7 @@ function* createSongSaga({payload: [song, artist_id, album_id]}: PayloadAction<[
 
 function* deleteSongSaga({payload: [albumId, songId]}: PayloadAction<[string, string]>){
     try{
-        const response: AxiosResponse<song_type> = yield axios.delete(`/api/deleteSong/album/${albumId}/songs/${songId}`)
+        const response: AxiosResponse<song_type> = yield axios.delete(`${BASE_URL}/api/deleteSong/album/${albumId}/songs/${songId}`)
         yield put(deleteSongSuccessAction(response.data));
     } catch (error) {
         yield put(deleteSongErrorAction(error as string));
@@ -42,7 +43,7 @@ function* deleteSongSaga({payload: [albumId, songId]}: PayloadAction<[string, st
  function* updateSongSaga({payload: [song, albumId]}: PayloadAction<[song_type, string]>){
     try{
         // 
-        const response: AxiosResponse<song_type> = yield axios.put(`/api/updateSong/album/${albumId}/songs/${song._id}`, song)
+        const response: AxiosResponse<song_type> = yield axios.put(`${BASE_URL}/api/updateSong/album/${albumId}/songs/${song._id}`, song)
         yield put(updateSongSuccessAction(response.data));
     }catch (error){
         // 

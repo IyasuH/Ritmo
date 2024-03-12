@@ -22,10 +22,11 @@ import {
     total_number_album_type,
     total_number_genre_type
 } from "../../interfaces/interfaces";
+import { BASE_URL } from "../config";
 
 function* totNumberOfSongs(){
     try{
-        const response: AxiosResponse<total_number_Songs_type> = yield axios.get('/api/totalNumberOfSongs/')
+        const response: AxiosResponse<total_number_Songs_type> = yield axios.get(`${BASE_URL}/api/totalNumberOfSongs/`)
         yield put(getNumberOfSongsSuccessAction(response.data));
 
     }catch(error){
@@ -35,7 +36,7 @@ function* totNumberOfSongs(){
 
 function* totNumberOfArtists(){
     try{
-        const response: AxiosResponse<total_number_artist_type> = yield axios.get('/api/totalNumberOfArtists/')
+        const response: AxiosResponse<total_number_artist_type> = yield axios.get(`${BASE_URL}/api/totalNumberOfArtists/`)
         yield put(getNumberOfArtistsSuccessAction(response.data));
 
     }catch(error){
@@ -45,7 +46,7 @@ function* totNumberOfArtists(){
 
 function* totNumberOfAlbums(){
     try{
-        const response: AxiosResponse<total_number_album_type> = yield axios.get('/api/totalNumberOfAlbums/')
+        const response: AxiosResponse<total_number_album_type> = yield axios.get(`${BASE_URL}/api/totalNumberOfAlbums/`)
         yield put(getNumberOfAlbumsSuccessAction(response.data));
 
     }catch(error){
@@ -55,7 +56,7 @@ function* totNumberOfAlbums(){
 
 function* totNumberOfGenres(){
     try{
-        const response: AxiosResponse<total_number_genre_type> = yield axios.get('/api/numberSongsGenres/')
+        const response: AxiosResponse<total_number_genre_type> = yield axios.get(`${BASE_URL}/api/numberSongsGenres/`)
         yield put(getNumberOfGenresSuccessAction(response.data));
 
     }catch(error){

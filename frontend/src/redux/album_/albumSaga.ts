@@ -14,10 +14,11 @@ import {
  } from "./albumSlice";
 
  import { album_type } from "../../interfaces/interfaces";
+import { BASE_URL } from "../config";
 
  function* getAlbumSaga({payload: id}: PayloadAction<string>) {
     try{
-        const response: AxiosResponse<album_type> = yield axios.get(`/api/getAlbum/${id}`)
+        const response: AxiosResponse<album_type> = yield axios.get(`${BASE_URL}/api/getAlbum/${id}`)
         yield put(getAlbumSuccessAction(response.data))
     } catch (error){
         yield put(getAlbumErrorAction(error as string));
@@ -26,7 +27,7 @@ import {
  
  function* createAlbumSaga({payload: [album, artist_id]}: PayloadAction<[album_type, string]>){
     try{
-        const response: AxiosResponse<album_type> = yield axios.post(`/api/newAlbum/${artist_id}`, album) // i have to pass artist_id as a parameter
+        const response: AxiosResponse<album_type> = yield axios.post(`${BASE_URL}/api/newAlbum/${artist_id}`, album) // i have to pass artist_id as a parameter
         yield put(createAlbumSuccessAction(response.data));
     } catch (error){
         yield put(createAlbumErrorAction(error as string));
@@ -35,7 +36,7 @@ import {
 
  function* deleteAlbumSaga({payload: id}: PayloadAction<string>){
     try{
-        const response: AxiosResponse<album_type> = yield axios.delete(`/api/deleteAlbum/${id}`)
+        const response: AxiosResponse<album_type> = yield axios.delete(`${BASE_URL}/api/deleteAlbum/${id}`)
         yield put(deleteAlbumSuccessAction(response.data));
     } catch (error) {
         yield put(deleteAlbumErrorAction(error as string));
@@ -45,7 +46,7 @@ import {
 function* updateAlbumSaga({payload: album}: PayloadAction<album_type>){
     try{
         // 
-        const response: AxiosResponse<album_type> = yield axios.put(`/api/updateAlbum/${album._id}`, album)
+        const response: AxiosResponse<album_type> = yield axios.put(`${BASE_URL}/api/updateAlbum/${album._id}`, album)
         yield put(updateAlbumSuccessAction(response.data));
     }catch (error){
         // 

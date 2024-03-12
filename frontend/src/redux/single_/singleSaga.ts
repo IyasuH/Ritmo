@@ -2,6 +2,7 @@ import { PayloadAction, PayloadActionCreator } from "@reduxjs/toolkit";
 import axios, { AxiosResponse } from "axios";
 import { put, takeLatest } from "redux-saga/effects";
 import { single_type } from "../../interfaces/interfaces";
+import { BASE_URL } from "../config";
 
 import {
     createSingleSuccessAction,
@@ -16,7 +17,7 @@ import {
 
 function* createSingleSaga({payload: [single, artist_id]}: PayloadAction<[single_type, string]>){
     try{
-        const response: AxiosResponse<single_type> = yield axios.post(`/api/newSingle/${artist_id}`, single);
+        const response: AxiosResponse<single_type> = yield axios.post(`${BASE_URL}/api/newSingle/${artist_id}`, single);
         yield put(createSingleSuccessAction(response.data));
     }catch (error){
         yield put(createSingleErrorAction(error as string));
@@ -26,7 +27,7 @@ function* createSingleSaga({payload: [single, artist_id]}: PayloadAction<[single
 function* updateSingleSaga({payload: single}: PayloadAction<single_type>){
     try{
         // 
-        const response: AxiosResponse<single_type> = yield axios.put(`/api/updateSingle/${single._id}`, single)
+        const response: AxiosResponse<single_type> = yield axios.put(`${BASE_URL}/api/updateSingle/${single._id}`, single)
         yield put(updateSingleSuccessAction(response.data));
     }catch (error){
         // 
@@ -36,7 +37,7 @@ function* updateSingleSaga({payload: single}: PayloadAction<single_type>){
 
 function* deleteSingleSaga({payload: id}: PayloadAction<string>){
     try{
-        const response: AxiosResponse<single_type> = yield axios.delete(`/api/deleteSingle/${id}`)
+        const response: AxiosResponse<single_type> = yield axios.delete(`${BASE_URL}/api/deleteSingle/${id}`)
         yield put(deleteSingleSuccessAction(response.data));
     } catch (error) {
         yield put(deleteSingleErrorAction(error as string));

@@ -1,6 +1,7 @@
 import { PayloadAction } from "@reduxjs/toolkit";
 import axios, { AxiosResponse } from "axios";
 import { put, takeLatest } from "redux-saga/effects"
+import { BASE_URL } from "../config";
 // import { artist_type } from "../../interfaces/interfaces";
 import { getAllArtistsErrorAction,
     getAllArtistsSuccessAction,
@@ -21,7 +22,7 @@ import { artist_type } from "../../interfaces/interfaces";
 
 function* getArtistSaga({payload: id}: PayloadAction<string>) {
     try{
-        const response: AxiosResponse<artist_type> = yield axios.get(`/api/getArtist/${id}`)
+        const response: AxiosResponse<artist_type> = yield axios.get(`${BASE_URL}/api/getArtist/${id}`)
         yield put(getArtistSuccessAction(response.data))
     } catch (error){
         yield put(getArtistErrorAction(error as string));
@@ -30,7 +31,7 @@ function* getArtistSaga({payload: id}: PayloadAction<string>) {
 
 function* createArtistSaga({payload: artist}: PayloadAction<artist_type>){
     try{
-        const response: AxiosResponse<artist_type> = yield axios.post('/api/newArtist', artist)
+        const response: AxiosResponse<artist_type> = yield axios.post(`${BASE_URL}/api/newArtist`, artist)
         yield put(createArtistSuccessAction(response.data));
     } catch (error){
         yield put(createArtistErrorAction(error as string));
@@ -39,7 +40,7 @@ function* createArtistSaga({payload: artist}: PayloadAction<artist_type>){
 
 function* listArtistSaga(){
     try{
-        const response: AxiosResponse<[artist_type]> = yield axios.get('/api/listArtists')
+        const response: AxiosResponse<[artist_type]> = yield axios.get(`${BASE_URL}/api/listArtists`)
         yield put(getAllArtistsSuccessAction(response.data));
     } catch (error){
         yield put(getAllArtistsErrorAction(error as string));
@@ -48,7 +49,7 @@ function* listArtistSaga(){
 
 function* updateArtistSaga({payload: artist}: PayloadAction<artist_type>){
     try{
-        const response: AxiosResponse<artist_type> = yield axios.put(`/api/updateArtist/${artist._id}`, artist)
+        const response: AxiosResponse<artist_type> = yield axios.put(`${BASE_URL}/api/updateArtist/${artist._id}`, artist)
         yield put(updateArtistSuccessAction(response.data));
     }catch (error){
         yield put(updateArtistErrorAction(error as string));
@@ -57,7 +58,7 @@ function* updateArtistSaga({payload: artist}: PayloadAction<artist_type>){
 
 function* deleteArtistSaga({payload: id}: PayloadAction<string>){
     try{
-        const response: AxiosResponse<artist_type> = yield axios.delete(`/api/deleteArtist/${id}`)
+        const response: AxiosResponse<artist_type> = yield axios.delete(`${BASE_URL}/api/deleteArtist/${id}`)
         yield put(deleteArtistSuccessAction(response.data))
     } catch (error){
         yield put(deleteArtistErrorAction(error as string));
