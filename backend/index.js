@@ -2,6 +2,7 @@ require('dotenv').config()
 
 const express = require('express')
 const mongoose = require('mongoose')
+const cors = require('cors');
 
 const songRouter = require('./routes/songs')
 
@@ -14,7 +15,15 @@ app.use((req, res, next) => {
     next();
 })
 
+const allowedOrigins = ['http://localhost:3000', 'https://ritmo-one.vercel.app', 'https://ritmo-git-main-iyasuh.vercel.app']
+
+app.use(cors({
+      origin: allowedOrigins,
+    })
+);
+
 app.use('/api', songRouter)
+
 
 mongoose.connect(process.env.MOGO_URI)
 .then(() => {
