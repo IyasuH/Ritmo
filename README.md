@@ -8,6 +8,8 @@ platform for users to create, read, update and delete data about artists, albums
 songs, and single songs. In addition the platform offers comprehensive statistics about the
 platform itself, specific artists, albums and songs.
 
+![Screenshoot  of the site](screenshoot/sc_1.png)
+
 ## Key features and functionalities 
 
 - Artist and Music Management
